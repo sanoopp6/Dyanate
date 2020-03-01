@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="colorPrimary">#3589c4</color>
+    <color name="colorPrimaryDark">#195784</color>
+    <color name="colorAccent">#195885</color>
+
+    <color name="blackColor">#000000</color>
+    <color name="whiteColor">#FFFFFF</color>
+    <color name="white10">#1Affffff</color>
+    <color name="redColor">#c80a0a</color>
+    <color name="blueColor">#0e5081</color>
+    <color name="lightBlueColor">#3183b9</color>
+    <color name="lightestBlueColor">#87b4cf</color>
+    <color name="greenColor">#0ac80a</color>
+    <color name="orangeColor">#f7a21f</color>
+    <color name="saddleBrownColor">#c27738</color>
+    <color name="whiteSmokeColor">#F1F1F2</color>
+
+    <color name="edit_text_focused_color">#2E3191</color>
+    <color name="darkest_gray">#6e6e6e</color>
+    <color name="lighter_gray">#DEE3E6</color>
+
+    <color name="tableItemBackgroundColor">#dfddd6</color>
+    <color name="tableItemButtonBackgroundColor">#b0c2c9</color>
+
+    <color name="colorFooter">#404041</color>
+    <color name="colorBorder">#FF1E7A2D</color>
+
+    <color name="twitterColor">#399de5</color>
+    <color name="facebookColor">#26346c</color>
+
+</resources>

@@ -1,0 +1,71 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowFullscreen">false</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="TabLayout" parent="Widget.Design.TabLayout">
+        <item name="android:textSize">14sp</item>
+        <!--<item name="tabIndicatorColor">@color/color_blue</item>-->
+        <!--<item name="tabSelectedTextColor">@color/color_blue</item>-->
+        <!--<item name="tabTextColor">@color/black</item>-->
+        <item name="tabTextAppearance">@style/TabLayoutTextAppearance</item>
+    </style>
+
+    <style name="TabLayoutTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:fontFamily">@font/droid_arabic_kufi</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="FontSizeTen">
+        <item name="android:fontFamily">@font/droid_arabic_kufi</item>
+        <item name="android:textSize">10sp</item>
+    </style>
+
+    <style name="FontSizeEleven">
+        <item name="android:fontFamily">@font/droid_arabic_kufi</item>
+        <item name="android:textSize">11sp</item>
+    </style>
+
+    <style name="FontSizeTwelve">
+        <item name="android:fontFamily">@font/droid_arabic_kufi</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="FontSizeThirteen">
+        <item name="android:fontFamily">@font/droid_arabic_kufi</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <style name="FontSizeFourteen">
+        <item name="android:fontFamily">@font/droid_arabic_kufi</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="FontSizeFifteen">
+        <item name="android:fontFamily">@font/droid_arabic_kufi</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="FontSizeSixteen">
+        <item name="android:fontFamily">@font/droid_arabic_kufi</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="FontSizeSeventeen">
+        <item name="android:fontFamily">@font/droid_arabic_kufi</item>
+        <item name="android:textSize">17sp</item>
+    </style>
+
+</resources>

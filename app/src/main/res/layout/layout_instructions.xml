@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--<LinearLayout-->
+    <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_centerInParent="true"-->
+    <!--android:orientation="vertical" >-->
+
+    <!--<android.support.v7.widget.CardView-->
+        <!--xmlns:card_view="http://schemas.android.com/apk/res-auto"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--card_view:cardBackgroundColor="@color/whiteColor">-->
+
+<LinearLayout
+    android:id="@+id/linearLayout_back"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="2dp"
+    android:layout_gravity="center"
+    android:orientation="horizontal"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:textColor="@color/blackColor"
+        android:background="@android:color/transparent"
+        android:layout_width="50dp"
+        android:gravity="center"
+        style="@style/FontSizeThirteen"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView_slNo" />
+
+    <TextView
+        android:id="@+id/textView_topic"
+        android:background="@android:color/transparent"
+        android:textColor="@color/blackColor"
+        android:gravity="center"
+        style="@style/FontSizeThirteen"
+        android:textStyle="bold"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/button_view"
+        android:background="@android:color/transparent"
+        android:textColor="@color/edit_text_focused_color"
+        android:layout_width="85dp"
+        android:textAllCaps="false"
+        android:gravity="center"
+        style="@style/FontSizeThirteen"
+        android:text="@string/View"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
+
+    <!--</android.support.v7.widget.CardView>-->
+
+<!--</LinearLayout>-->

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".views.FeedbackActivity" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="20dp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/FeedbackDetail"
+            style="@style/FontSizeSixteen"
+            android:textStyle="bold"
+            android:textAlignment="textStart"
+            android:textColor="@color/lightBlueColor" />
+
+        <View
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:background="@color/darkest_gray"
+            android:layout_height="1dp" />
+
+        <TextView
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/Message"
+            style="@style/FontSizeSixteen"
+            android:textAlignment="textStart"
+            android:textColor="@color/lightBlueColor" />
+
+        <EditText
+            android:id="@+id/editText_feedback"
+            android:inputType="text|textMultiLine"
+            android:minLines="5"
+            android:layout_marginTop="5dp"
+            android:padding="2dp"
+            android:background="@drawable/layout_rect_white_lightblue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/blackColor"
+            style="@style/FontSizeFourteen" />
+
+        <CheckBox
+            android:textStyle="bold"
+            android:drawableTint="@color/lightBlueColor"
+            android:textColor="@color/lightBlueColor"
+            android:text="@string/CommonFeedback"
+            android:id="@+id/checkBox_common"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="10dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView_feedbacks_images"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:scrollbars="horizontal" />
+
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="45dp">
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textColor="@color/whiteColor"
+                android:text="@string/Submit"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/layout_rect_blue_rounded"
+                style="@style/FontSizeFifteen"
+                android:id="@+id/button_submit"/>
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textColor="@color/lightBlueColor"
+                android:text="@string/AttachAFile"
+                android:background="@drawable/layout_rect_white_lightblue_rounded"
+                style="@style/FontSizeFifteen"
+                android:id="@+id/button_attach_images"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

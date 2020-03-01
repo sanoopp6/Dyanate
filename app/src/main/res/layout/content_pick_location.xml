@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".views.PickLocationActivity">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/darkest_gray" />
+
+    <LinearLayout
+        android:id="@+id/top_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/edEnterLocation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_weight="1"
+            android:backgroundTint="#00000000"
+            android:drawableLeft="@android:drawable/ic_menu_search"
+            android:drawablePadding="5dp"
+            android:drawableStart="@android:drawable/ic_menu_search"
+            android:drawableTint="@color/blackColor"
+            android:gravity="start|center"
+            android:hint="@string/TypeYourLocation"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:singleLine="true"
+            android:textColor="@color/darkest_gray"
+            android:textColorHint="@color/darkest_gray"
+            android:textSize="16sp">
+
+            <requestFocus />
+        </EditText>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/darkest_gray" />
+
+        <Spinner
+            android:id="@+id/city_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="@color/darkest_gray" />
+
+    <ListView
+        android:id="@+id/listView_results"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@color/darkest_gray"
+        android:dividerHeight="1dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp" />
+
+</LinearLayout>

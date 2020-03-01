@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_home"
+        android:title="@string/Home" />
+    <item
+        android:id="@+id/nav_add_trip"
+        android:icon="@drawable/ic_add_trip"
+        android:title="@string/AddATrip" />
+    <item
+        android:id="@+id/nav_my_trip"
+        android:icon="@drawable/ic_world"
+        android:title="@string/MyOrders" />
+    <item
+        android:id="@+id/nav_feedback"
+        android:icon="@drawable/ic_complaints_book"
+        android:title="@string/Feedback" />
+    <item
+        android:id="@+id/nav_settings"
+        android:icon="@drawable/ic_settings_gears"
+        android:title="@string/Settings" />
+    <item
+        android:id="@+id/nav_faq"
+        android:icon="@drawable/ic_questionmark"
+        android:title="@string/FAQ" />
+    <item
+        android:id="@+id/nav_notfn"
+        android:icon="@drawable/ic_notifications"
+        android:title="@string/Notifications" />
+    <item
+        android:id="@+id/nav_share"
+        android:icon="@drawable/ic_share"
+        android:title="@string/Share" />
+    <item
+        android:id="@+id/nav_logout"
+        android:icon="@drawable/ic_logout"
+        android:title="@string/Logout" />
+
+</menu>

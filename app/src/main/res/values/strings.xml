@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Dynate</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="com_facebook_loginview_log_out_button">Facebook</string>
+    <string name="com_facebook_loginview_log_in_button">Facebook</string>
+    <string name="com_facebook_loginview_log_in_button_long">Facebook</string>
+    <string name="tw__login_btn_txt">Twitter</string>
+    <string name="facebook_app_id" translatable="false">344409719351164</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb344409719351164</string>
+
+    <string name="DoYouWantToExit">Do you want to exit ?</string>
+    <string name="FacebookError">Facebook returned error!</string>
+    <string name="NoAppPDF">No application to open PDF!</string>
+
+    <string-array name="city_array">
+        <item>Riyadh</item>
+        <item>Jeddah</item>
+        <item>Mecca</item>
+        <item>Medina</item>
+        <item>Dammam</item>
+        <item>Taif</item>
+        <item>Tabuk</item>
+        <item>Buraidah</item>
+        <item>Khamis Mushait</item>
+    </string-array>
+
+    <string-array name="city_location_array" translatable="false">
+        <item>24.688,46.722</item>
+        <item>21.542,39.198</item>
+        <item>21.427,39.826</item>
+        <item>24.469,39.614</item>
+        <item>26.434,50.103</item>
+        <item>21.27,40.416</item>
+        <item>28.4,36.572</item>
+        <item>26.326,43.975</item>
+        <item>18.3,42.733</item>
+    </string-array>
+
+    <string name="AccountType">Account Type</string>
+    <string name="Address">Address</string>
+    <string name="AlphanumericUsername">Username must have alphabets and numbers!</string>
+    <string name="AppPermissionDenied">App permission denied</string>
+    <string name="Approve">Approve</string>
+    <string name="AreYouSure">Are you sure ?</string>
+    <string name="AreYouSureNew">Are you sure ?</string>
+    <string name="BookmarkLocation">Save this location ?</string>
+    <string name="Buraidah">Buraidah</string>
+    <string name="Cancel">Cancel</string>
+    <string name="CancelSuccess">Canceled successfully.</string>
+    <string name="CancelTrip">Cancel Trip</string>
+    <string name="ConfirmDetail">Sender and Receiver Details</string>
+    <string name="ConfirmPassword">Confirm Passsword</string>
+    <string name="ConfirmTrip">Confirm Trip</string>
+    <string name="Continue">Continue</string>
+    <string name="Customer">Customer</string>
+    <string name="Dammam">Dammam</string>
+    <string name="Date">Date</string>
+    <string name="DeleteBookmarkedLocation">Delete saved location ?</string>
+    <string name="Distance">Driving distance</string>
+    <string name="DistanceInKM">Distance in KM to Drivers</string>
+    <string name="DistanceToDriverInKM">Distance to Driver in KM</string>
+    <string name="DistanceWithinAKM">Distance from start location within one KM, Do you want to continue ?</string>
+    <string name="Done">Done</string>
+    <string name="DoYouWantToSendMessage">Do you want to send message to sender and receiver for location or pick location from map ?</string>
+    <string name="DoYouWantToWaitMore">Do you want to wait more time ?</string>
+    <string name="Driver">Driver</string>
+    <string name="DriverReplies">Driver Replies</string>
+    <string name="DriversInMap">Drivers in Map</string>
+    <string name="DuplicateMobile">Mobile Number already registered</string>
+    <string name="DuplicateUsername">Username already registered</string>
+    <string name="Duration">Duration</string>
+    <string name="EditOrder">Edit Order</string>
+    <string name="Email">Email</string>
+    <string name="EndPoint">Ending Point</string>
+    <string name="EnterDistanceInKMAndDriversCount">Enter distance in KM Vehicle can be searched and count of Drivers to be contacted?</string>
+    <string name="Facebook">Facebook</string>
+    <string name="FilledDataWillBeLost">Filled data will be lost, Are you sure ?</string>
+    <string name="ForgotPassword">Forgot Password</string>
+    <string name="Friend">Friend</string>
+    <string name="From">From</string>
+    <string name="FromMobileAndToMobileSame">From-Mobile and To-Mobile is the same</string>
+    <string name="Home">Home</string>
+    <string name="IAgreeTo">I Agree to</string>
+    <string name="InActiveMethodContactWakala">Method inactive, Contact wakala for activation.</string>
+    <string name="InvalidAddress">Invalid Address!</string>
+    <string name="InvalidDate">Invalid Date</string>
+    <string name="InvalidDistance">Invalid distance!</string>
+    <string name="InvalidDriverCount">Invalid driver count!</string>
+    <string name="InvalidEmail">Invalid Email!</string>
+    <string name="InvalidLogin">Invalid login!</string>
+    <string name="InvalidMobileNumber">Invalid Mobile Number!</string>
+    <string name="InvalidName">Invalid Name!</string>
+    <string name="InvalidOTPNumber">Invalid OTP</string>
+    <string name="InvalidPassword">Invalid Password!</string>
+    <string name="InvalidReceiverMob">Invalid Receiver Mobile Number</string>
+    <string name="InvalidReceiverName">Invalid Receiver Name</string>
+    <string name="InvalidSenderMob">Invalid Sender Mobile Number</string>
+    <string name="InvalidSenderName">Invalid Sender Name</string>
+    <string name="InvalidShipment">Invalid Shipment</string>
+    <string name="InvalidSubject">Invalid Subject</string>
+    <string name="InvalidTime">Invalid Time</string>
+    <string name="InvalidUsername">Invalid Username!</string>
+    <string name="InvalidVehicle">Invalid Vehicle</string>
+    <string name="InvalidVehicleSize">Invalid Vehicle Size</string>
+    <string name="Jeddah">Jeddah</string>
+    <string name="KhamisMushait">Khamis Mushait</string>
+    <string name="LocationTypeNotSelected">Location type not selected!</string>
+    <string name="Login">Login</string>
+    <string name="LoginAsGuest">Login As Guest</string>
+    <string name="Logout">Logout</string>
+    <string name="Mecca">Mecca</string>
+    <string name="Medina">Medina</string>
+    <string name="MessageAlreadyToReceiver">Recently send location request to %1$s, Proceed ?</string>
+    <string name="MessageAlreadyToSender">Recently send location request to %1$s, Proceed ?</string>
+    <string name="MessageAlreadyToSenderReceiver">Recently send location request to %1$s and %2$s, Proceed ?</string>
+    <string name="MessagesSendToSenderAndReceiver">Location request messages send to sender and receiver.</string>
+    <string name="Mobile">Mobile</string>
+    <string name="MobileRequired">Mobile</string>
+    <string name="Model">Model</string>
+    <string name="MyLocation">My location</string>
+    <string name="MyOrders">My Orders</string>
+    <string name="Name">Name</string>
+    <string name="NameRequired">Name</string>
+    <string name="Negotiable">Negotiable</string>
+    <string name="NewUserRegister">New User? Register Now!</string>
+    <string name="No">No</string>
+    <string name="NoDriverDoYouWantToWaitMore">No Driver available now, Do you want to move to waiting ?</string>
+    <string name="NoDriversFound">No drivers found. Cancel trip, Put in wait or Retry trip with Any size ?</string>
+    <string name="NoMobileNumber">Mobile number empty!</string>
+    <string name="NoMoreThan3Drivers">Maximum three drivers!</string>
+    <string name="NoOfDrivers">No. of Drivers to Search</string>
+    <string name="Ok">Ok</string>
+    <string name="Order">Order</string>
+    <string name="OrderNo">Order No</string>
+    <string name="OTP">OTP</string>
+    <string name="OTPSendPleaseVerifyToContinue">OTP send, please verify to continue.</string>
+    <string name="PackageLocation">Package Location</string>
+    <string name="Password">Password</string>
+    <string name="PasswordMin6Char">Password minimum 6 characters!</string>
+    <string name="PasswordMinFourCharaters">Password minimum four charaters!</string>
+    <string name="PasswordRequired">Password</string>
+    <string name="PickFromMap">Pick From Map</string>
+    <string name="PickLocation">Pick Location</string>
+    <string name="PleaseVerifyYourMobileNumber">Please verify your Mobile Number</string>
+    <string name="PreviousDateOrTime">Previous Date or Time Selected</string>
+    <string name="PutInWait">Wait More</string>
+    <string name="Rate">Rate</string>
+    <string name="ReceiverDetails">Receiver Details</string>
+    <string name="ReceiverIs">Receiver is</string>
+    <string name="ReceiverUpdatedWaitingSender">Receiver updated location, Waiting Sender</string>
+    <string name="Register">Register</string>
+    <string name="RegistrationSuccessful">Registration Successful</string>
+    <string name="RejectedAllDrivers">All drivers rejected!</string>
+    <string name="RejectionSuccess">Rejected successfully.</string>
+    <string name="RememberMe">Remember Me</string>
+    <string name="ResendOTP">Resend OTP</string>
+    <string name="ResetPassword">Reset Password</string>
+    <string name="RetryWithAny">Retry With Any</string>
+    <string name="Riyadh">Riyadh</string>
+    <string name="SearchDriversNear">Search Drivers near</string>
+    <string name="SearchingForDriver">Searching for Driver…</string>
+    <string name="Select">Select</string>
+    <string name="SelectAddress">Pick My Location</string>
+    <string name="SelectDropOffLocation">Select Drop-Off Location</string>
+    <string name="SelectModel">Select Model</string>
+    <string name="SelectPickUpLocation">Select Pick-Up Location</string>
+    <string name="SelectReceiverType">Select receiver type!</string>
+    <string name="SelectSenderType">Select sender type!</string>
+    <string name="SelectSize">Select Vehicle Size</string>
+    <string name="SelectType">Select Type</string>
+    <string name="Self">Self</string>
+    <string name="Send">Send</string>
+    <string name="SenderDetails">Sender Details</string>
+    <string name="SenderIs">Sender is</string>
+    <string name="SenderReceiverDetails">Sender And Receiver Details</string>
+    <string name="SenderReceiverUpdated">Receiver and Sender updated location</string>
+    <string name="SenderUpdatedWaitingReceiver">Sender updated location, Waiting Receiver</string>
+    <string name="SendMessage">Send Message</string>
+    <string name="Settings">Settings</string>
+    <string name="Share">Share App</string>
+    <string name="Shipment">Shipment</string>
+    <string name="ShipmentDetails">Shipment Details</string>
+    <string name="ShipmentSubject">Shipment / Subject</string>
+    <string name="ShipmentTitle">Shipment Detail</string>
+    <string name="ShowDetails">Show Details</string>
+    <string name="ShowInMap">Show in Map</string>
+    <string name="ShowReplies">Show Replies</string>
+    <string name="ShowRoute">Show Route</string>
+    <string name="Size">Vehicle Size</string>
+    <string name="SmallCompany">Small Company</string>
+    <string name="StartPoint">Starting Point</string>
+    <string name="Status">Status</string>
+    <string name="Subject">Subject</string>
+    <string name="Submit">Submit</string>
+    <string name="Tabuk">Tabuk</string>
+    <string name="Taif">Taif</string>
+    <string name="TermsAndConditions">Terms and Conditions</string>
+    <string name="Time">Time</string>
+    <string name="To">To</string>
+    <string name="TripNo">Trip No.</string>
+    <string name="TripWillBeCancelled">Current request will be cancelled. Are you sure ?</string>
+    <string name="TurnOnLocation">To re-enable, please go to Settings and turn on Location service for this app</string>
+    <string name="Twitter">Twitter</string>
+    <string name="Type">Type</string>
+    <string name="TypeYourLocation">Type your location</string>
+    <string name="UnableToConnect">Unable to connect..</string>
+    <string name="UnableToFetchLocation">Unable to fetch Location.</string>
+    <string name="Username">Username </string>
+    <string name="Username10Char">Username must be with in 10 characters!</string>
+    <string name="Username4Char">Username must have at least 4 characters!</string>
+    <string name="UsernameOrMobile">Username Or Mobile Number</string>
+    <string name="UsernameRequired">Username</string>
+    <string name="Vehicle">Vehicle</string>
+    <string name="VerifyOTP">Verify OTP</string>
+    <string name="VersionUpdateAvailable">Version update available, please update.</string>
+    <string name="View">View</string>
+    <string name="WaitingDriverReply">Waiting Driver Reply</string>
+    <string name="Welcome">Welcome</string>
+    <string name="WeSendAMessageToNumber">We have sent an OTP via SMS to </string>
+    <string name="Yes">Yes</string>
+    <string name="YouAreHere">You are here</string>
+    <string name="YouMustAgreeToTermsAndConditions">You must agree to Terms and Conditions!</string>
+    <string name="YouMustConfirmPassword">Passwords does not match!</string>
+    <string name="YourReplyUpdated">Your reply updated.</string>
+
+    <string name="AttachAFile">Attach a File</string>
+    <string name="Attachment">Attachment</string>
+    <string name="AttachmentIns">Attachments</string>
+    <string name="CancelFailed">Canceling failed!</string>
+    <string name="ChooseFromGallery">Choose from Gallery</string>
+    <string name="ChooseFromGoogleMap">Choose Location From GoogleMap</string>
+    <string name="ClearAll">Clear All</string>
+    <string name="CommonFeedback">Set as Common</string>
+    <string name="CommonFeedbacks">Common Feedbacks</string>
+    <string name="ComplaintEmpty">Complaints Empty!</string>
+    <string name="Complaints">Complaints</string>
+    <string name="Exit">Exit</string>
+    <string name="FAQ">FAQ</string>
+    <string name="Feedback">Feedback</string>
+    <string name="FeedbackDetail">Feedback Detail</string>
+    <string name="FeedbackUpdated">Your feedback updated.</string>
+    <string name="Instructions">Instructions</string>
+    <string name="Language">عربي</string>
+    <string name="Message">Message</string>
+    <string name="MyFeedbacks">My Feedbacks</string>
+    <string name="Notifications">Notifications</string>
+    <string name="OnlyEnglishCharacters">Only English alphabets and numbers are allowed for Username!</string>
+    <string name="PasswordInvalidChar">Invalid characters in password!</string>
+    <string name="PleaseSelectAccountType">Please select Account type!</string>
+    <string name="Q">Q</string>
+    <string name="Registrations">Registrations</string>
+    <string name="Reply">Reply</string>
+    <string name="ReplyIsEmpty">Reply is empty!</string>
+    <string name="ReplyUpdated">Reply updated</string>
+    <string name="Retry">Retry</string>
+    <string name="Route">Route</string>
+    <string name="ShareMessage">Download Dynate Application</string>
+    <string name="ShootClearly">Please shoot clearly before uploading!</string>
+    <string name="ShowFeedbacks">Show Feedbacks</string>
+    <string name="SlNo">Sl.No.</string>
+    <string name="SuggectionComplaintEmpty">Suggestion and Complaint both empty</string>
+    <string name="SuggectionEmpty">Suggestions Empty!</string>
+    <string name="Suggections">Suggestions</string>
+    <string name="TakePhoto">Take Photo</string>
+    <string name="Topic">Topic</string>
+    <string name="TypeYourReply">Type your reply</string>
+    <string name="UsernameAndPasswordSame">Username and Password should not be the same!</string>
+
+    <string name="AddName">Add Name</string>
+    <string name="AddPhoto">Add Photo</string>
+    <string name="Confirm">Confirm</string>
+    <string name="UpdateNow">Goto Store and Update</string>
+    <string name="AddATrip">Add A Trip</string>
+    <string name="DateAndTime">Date and Time</string>
+    <string name="EnterMessage">Type a message</string>
+    <string name="SAR">SAR</string>
+    <string name="Details">Details</string>
+    <string name="ChangeLanguageRestart">Change the language will restart the application, are you sure ?</string>
+    <string name="HomeText">Through the application and without a headache can you define the shipping location, location of receipt, date and time of shipment and after you have agreed to the price, then the shipment can be tracked from your mobile.</string>
+    <string name="AppName">Dynate</string>
+
+    <string name="NoFeedbacks">No suggestions found!</string>
+    <string name="NoComplaints">No complaints found!</string>
+    <string name="NoNotifications">No notifications found!</string>
+    <string name="SwitchLang">Switch Language</string>
+    <string name="Completed">Completed</string>
+    <string name="pls_enter_trip_rate">Please enter trip rate</string>
+    <string name="ok">Ok</string>
+    <string name="error_occurred_pls_try_later">Error occurred, please try again later</string>
+    <string name="trip_accepted_successfully">Trip accepted succesfully</string>
+    <string name="are_you_sure_cancel_trip">Are you sure, cancel trip?</string>
+    <string name="trip_cancelled_successfully">Trip cancelled successfully</string>
+    <string name="driver_not_found">Driver not found, please try again later or try with another vehicle size</string>
+
+</resources>

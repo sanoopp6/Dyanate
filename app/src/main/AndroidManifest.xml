@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:dist="http://schemas.android.com/apk/distribution"
+    package="com.fast_prog.dyanate">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+<!--    <uses-permission android:name="android.permission.RECEIVE_SMS" />-->
+<!--    <uses-permission android:name="android.permission.READ_SMS" />-->
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera" />
+
+    <dist:module dist:instant="true" />
+
+    <application
+        android:name=".utilities.DynateApplication"
+        android:allowBackup="true"
+        android:fullBackupContent="false"
+        android:icon="@drawable/dynate_1"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".views.TrackTripActivity"></activity>
+        <activity android:name=".views.DriverReplyActivity" />
+
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBu0L-ZDx6XiLf2y_bE1jcn5HVv1On5XpM" /> <!-- <meta-data -->
+        <!-- android:name="com.facebook.sdk.ApplicationId" -->
+        <!-- android:value="@string/facebook_app_id" /> -->
+        <!-- <activity -->
+        <!-- android:name="com.facebook.FacebookActivity" -->
+        <!-- android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation" -->
+        <!-- android:label="@string/app_name" /> -->
+        <!-- <activity -->
+        <!-- android:name="com.facebook.CustomTabActivity" -->
+        <!-- android:exported="true"> -->
+        <!-- <intent-filter> -->
+        <!-- <actionandroid:name="android.intent.action.VIEW" /> -->
+        <!-- <category android:name="android.intent.category.DEFAULT" /> -->
+        <!-- <category android:name="android.intent.category.BROWSABLE" /> -->
+        <!-- <data android:scheme="@string/fb_login_protocol_scheme" /> -->
+        <!-- </intent-filter> -->
+        <!-- </activity> -->
+        <service android:name=".utilities.DynateFbInstanceIdService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".utilities.DynateFbMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
+        <activity
+            android:name=".views.SettigsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.ConfirmDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.ConfirmFromToActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.SenderLocationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.MyOrdersActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.NoLoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.PickLocationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.UpdateActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.ShipmentDetActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.SplashScreenActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".views.ReceiverLocationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.VerifyOTPActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.WaitDriverActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.InstructionsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.FaqListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.FeedbackActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.ShowFeedbackListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.NotificationsListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.FeedbackDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.ShowPDFImageActivity"
+            android:screenOrientation="portrait" /> <!-- <activity -->
+        <!-- android:name=".views.Removed.OrderDetailActivity" -->
+        <!-- android:screenOrientation="portrait" /> -->
+        <!-- <activity -->
+        <!-- android:name=".views.Removed.DriverRepliesActivity" -->
+        <!-- android:screenOrientation="portrait" /> -->
+        <!-- <activity -->
+        <!-- android:name=".views.Removed.ConfirmOrderActivity" -->
+        <!-- android:screenOrientation="portrait" /> -->
+        <!-- <activity -->
+        <!-- android:name=".views.Removed.ForgotPasswordActivity" -->
+        <!-- android:screenOrientation="portrait" /> -->
+        <!-- <activity -->
+        <!-- android:name=".views.Removed.MapLocationPickerActivity" -->
+        <!-- android:screenOrientation="portrait" /> -->
+        <!-- <activity -->
+        <!-- android:name=".views.Removed.RegisterActivity" -->
+        <!-- android:screenOrientation="portrait" /> -->
+        <!-- <activity -->
+        <!-- android:name=".views.Removed.SenderReceiverActivity" -->
+        <!-- android:screenOrientation="portrait" /> -->
+        <!-- <activity -->
+        <!-- android:name=".views.Removed.SocialMediaActivity" -->
+        <!-- android:screenOrientation="portrait" /> -->
+        <activity
+            android:name=".views.ShipmentDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.SuccessActivity"
+            android:screenOrientation="portrait" />
+    </application>
+
+</manifest>
