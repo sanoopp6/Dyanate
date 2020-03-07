@@ -100,19 +100,19 @@ class ConfirmFromToActivity : AppCompatActivity(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
-        txt_distance.startAnimation(UtilityFunctions.blinkAnimation)
+//        txt_distance.startAnimation(UtilityFunctions.blinkAnimation)
 
         btn_confirm_route.setOnClickListener {
-            UtilityFunctions.showAlertOnActivity(this@ConfirmFromToActivity,
-                    resources.getString(R.string.AreYouSure), resources.getString(R.string.Yes),
-                    resources.getString(R.string.No), true, false,
-                    {
+//            UtilityFunctions.showAlertOnActivity(this@ConfirmFromToActivity,
+//                    resources.getString(R.string.AreYouSure), resources.getString(R.string.Yes),
+//                    resources.getString(R.string.No), true, false,
+//                    {
                         if (ConnectionDetector.isConnected(this@ConfirmFromToActivity)) {
                             AddTripMasterBackground().execute()
                         } else {
                             ConnectionDetector.errorSnackbar(coordinator_layout)
                         }
-                    }, {})
+//                    }, {})
         }
 
         btn_show_details.setOnClickListener {
@@ -376,7 +376,7 @@ class ConfirmFromToActivity : AppCompatActivity(), OnMapReadyCallback {
             params["ArgTripMToIsSelf"] = "false"
             params["ArgTripMToName"] = Ride.instance.toName
             params["ArgTripMToMob"] = Ride.instance.toMobile
-            params["ArgTripMSubject"] = Ride.instance.subject
+            params["ArgTripMSubject"] = Ride.instance.shipmentTypeName
             params["ArgTripMNotes"] = Ride.instance.shipment
             params["ArgTripMVsId"] = Ride.instance.vehicleSizeId!!
             params["ArgTripMCustLat"] = "0"

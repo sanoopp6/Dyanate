@@ -88,16 +88,16 @@ class DetailsFragment : Fragment() {
         view.toNameTextView.text = order?.tripToName
         view.toMobTextView.text = order?.tripToMob?.trimStart{ it <= '+'}
 
-        view.cancelTripButton.setOnClickListener {
-            UtilityFunctions.showAlertOnActivity(activity!!,
-                    resources.getString(R.string.AreYouSure), resources.getString(R.string.Yes),
-                    resources.getString(R.string.No), true, false,
-                    {
-                        if (ConnectionDetector.isConnected(activity!!)) {
-                            TripMasterStatusUpdateBackground(order?.tripId!!).execute()
-                        }
-                    }, {})
-        }
+//        view.cancelTripButton.setOnClickListener {
+//            UtilityFunctions.showAlertOnActivity(activity!!,
+//                    resources.getString(R.string.AreYouSure), resources.getString(R.string.Yes),
+//                    resources.getString(R.string.No), true, false,
+//                    {
+//                        if (ConnectionDetector.isConnected(activity!!)) {
+//                            TripMasterStatusUpdateBackground(order?.tripId!!).execute()
+//                        }
+//                    }, {})
+//        }
 
         return view
     }

@@ -294,5 +294,9 @@
     <string name="are_you_sure_cancel_trip">Are you sure, cancel trip?</string>
     <string name="trip_cancelled_successfully">Trip cancelled successfully</string>
     <string name="driver_not_found">Driver not found, please try again later or try with another vehicle size</string>
+    <string name="Pls_select_shipment_type">Please select shipment type</string>
+    <string name="same_as_sender">Same as sender</string>
+    <string name="InvalidSenderDetail">Invalid sender details</string>
+    <string name="skip_destination"><![CDATA[Skip destination >>]]></string>
 
 </resources>

@@ -323,10 +323,10 @@ class SenderLocationActivity : AppCompatActivity(), OnMapReadyCallback,
         }
 
         btn_select_location.setOnClickListener {
-            UtilityFunctions.showAlertOnActivity(this@SenderLocationActivity,
-                resources.getString(R.string.AreYouSure), resources.getString(R.string.Yes),
-                resources.getString(R.string.No), true, false,
-                {
+//            UtilityFunctions.showAlertOnActivity(this@SenderLocationActivity,
+//                resources.getString(R.string.AreYouSure), resources.getString(R.string.Yes),
+//                resources.getString(R.string.No), true, false,
+//                {
                     if (!type_location_text_view.text.toString().equals(
                             resources.getString(R.string.TypeYourLocation),
                             true
@@ -353,7 +353,7 @@ class SenderLocationActivity : AppCompatActivity(), OnMapReadyCallback,
                             )
                         )
                     }
-                }, {})
+//                }, {})
         }
 
         gpsTracker = GPSTracker(this@SenderLocationActivity)
@@ -658,7 +658,7 @@ class SenderLocationActivity : AppCompatActivity(), OnMapReadyCallback,
                     editor.putString(Constants.PREFS_SHARE_URL, "")
                     editor.commit()
 
-                    val intent = Intent(this@SenderLocationActivity, NoLoginActivity::class.java)
+                    val intent = Intent(this@SenderLocationActivity, LoginActivity::class.java)
                     ActivityCompat.finishAffinity(this@SenderLocationActivity)
                     startActivity(intent)
                     finish()
@@ -730,7 +730,7 @@ class SenderLocationActivity : AppCompatActivity(), OnMapReadyCallback,
                     editor.putString(Constants.PREFS_SHARE_URL, "")
                     editor.commit()
 
-                    val intent = Intent(this@SenderLocationActivity, NoLoginActivity::class.java)
+                    val intent = Intent(this@SenderLocationActivity, LoginActivity::class.java)
                     ActivityCompat.finishAffinity(this@SenderLocationActivity)
                     startActivity(intent)
                     finish()

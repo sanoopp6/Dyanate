@@ -22,8 +22,10 @@ class Ride : Serializable {
     //var isToSelf: Boolean? = null
     var toName: String = ""
     var toMobile: String = ""
-    var subject: String = ""
+//    var subject: String = ""
     var shipment: String = ""
+    var shipmentTypeID: String = ""
+    var shipmentTypeName: String = ""
     var date: String = ""
     var hijriDate: String = ""
     var time: String = ""

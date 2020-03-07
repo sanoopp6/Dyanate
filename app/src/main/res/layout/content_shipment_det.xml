@@ -1,114 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".views.ShipmentDetActivity"
-    android:orientation="vertical">
+    tools:context=".views.ShipmentDetActivity">
 
     <LinearLayout
-        android:layout_margin="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="20dp"
         android:orientation="vertical">
 
         <TextView
-            android:textColor="@color/lightBlueColor"
-            android:layout_width="match_parent"
             style="@style/FontSizeFifteen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/Subject"
-            android:layout_height="wrap_content" />
-
-        <EditText
-            android:inputType="text"
-            android:textAlignment="center"
-            android:textColor="@color/blackColor"
-            android:id="@+id/edit_subject"
-            android:layout_width="match_parent"
-            android:background="@drawable/layout_rect_tranparent_grey"
-            android:layout_height="35dp"
-            android:singleLine="true"
-            style="@style/FontSizeFifteen" />
-
-        <TextView
-            android:textColor="@color/lightBlueColor"
-            android:layout_width="match_parent"
-            android:text="@string/Shipment"
-            style="@style/FontSizeFifteen"
-            android:layout_marginTop="10dp"
-            android:layout_height="wrap_content" />
-
-        <EditText
-            android:inputType="text"
-            android:textAlignment="center"
-            android:textColor="@color/blackColor"
-            android:background="@drawable/layout_rect_tranparent_grey"
-            android:id="@+id/edit_shipment"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            style="@style/FontSizeFifteen"
-            android:lines="3" />
-
-        <TextView
-            android:textColor="@color/lightBlueColor"
-            android:layout_width="match_parent"
-            android:text="@string/Size"
-            style="@style/FontSizeFifteen"
-            android:layout_marginTop="10dp"
-            android:layout_height="wrap_content" />
+            android:textColor="@color/lightBlueColor" />
 
         <Spinner
-            android:textAlignment="center"
-            android:textColor="@color/blackColor"
-            android:background="@drawable/layout_rect_tranparent_grey"
-            android:id="@+id/spnr_veh_size"
-            android:layout_width="match_parent"
+            android:id="@+id/spnr_shipment_type"
             style="@style/FontSizeFifteen"
-            android:layout_height="35dp" />
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="@drawable/layout_rect_tranparent_grey"
+            android:textAlignment="center"
+            android:textColor="@color/blackColor" />
+
+        <!--        <EditText-->
+        <!--            android:id="@+id/edit_subject"-->
+        <!--            style="@style/FontSizeFifteen"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="35dp"-->
+        <!--            android:background="@drawable/layout_rect_tranparent_grey"-->
+        <!--            android:inputType="text"-->
+        <!--            android:singleLine="true"-->
+        <!--            android:textAlignment="center"-->
+        <!--            android:textColor="@color/blackColor" />-->
 
         <TextView
-            android:textColor="@color/lightBlueColor"
-            android:layout_marginTop="10dp"
-            android:layout_width="match_parent"
             style="@style/FontSizeFifteen"
-            android:text="@string/SenderIs"
-            android:layout_height="wrap_content" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/Shipment"
+            android:textColor="@color/lightBlueColor" />
+
 
         <EditText
-            android:textColor="@color/blackColor"
-            android:id="@+id/edit_from_name"
-            android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:textAlignment="center"
+            android:id="@+id/edit_shipment"
             style="@style/FontSizeFifteen"
-            android:hint="@string/Name"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
             android:background="@drawable/layout_rect_tranparent_grey"
             android:inputType="text"
-            android:singleLine="true" />
+            android:lines="3"
+            android:textAlignment="center"
+            android:textColor="@color/blackColor" />
 
-        <LinearLayout
-            android:layout_marginTop="5dp"
-            android:layoutDirection="ltr"
+        <TextView
+            style="@style/FontSizeFifteen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/Size"
+            android:textColor="@color/lightBlueColor" />
+
+        <Spinner
+            android:id="@+id/spnr_veh_size"
+            style="@style/FontSizeFifteen"
             android:layout_width="match_parent"
             android:layout_height="35dp"
-            android:clipChildren="false" >
+            android:background="@drawable/layout_rect_tranparent_grey"
+            android:textAlignment="center"
+            android:textColor="@color/blackColor" />
+
+        <ImageView
+            android:id="@+id/vehicle_size_image_view"
+            android:layout_width="100dp"
+            android:layout_height="70dp"
+            android:background="#FFF"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/dynate_1" />
+
+        <TextView
+            style="@style/FontSizeFifteen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/SenderIs"
+            android:textColor="@color/lightBlueColor" />
+
+        <EditText
+            android:id="@+id/edit_from_name"
+            style="@style/FontSizeFifteen"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="@drawable/layout_rect_tranparent_grey"
+            android:hint="@string/Name"
+            android:inputType="text"
+            android:singleLine="true"
+            android:textAlignment="center"
+            android:textColor="@color/blackColor" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_marginTop="5dp"
+            android:clipChildren="false"
+            android:layoutDirection="ltr">
 
             <com.hbb20.CountryCodePicker
-                app:ccp_showNameCode = "false"
-                app:ccp_showFlag="false"
-                app:ccp_textSize="15sp"
-                app:ccp_autoFormatNumber="false"
-                app:ccp_autoDetectCountry="false"
-                app:ccp_autoDetectLanguage="true"
-                app:ccp_defaultNameCode="SA"
-                android:textColor="@color/blackColor"
-                android:background="@drawable/layout_rect_tranparent_grey"
                 android:id="@+id/countryCodePicker_from"
                 android:layout_width="75dp"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:background="@drawable/layout_rect_tranparent_grey"
+                android:textColor="@color/blackColor"
+                app:ccp_autoDetectCountry="false"
+                app:ccp_autoDetectLanguage="true"
+                app:ccp_autoFormatNumber="false"
+                app:ccp_defaultNameCode="SA"
+                app:ccp_showFlag="false"
+                app:ccp_showNameCode="false"
+                app:ccp_textSize="15sp" />
 
             <View
                 android:layout_width="2dp"
@@ -117,48 +134,48 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/layout_rect_tranparent_grey" >
+                android:background="@drawable/layout_rect_tranparent_grey">
 
                 <EditText
-                    android:textColor="@color/blackColor"
-                    android:gravity="center"
                     android:id="@+id/edit_from_mobile"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:hint="@string/Mobile"
-                    android:textDirection="ltr"
-                    android:singleLine="true"
-                    android:inputType="phone"
                     style="@style/FontSizeFifteen"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:background="@android:color/transparent"
-                    android:layout_height="match_parent" />
+                    android:gravity="center"
+                    android:hint="@string/Mobile"
+                    android:inputType="phone"
+                    android:singleLine="true"
+                    android:textColor="@color/blackColor"
+                    android:textDirection="ltr" />
 
                 <ImageView
                     android:id="@+id/img_from_mobile"
                     android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:padding="5dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/ic_address_book"
-                    android:layout_height="match_parent" />
+                    android:src="@drawable/ic_address_book" />
 
             </LinearLayout>
 
         </LinearLayout>
 
         <TextView
-            android:textColor="@color/lightBlueColor"
-            android:layout_marginTop="10dp"
-            android:layout_width="match_parent"
             style="@style/FontSizeFifteen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:text="@string/DateAndTime"
-            android:layout_height="wrap_content" />
+            android:textColor="@color/lightBlueColor" />
 
         <LinearLayout
             android:id="@+id/date_layout"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
             android:layoutDirection="ltr"
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_height="35dp">
+            android:orientation="horizontal">
 
             <FrameLayout
                 android:layout_width="0dp"
@@ -168,12 +185,12 @@
                 android:clipChildren="false">
 
                 <Button
-                    android:textColor="@color/blackColor"
                     android:id="@+id/txt_datepicker1"
+                    style="@style/FontSizeFourteen"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    style="@style/FontSizeFourteen"
-                    android:background="@android:color/transparent" />
+                    android:background="@android:color/transparent"
+                    android:textColor="@color/blackColor" />
 
                 <ImageView
                     android:layout_width="22dp"
@@ -190,15 +207,16 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/layout_rect_tranparent_grey"
-                android:clipChildren="false">
+                android:clipChildren="false"
+                android:visibility="gone">
 
                 <Button
-                    android:textColor="@color/blackColor"
                     android:id="@+id/txt_datepicker2"
+                    style="@style/FontSizeFourteen"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    style="@style/FontSizeFourteen"
-                    android:background="@android:color/transparent" />
+                    android:background="@android:color/transparent"
+                    android:textColor="@color/blackColor" />
 
                 <ImageView
                     android:layout_width="22dp"
@@ -210,28 +228,21 @@
 
             </FrameLayout>
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_marginTop="5dp"
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_height="35dp">
-
             <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
                 android:layout_weight="1"
                 android:background="@drawable/layout_rect_tranparent_grey"
                 android:clipChildren="false">
 
                 <Button
-                    android:textColor="@color/blackColor"
                     android:id="@+id/txt_timepicker"
+                    style="@style/FontSizeFourteen"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    style="@style/FontSizeFourteen"
-                    android:background="@android:color/transparent" />
+                    android:background="@android:color/transparent"
+                    android:textColor="@color/blackColor" />
 
                 <ImageView
                     android:layout_width="22dp"
@@ -243,52 +254,99 @@
 
             </FrameLayout>
 
-            <View
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent" />
+        </LinearLayout>
+
+        <!--        <LinearLayout-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="35dp"-->
+        <!--            android:layout_marginTop="5dp"-->
+        <!--            android:orientation="horizontal">-->
+
+        <!--            <FrameLayout-->
+        <!--                android:layout_width="0dp"-->
+        <!--                android:layout_height="match_parent"-->
+        <!--                android:layout_weight="1"-->
+        <!--                android:background="@drawable/layout_rect_tranparent_grey"-->
+        <!--                android:clipChildren="false">-->
+
+        <!--                <Button-->
+        <!--                    android:id="@+id/txt_timepicker"-->
+        <!--                    style="@style/FontSizeFourteen"-->
+        <!--                    android:layout_width="match_parent"-->
+        <!--                    android:layout_height="match_parent"-->
+        <!--                    android:background="@android:color/transparent"-->
+        <!--                    android:textColor="@color/blackColor" />-->
+
+        <!--                <ImageView-->
+        <!--                    android:layout_width="22dp"-->
+        <!--                    android:layout_height="22dp"-->
+        <!--                    android:layout_gravity="end|center_vertical"-->
+        <!--                    android:padding="2dp"-->
+        <!--                    android:scaleType="fitCenter"-->
+        <!--                    android:src="@drawable/ic_time" />-->
+
+        <!--            </FrameLayout>-->
+
+        <!--            <View-->
+        <!--                android:layout_width="0dp"-->
+        <!--                android:layout_height="match_parent"-->
+        <!--                android:layout_weight="1" />-->
+
+        <!--        </LinearLayout>-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                style="@style/FontSizeFifteen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ReceiverIs"
+                android:textColor="@color/lightBlueColor" />
+
+            <CheckBox
+                android:id="@+id/sameSenderCheckBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/same_as_sender" />
 
         </LinearLayout>
 
-        <TextView
-            android:layout_marginTop="10dp"
-            android:textColor="@color/lightBlueColor"
-            android:layout_width="match_parent"
-            android:text="@string/ReceiverIs"
-            style="@style/FontSizeFifteen"
-            android:layout_height="wrap_content" />
-
         <EditText
             android:id="@+id/edit_to_name"
+            style="@style/FontSizeFifteen"
             android:layout_width="match_parent"
             android:layout_height="35dp"
-            android:textAlignment="center"
-            android:hint="@string/Name"
             android:background="@drawable/layout_rect_tranparent_grey"
+            android:hint="@string/Name"
             android:inputType="text"
             android:singleLine="true"
-            style="@style/FontSizeFifteen" />
+            android:textAlignment="center" />
 
         <LinearLayout
-            android:layout_marginTop="5dp"
-            android:layoutDirection="ltr"
             android:layout_width="match_parent"
             android:layout_height="35dp"
-            android:clipChildren="false" >
+            android:layout_marginTop="5dp"
+            android:clipChildren="false"
+            android:layoutDirection="ltr">
 
             <com.hbb20.CountryCodePicker
-                app:ccp_showNameCode = "false"
-                app:ccp_showFlag="false"
-                app:ccp_textSize="15sp"
-                app:ccp_autoFormatNumber="false"
-                app:ccp_autoDetectCountry="false"
-                app:ccp_autoDetectLanguage="true"
-                app:ccp_defaultNameCode="SA"
-                android:textColor="@color/blackColor"
-                android:background="@drawable/layout_rect_tranparent_grey"
                 android:id="@+id/countryCodePicker_to"
                 android:layout_width="75dp"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:background="@drawable/layout_rect_tranparent_grey"
+                android:textColor="@color/blackColor"
+                app:ccp_autoDetectCountry="false"
+                app:ccp_autoDetectLanguage="true"
+                app:ccp_autoFormatNumber="false"
+                app:ccp_defaultNameCode="SA"
+                app:ccp_showFlag="false"
+                app:ccp_showNameCode="false"
+                app:ccp_textSize="15sp" />
 
             <View
                 android:layout_width="2dp"
@@ -297,28 +355,28 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/layout_rect_tranparent_grey" >
+                android:background="@drawable/layout_rect_tranparent_grey">
 
                 <EditText
-                    android:gravity="center"
                     android:id="@+id/edit_to_mobile"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:hint="@string/Mobile"
-                    android:textDirection="ltr"
-                    android:singleLine="true"
-                    android:inputType="phone"
                     style="@style/FontSizeFifteen"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:background="@android:color/transparent"
-                    android:layout_height="match_parent" />
+                    android:gravity="center"
+                    android:hint="@string/Mobile"
+                    android:inputType="phone"
+                    android:singleLine="true"
+                    android:textDirection="ltr" />
 
                 <ImageView
                     android:id="@+id/img_to_mobile"
                     android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:padding="5dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/ic_address_book"
-                    android:layout_height="match_parent" />
+                    android:src="@drawable/ic_address_book" />
 
             </LinearLayout>
 
@@ -326,13 +384,13 @@
 
         <Button
             android:id="@+id/btn_book_vehicle"
+            style="@style/FontSizeSixteen"
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="30dp"
             android:background="@color/blueColor"
             android:text="@string/Continue"
-            style="@style/FontSizeSixteen"
             android:textColor="@color/whiteColor" />
 
     </LinearLayout>

@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".views.LoginActivity"
+    android:baselineAligned="false"
     android:orientation="vertical"
-    android:baselineAligned="false">
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".views.LoginActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,69 +19,70 @@
             android:layout_height="125dp">
 
             <ImageView
-                android:scaleType="fitXY"
-                android:src="@drawable/background_login"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/background_login" />
 
             <ImageView
+                android:layout_width="75dp"
+                android:layout_height="75dp"
                 android:layout_gravity="center"
                 android:scaleType="fitXY"
-                android:src="@drawable/ic_parking_worker"
-                android:layout_width="75dp"
-                android:layout_height="75dp" />
+                android:src="@drawable/ic_parking_worker" />
 
         </FrameLayout>
 
         <ImageView
-            android:layout_marginTop="35dp"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_blue_triangle"
             android:layout_width="50dp"
-            android:layout_height="25dp" />
-
-        <TextView
-            android:layout_marginTop="-60dp"
-            android:textAllCaps="true"
-            android:gravity="center"
-            style="@style/FontSizeFifteen"
-            android:textColor="@color/whiteColor"
-            android:text="@string/Customer"
-            android:background="@color/blueColor"
-            android:layout_width="match_parent"
-            android:layout_height="40dp" />
-
-        <TextView
-            android:layout_marginTop="8dp"
-            android:textAllCaps="true"
+            android:layout_height="25dp"
             android:layout_gravity="center"
-            android:textStyle="bold"
-            style="@style/FontSizeSixteen"
-            android:textColor="@color/blueColor"
-            android:text="@string/app_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_marginTop="35dp"
+            android:src="@drawable/ic_blue_triangle" />
+
+        <TextView
+            style="@style/FontSizeFifteen"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="-60dp"
+            android:background="@color/blueColor"
+            android:gravity="center"
+            android:text="@string/Login"
+            android:textAllCaps="true"
+            android:textColor="@color/whiteColor" />
+
+<!--        <TextView-->
+<!--            style="@style/FontSizeSixteen"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:layout_marginTop="8dp"-->
+<!--            android:text="@string/app_name"-->
+<!--            android:textAllCaps="true"-->
+<!--            android:textColor="@color/blueColor"-->
+<!--            android:textStyle="bold" />-->
 
         <LinearLayout
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="40dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginRight="20dp"
+            android:layoutDirection="ltr">
 
             <com.hbb20.CountryCodePicker
-                app:ccp_showNameCode = "false"
-                app:ccp_showFlag="false"
-                app:ccp_textSize="15sp"
-                app:ccp_autoFormatNumber="false"
-                app:ccp_autoDetectCountry="false"
-                app:ccp_autoDetectLanguage="true"
-                app:ccp_defaultNameCode="SA"
-                android:textColor="@color/blackColor"
-                android:background="@android:color/transparent"
                 android:id="@+id/countryCodePicker"
                 android:layout_width="75dp"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:textColor="@color/blackColor"
+                app:ccp_autoDetectCountry="false"
+                app:ccp_autoDetectLanguage="true"
+                app:ccp_autoFormatNumber="false"
+                app:ccp_defaultNameCode="SA"
+                app:ccp_showFlag="false"
+                app:ccp_showNameCode="false"
+                app:ccp_textSize="15sp" />
 
             <View
                 android:id="@+id/view_border"
@@ -90,51 +90,51 @@
                 android:layout_height="match_parent" />
 
             <EditText
-                android:hint="@string/Mobile"
                 android:id="@+id/edt_mobile_number"
+                style="@style/FontSizeFifteen"
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
-                style="@style/FontSizeFifteen"
+                android:background="@android:color/transparent"
+                android:hint="@string/Mobile"
+                android:inputType="phone"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
-                android:background="@android:color/transparent"
-                android:textAlignment="textStart"
                 android:singleLine="true"
-                android:inputType="phone" />
+                android:textAlignment="textStart" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
             android:layout_width="match_parent"
-            android:layout_height="2dp">
+            android:layout_height="2dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
 
             <View
-                android:background="@color/lighter_gray"
                 android:layout_width="75dp"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:background="@color/lighter_gray" />
 
             <View
                 android:layout_width="5dp"
                 android:layout_height="match_parent" />
 
             <View
-                android:background="@color/lighter_gray"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:background="@color/lighter_gray" />
 
         </LinearLayout>
 
         <Button
-            android:layout_margin="30dp"
             android:id="@+id/btn_login"
+            style="@style/FontSizeSixteen"
             android:layout_width="match_parent"
             android:layout_height="45dp"
+            android:layout_margin="30dp"
             android:background="@drawable/layout_rect_blue_rounded"
             android:text="@string/Login"
-            android:textColor="@color/whiteColor"
-            style="@style/FontSizeSixteen" />
+            android:textColor="@color/whiteColor" />
 
     </LinearLayout>
 

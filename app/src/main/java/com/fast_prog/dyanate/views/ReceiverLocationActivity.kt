@@ -109,6 +109,19 @@ class ReceiverLocationActivity : AppCompatActivity(), OnMapReadyCallback,
             startActivityForResult(intent, REQUEST_CODE_AUTOCOMPLETE)
         }
 
+        skip_destination_button.setOnClickListener {
+
+            Ride.instance.dropOffLocation = ""
+            Ride.instance.dropOffLatitude = "0"
+            Ride.instance.dropOffLongitude = "0"
+            startActivity(
+                Intent(
+                    this@ReceiverLocationActivity,
+                    ShipmentDetActivity::class.java
+                )
+            )
+        }
+
         bookmark_location_image_view.setOnClickListener {
             if (placeItemSelectedKey.isNullOrEmpty()) {
                 UtilityFunctions.showAlertOnActivity(this@ReceiverLocationActivity,
@@ -135,7 +148,7 @@ class ReceiverLocationActivity : AppCompatActivity(), OnMapReadyCallback,
                             bookmark_location_image_view.setColorFilter(Color.parseColor(Constants.FILTER_COLOR))
 
                         } catch (e: SnappydbException) {
-                            Log.e("", e.message)
+                            Log.e("", e.message!!)
                             e.printStackTrace()
                         }
                     },
@@ -249,10 +262,10 @@ class ReceiverLocationActivity : AppCompatActivity(), OnMapReadyCallback,
         }
 
         btn_preview.setOnClickListener {
-            UtilityFunctions.showAlertOnActivity(this@ReceiverLocationActivity,
-                resources.getString(R.string.AreYouSure), resources.getString(R.string.Yes),
-                resources.getString(R.string.No), true, false,
-                {
+//            UtilityFunctions.showAlertOnActivity(this@ReceiverLocationActivity,
+//                resources.getString(R.string.AreYouSure), resources.getString(R.string.Yes),
+//                resources.getString(R.string.No), true, false,
+//                {
                     if (!type_location_text_view.text.toString().equals(
                             resources.getString(R.string.TypeYourLocation),
                             ignoreCase = true
@@ -317,7 +330,7 @@ class ReceiverLocationActivity : AppCompatActivity(), OnMapReadyCallback,
                             )
                         }
                     }
-                }, {})
+//                }, {})
         }
 
         gpsTracker = GPSTracker(this@ReceiverLocationActivity)

@@ -3,6 +3,7 @@ package com.fast_prog.dyanate.views
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.res.Configuration
 import android.os.AsyncTask
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -12,9 +13,12 @@ import com.fast_prog.dyanate.utilities.ConnectionDetector
 import com.fast_prog.dyanate.utilities.Constants
 import com.fast_prog.dyanate.utilities.JsonParser
 import com.fast_prog.dyanate.utilities.UtilityFunctions
+import com.yariksoffice.lingver.Lingver
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.content_login.*
 import org.json.JSONObject
+import java.util.*
+import kotlin.collections.HashMap
 
 class LoginActivity : AppCompatActivity() {
 
@@ -30,11 +34,11 @@ class LoginActivity : AppCompatActivity() {
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+//        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         sharedPreferences = getSharedPreferences(Constants.PREFS_NAME, Context.MODE_PRIVATE)
 
-        toolbar.setNavigationOnClickListener { finish() }
+//        toolbar.setNavigationOnClickListener { finish() }
 
         customTitle(resources.getString(R.string.Login))
 
@@ -53,6 +57,19 @@ class LoginActivity : AppCompatActivity() {
 //            }
 //        }
 
+        button_lang.setOnClickListener {
+            if (sharedPreferences.getString(Constants.PREFS_LANG, "").equals("ar", true)) {
+                reloadActivity("en")
+                Lingver.getInstance().setLocale(this, "en")
+            } else {
+                reloadActivity("ar")
+                Lingver.getInstance().setLocale(this, "ar")
+            }
+        }
+
+        if (sharedPreferences.getBoolean(Constants.PREFS_IS_LOGIN, false)) {
+            startActivity(Intent(this@LoginActivity, SenderLocationActivity::class.java))
+        }
         btn_login.setOnClickListener {
             if (validate()) {
                 if (ConnectionDetector.isConnected(applicationContext)) {
@@ -62,6 +79,21 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun reloadActivity(lang: String) {
+        val locale = Locale(lang)
+        Locale.setDefault(locale)
+        val confg = Configuration()
+        confg.locale = locale
+        baseContext.resources.updateConfiguration(confg, baseContext.resources.displayMetrics)
+
+        val editor = sharedPreferences.edit()
+        editor.putString(Constants.PREFS_LANG, lang)
+        editor.commit()
+
+        startActivity(Intent(this@LoginActivity, LoginActivity::class.java))
+        finish()
     }
 
     private fun validate(): Boolean {

@@ -12,6 +12,7 @@ import androidx.core.app.ActivityCompat
 import com.fast_prog.dyanate.R
 import com.fast_prog.dyanate.utilities.Constants
 import com.fast_prog.dyanate.utilities.UtilityFunctions
+import com.yariksoffice.lingver.Lingver
 import kotlinx.android.synthetic.main.content_settings.*
 import java.util.*
 
@@ -55,6 +56,9 @@ class SettigsActivity : AppCompatActivity() {
                             )
                         ) {
                             lang = "en"
+                            Lingver.getInstance().setLocale(this, "en")
+                        } else {
+                            Lingver.getInstance().setLocale(this, "ar")
                         }
 
                         val locale = Locale(lang)

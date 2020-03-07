@@ -149,60 +149,60 @@ class RepliesFragment : Fragment() {
 
             val tripDStatus = orderList!![position].tripDStatus
 
-            if (orderList!![position].tripDIsNegotiable!!.equals("true", ignoreCase = true)) {
-                holder.textNegotiable.text = yesLabel
-                if (tripDStatus!!.matches("1".toRegex())) {
-                    holder.edittextRate.isEnabled = true
-                    holder.edittextRate.textAlignment = View.TEXT_ALIGNMENT_CENTER
-                    holder.edittextRate.background = ContextCompat.getDrawable(
-                        activity!!,
-                        R.drawable.layout_rect_white_lightblue
-                    )
-                }
-            } else {
-                holder.textNegotiable.text = noLabel
-            }
+//            if (orderList!![position].tripDIsNegotiable!!.equals("true", ignoreCase = true)) {
+//                holder.textNegotiable.text = yesLabel
+//                if (tripDStatus!!.matches("1".toRegex())) {
+//                    holder.edittextRate.isEnabled = true
+//                    holder.edittextRate.textAlignment = View.TEXT_ALIGNMENT_CENTER
+//                    holder.edittextRate.background = ContextCompat.getDrawable(
+//                        activity!!,
+//                        R.drawable.layout_rect_white_lightblue
+//                    )
+//                }
+//            } else {
+//                holder.textNegotiable.text = noLabel
+//            }
 
-            if (!tripDStatus!!.equals("1", ignoreCase = true)) {
-                holder.btnApprove.visibility = View.GONE
-            }
+//            if (!tripDStatus!!.equals("1", ignoreCase = true)) {
+//                holder.btnApprove.visibility = View.GONE
+//            }
 
-            if (tripDStatus.matches("3|4|5".toRegex())) {
-                holder.btnCancel.visibility = View.GONE
-            }
+//            if (tripDStatus.matches("3|4|5".toRegex())) {
+//                holder.btnCancel.visibility = View.GONE
+//            }
 
-            holder.btnApprove.setOnClickListener {
-                UtilityFunctions.showAlertOnActivity(activity!!,
-                    areYouSureLabel,
-                    yesLabel,
-                    noLabel,
-                    true,
-                    false,
-                    {
-                        if (ConnectionDetector.isConnected(activity!!)) {
-                            selectedIndex = position
-                            rate = holder.edittextRate.text.toString().trim().toDouble()
-                            TripDetailsBackground().execute()
-                        }
-                    },
-                    {})
-            }
-
-            holder.btnCancel.setOnClickListener {
-                UtilityFunctions.showAlertOnActivity(activity!!,
-                    areYouSureLabel,
-                    yesLabel,
-                    noLabel,
-                    true,
-                    false,
-                    {
-                        if (ConnectionDetector.isConnected(activity!!)) {
-                            selectedIndex = position
-                            TripDetailsStatusUpdateBackground().execute()
-                        }
-                    },
-                    {})
-            }
+//            holder.btnApprove.setOnClickListener {
+//                UtilityFunctions.showAlertOnActivity(activity!!,
+//                    areYouSureLabel,
+//                    yesLabel,
+//                    noLabel,
+//                    true,
+//                    false,
+//                    {
+//                        if (ConnectionDetector.isConnected(activity!!)) {
+//                            selectedIndex = position
+//                            rate = holder.edittextRate.text.toString().trim().toDouble()
+//                            TripDetailsBackground().execute()
+//                        }
+//                    },
+//                    {})
+//            }
+//
+//            holder.btnCancel.setOnClickListener {
+//                UtilityFunctions.showAlertOnActivity(activity!!,
+//                    areYouSureLabel,
+//                    yesLabel,
+//                    noLabel,
+//                    true,
+//                    false,
+//                    {
+//                        if (ConnectionDetector.isConnected(activity!!)) {
+//                            selectedIndex = position
+//                            TripDetailsStatusUpdateBackground().execute()
+//                        }
+//                    },
+//                    {})
+//            }
         }
 
         override fun getItemCount(): Int {

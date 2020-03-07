@@ -60,7 +60,7 @@
     <string name="Duration">المدة الزمنية</string>
     <string name="EditOrder">تعديل</string>
     <string name="Email">الايميل</string>
-    <string name="EndPoint">نهاية مكان</string>
+    <string name="EndPoint">نهاية المكان</string>
     <string name="EnterDistanceInKMAndDriversCount">حدد نطاقة بحث السائقين بالكيلومتر وعدد من يمكنهم التواصل معك .</string>
     <string name="Facebook">فيس بوك</string>
     <string name="FilledDataWillBeLost">سيتم فقدان البيانات، هل أنت متأكد؟</string>
@@ -177,7 +177,7 @@
     <string name="ShowRoute">اعرض الخارطة</string>
     <string name="Size">مركبة الحجم</string>
     <string name="SmallCompany">شركة صغيرة</string>
-    <string name="StartPoint">بدء مكان</string>
+    <string name="StartPoint">بداية المكان</string>
     <string name="Status">الحالة</string>
     <string name="Subject">نوع الشحنة</string>
     <string name="Submit">إرسال</string>
@@ -266,14 +266,18 @@
     <string name="SAR">ريال</string>
     <string name="Details">التفاصيل</string>
     <string name="ChangeLanguageRestart">هل تريد تغير اللغة؟ تغير اللغه يودي الي اعاده تشغيل التطبيق</string>
-    <string name="HomeText">من خلال التطبيق وبدون صداع يمكنك تحديد موقع الشحن ومكان الاستلام وتاريخ ووقت الشحن وبعد الموافقة على السعر ، يمكن تتبع الشحنة من هاتفك المحمول.</string>
+    <string name="HomeText">من خلال التطبيق وبدون صداع يمكنك تحديد موقع الشحن ومكان بداية المكان وتاريخ ووقت الشحن وبعد الموافقة على السعر ، يمكن تتبع الشحنة من هاتفك المحمول.</string>
     <string name="AppName">دينا</string>
-    <string name="pls_enter_trip_rate">Please enter trip rate</string>
-    <string name="ok">Ok</string>
-    <string name="error_occurred_pls_try_later">Error occurred, please try again later</string>
-    <string name="trip_accepted_successfully">Trip accepted succesfully</string>
-    <string name="are_you_sure_cancel_trip">Are you sure, cancel trip?</string>
-    <string name="trip_cancelled_successfully">Trip cancelled successfully</string>
-    <string name="driver_not_found">Driver not found, please try again later or try with another vehicle size</string>
+    <string name="pls_enter_trip_rate">الرجاء إدخال سعر الرحلة</string>
+    <string name="ok">حسنا</string>
+    <string name="error_occurred_pls_try_later">حدث خطأ ، يرجى المحاولة مرة أخرى لاحقًا</string>
+    <string name="trip_accepted_successfully">قبلت الرحلة بنجاح</string>
+    <string name="are_you_sure_cancel_trip">هل أنت متأكد ، إلغاء الرحلة؟</string>
+    <string name="trip_cancelled_successfully">تم إلغاء الرحلة بنجاح</string>
+    <string name="driver_not_found">لم يتم العثور على السائق ، يرجى المحاولة مرة أخرى لاحقًا أو تجربة حجم مركبة آخر</string>
+    <string name="Pls_select_shipment_type">يرجى اختيار نوع الشحنة</string>
+    <string name="same_as_sender">نفس المرسل</string>
+    <string name="InvalidSenderDetail">تفاصيل المرسل غير صالحة</string>
+    <string name="skip_destination">تخطي الوجهة >>  </string>
 
 </resources>

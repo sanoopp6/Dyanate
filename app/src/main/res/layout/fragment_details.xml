@@ -278,16 +278,16 @@
 
         </LinearLayout>
 
-        <Button
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="80dp"
-            android:id="@+id/cancelTripButton"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:background="@color/redColor"
-            android:text="@string/Cancel"
-            android:textColor="@color/whiteColor"
-            style="@style/FontSizeSixteen" />
+<!--        <Button-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_marginBottom="80dp"-->
+<!--            android:id="@+id/cancelTripButton"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="45dp"-->
+<!--            android:background="@color/redColor"-->
+<!--            android:text="@string/Cancel"-->
+<!--            android:textColor="@color/whiteColor"-->
+<!--            style="@style/FontSizeSixteen" />-->
 
     </LinearLayout>
 

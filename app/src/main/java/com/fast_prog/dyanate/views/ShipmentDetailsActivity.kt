@@ -203,7 +203,8 @@ class ShipmentDetailsActivity : AppCompatActivity() {
             return when (position) {
                 0 -> RouteFragment()
                 1 -> DetailsFragment()
-                else -> RepliesFragment()
+//                else -> RepliesFragment()
+                else -> RouteFragment()
             }
         }
 

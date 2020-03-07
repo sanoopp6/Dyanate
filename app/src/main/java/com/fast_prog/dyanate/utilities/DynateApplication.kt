@@ -3,6 +3,7 @@ package com.fast_prog.dyanate.utilities
 import android.content.Context
 import android.content.res.Configuration
 import androidx.multidex.MultiDexApplication
+import com.yariksoffice.lingver.Lingver
 
 class DynateApplication : MultiDexApplication() {
 
@@ -12,6 +13,9 @@ class DynateApplication : MultiDexApplication() {
 
     override fun onCreate() {
         super.onCreate()
+        Lingver.init(this, applicationContext.getSharedPreferences(Constants.PREFS_NAME, Context.MODE_PRIVATE).getString(Constants.PREFS_LANG, "en")!!)
+//        val appSignatureHelper = AppSignatureHelper(this)
+//        appSignatureHelper.appSignatures
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {

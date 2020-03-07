@@ -29,10 +29,11 @@ object Constants {
     val BASE_URL_AR                     = "https://dyanate.fast-prog.com/ServiceAr.asmx/"
 //    val IMG_URL                         = "https://dyanate.fast-prog.com/"
 //
-    val BASE_URL                        = "http://10.0.2.2/dyanate/api/"
+//    val BASE_URL                        = "http://10.0.2.2/dyanate/api/"
     val DATE_URL                        = "http://myapi.dawammy.com.sa/ServiceEn.asmx/"
-//    val BASE_URL                        = "http://dyanate.eu-central-1.elasticbeanstalk.com/api/"
+    val BASE_URL                        = "http://dyanate.eu-central-1.elasticbeanstalk.com/api/"
     val IMG_URL                         = "https://dyanate.s3.eu-central-1.amazonaws.com"
+    val VEHICLE_IMG_URL                 = "https://dyanate.s3.eu-central-1.amazonaws.com"
 
 
     val APP_NAME                        = "dyna"

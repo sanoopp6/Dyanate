@@ -1,6 +1,7 @@
 package com.fast_prog.dyanate.views
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
@@ -10,21 +11,29 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.fast_prog.dyanate.R
 import com.fast_prog.dyanate.utilities.*
+import com.google.android.gms.auth.api.Auth
+import com.google.android.gms.auth.api.credentials.Credential
+import com.google.android.gms.auth.api.credentials.HintRequest
+import com.google.android.gms.auth.api.phone.SmsRetriever
+import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.material.snackbar.Snackbar
+import fast_prog.com.wakala.utilities.MySMSBroadcastReceiver
 import kotlinx.android.synthetic.main.activity_verify_otp.*
 import kotlinx.android.synthetic.main.content_verify_otp.*
 import org.json.JSONException
 import org.json.JSONObject
 import java.util.*
 
-class VerifyOTPActivity : AppCompatActivity() {
+class VerifyOTPActivity : AppCompatActivity(), MySMSBroadcastReceiver.OTPReceiveListener {
 
     internal var otp: String = ""
 
@@ -37,6 +46,12 @@ class VerifyOTPActivity : AppCompatActivity() {
     internal lateinit var sharedPreferences: SharedPreferences
 
     internal lateinit var otpArray: MutableList<String>
+
+    private var mCredentialsApiClient: GoogleApiClient? = null
+
+    private val RC_HINT = 2
+
+    private val smsBroadcast = MySMSBroadcastReceiver()
 
     companion object {
 
@@ -135,6 +150,14 @@ class VerifyOTPActivity : AppCompatActivity() {
                 if (!otp.isEmpty()) {
                     if (otp.length == 4) {
                         button_submit.isEnabled = true
+
+                        if (validate()) {
+                            if (ConnectionDetector.isConnected(this@VerifyOTPActivity)) {
+                                VerifyOTPBackground().execute()
+                            } else {
+                                ConnectionDetector.errorSnackbar(coordinator_layout)
+                            }
+                        }
                     }
                 }
 
@@ -240,6 +263,84 @@ class VerifyOTPActivity : AppCompatActivity() {
 
         otpArray = ArrayList()
         otpArray.add(otpExtra)
+
+        mCredentialsApiClient = GoogleApiClient.Builder(this)
+            .addApi(Auth.CREDENTIALS_API)
+            .build()
+
+        requestHint()
+
+        startSMSListener()
+
+        smsBroadcast.initOTPListener(this)
+        val intentFilter = IntentFilter()
+        intentFilter.addAction(SmsRetriever.SMS_RETRIEVED_ACTION)
+
+        applicationContext.registerReceiver(smsBroadcast, intentFilter)
+    }
+
+    override fun onOTPReceived(otp: String) {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(smsBroadcast)
+
+        editText_otp1.setText(otp.split("")[1])
+        editText_otp2.setText(otp.split("")[2])
+        editText_otp3.setText(otp.split("")[3])
+        editText_otp4.setText(otp.split("")[4])
+
+        if (validate()) {
+            if (ConnectionDetector.isConnected(this@VerifyOTPActivity)) {
+                VerifyOTPBackground().execute()
+            } else {
+                ConnectionDetector.errorSnackbar(coordinator_layout)
+            }
+        }
+    }
+
+    override fun onOTPTimeOut() {
+        //Toast.makeText(this, " SMS retriever API Timeout", Toast.LENGTH_SHORT).show()
+        Log.e("SMSListener", "SMS retriever API Timeout")
+    }
+
+    private fun startSMSListener() {
+        Log.e("startSMSListener", "start")
+
+        SmsRetriever.getClient(this@VerifyOTPActivity).startSmsRetriever()
+            .addOnSuccessListener {
+                //Log.e("startSMSListener", "success")
+                //otpTxtView.text = "Waiting for OTP"
+                //Toast.makeText(this, "SMS Retriever starts", Toast.LENGTH_LONG).show()
+            }.addOnFailureListener {
+                //Log.e("startSMSListener", "failure")
+                //otpTxtView.text = "Cannot Start SMS Retriever"
+                //Toast.makeText(this, "Error", Toast.LENGTH_LONG).show()
+                //}.addOnCanceledListener {
+                //    Log.e("startSMSListener", "cancelled")
+                //}.addOnCompleteListener {
+                //    Log.e("startSMSListener", "completed")
+            }
+    }
+
+    private fun requestHint() {
+        val hintRequest = HintRequest.Builder().setPhoneNumberIdentifierSupported(true).build()
+        val intent = Auth.CredentialsApi.getHintPickerIntent(mCredentialsApiClient, hintRequest)
+        //Log.e("requestHint", hintRequest.toString())
+        //Log.e("intent", intent.toString())
+
+        try {
+            startIntentSenderForResult(intent.intentSender, RC_HINT, null, 0, 0, 0)
+        } catch (e: Exception) {
+            Log.e("Error In getting Msg", e.message)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == RC_HINT && resultCode == Activity.RESULT_OK) {
+            val credential: Credential = data!!.getParcelableExtra(Credential.EXTRA_KEY)
+            //print("credential : $credential")
+            Log.e("credential", credential.toString())
+        }
     }
 
     override fun onResume() {

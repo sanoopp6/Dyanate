@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/content_home"
@@ -8,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".views.ReceiverLocationActivity" >
+    tools:context=".views.ReceiverLocationActivity">
 
     <FrameLayout
         android:id="@+id/map_frame"
@@ -17,8 +16,7 @@
         android:layout_weight="1"
         android:clipChildren="false">
 
-        <fragment
-            xmlns:android="http://schemas.android.com/apk/res/android"
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/map"
             android:name="com.google.android.gms.maps.SupportMapFragment"
@@ -32,11 +30,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|bottom"
-            android:layout_marginBottom="70dp"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginBottom="70dp"
             android:orientation="vertical">
 
             <ImageView
@@ -73,23 +71,23 @@
                 android:orientation="vertical">
 
                 <LinearLayout
-                    android:alpha="0.6"
                     android:id="@+id/marker_layout"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
+                    android:alpha="0.6"
                     android:background="@drawable/layout_round_marker_red"
                     android:clickable="true"
-                    android:gravity="center"
-                    android:focusable="true">
+                    android:focusable="true"
+                    android:gravity="center">
 
                     <TextView
                         android:id="@+id/you_are_here_text_view"
+                        style="@style/FontSizeTwelve"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:padding="5dp"
-                        style="@style/FontSizeTwelve"
                         android:text="@string/EndPoint"
                         android:textColor="@color/whiteColor" />
 
@@ -104,10 +102,10 @@
                 </LinearLayout>
 
                 <ImageView
-                    android:alpha="0.6"
                     android:layout_width="20dp"
                     android:layout_height="30dp"
                     android:layout_marginTop="-3dp"
+                    android:alpha="0.6"
                     app:srcCompat="@drawable/layout_down_arrow_red" />
 
             </LinearLayout>
@@ -128,6 +126,7 @@
 
                     <TextView
                         android:id="@+id/text_view_location_name"
+                        style="@style/FontSizeTwelve"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -140,8 +139,7 @@
                         android:padding="5dp"
                         android:scrollHorizontally="true"
                         android:singleLine="true"
-                        android:textColor="#FFF"
-                        style="@style/FontSizeTwelve" />
+                        android:textColor="#FFF" />
                 </LinearLayout>
 
                 <ImageView
@@ -155,18 +153,32 @@
         </FrameLayout>
 
         <Button
-            android:layout_marginBottom="30dp"
-            android:layout_gravity="bottom|center"
-            android:layout_width="match_parent"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
-            android:layout_height="45dp"
-            android:gravity="center"
-            android:background="@drawable/layout_rect_blue_rounded"
             android:id="@+id/btn_preview"
             style="@style/FontSizeFifteen"
-            android:textColor="@color/whiteColor"
-            android:text="@string/Continue" />
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_gravity="bottom|center"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/layout_rect_blue_rounded"
+            android:gravity="center"
+            android:text="@string/Continue"
+            android:textColor="@color/whiteColor" />
+
+        <Button
+            android:id="@+id/skip_destination_button"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_gravity="end"
+            android:layout_margin="20dp"
+            android:background="@color/colorAccent"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:text="@string/skip_destination"
+            android:textAllCaps="false"
+            android:textColor="#FFF"
+            android:textSize="12sp" />
 
     </FrameLayout>
 
@@ -180,9 +192,9 @@
             android:id="@+id/location_select_gps_image_view"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:scaleType="fitXY"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:scaleType="fitXY"
             app:srcCompat="@drawable/ic_gps_current_location" />
 
         <LinearLayout
@@ -190,15 +202,15 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical"
-            android:paddingLeft="10dp"
-            android:paddingStart="10dp">
+            android:paddingStart="10dp"
+            android:paddingLeft="10dp">
 
             <TextView
                 android:id="@+id/type_location_text_view"
+                style="@style/FontSizeEleven"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                style="@style/FontSizeEleven"
                 android:ellipsize="marquee"
                 android:marqueeRepeatLimit="marquee_forever"
                 android:singleLine="true"
@@ -206,10 +218,10 @@
 
             <TextView
                 android:id="@+id/text_view_province"
+                style="@style/FontSizeEleven"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/darkest_gray"
-                style="@style/FontSizeEleven" />
+                android:textColor="@color/darkest_gray" />
 
         </LinearLayout>
 
@@ -217,13 +229,13 @@
             android:id="@+id/search_location_image_view"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:layout_gravity="center_vertical"
             android:layout_marginLeft="3dp"
             android:layout_marginRight="3dp"
             android:scaleType="fitXY"
-            android:layout_gravity="center_vertical"
-            android:tint="@color/blackColor"
             android:scrollHorizontally="true"
-            android:src="@android:drawable/ic_menu_search" />
+            android:src="@android:drawable/ic_menu_search"
+            android:tint="@color/blackColor" />
 
         <View
             android:layout_width="1dp"
@@ -234,10 +246,10 @@
             android:id="@+id/bookmark_location_image_view"
             android:layout_width="28dp"
             android:layout_height="28dp"
+            android:layout_gravity="center_vertical"
             android:layout_marginLeft="3dp"
             android:layout_marginRight="3dp"
             android:scaleType="fitXY"
-            android:layout_gravity="center_vertical"
             android:scrollHorizontally="true"
             android:src="@drawable/ic_bookmark" />
 
