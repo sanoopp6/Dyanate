@@ -28,8 +28,8 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:text="@string/EndPoint"
-                android:textColor="@color/whiteColor"
-                style="@style/FontSizeEleven" />
+                android:textSize="10sp"
+                android:textColor="@color/whiteColor" />
 
         </LinearLayout>
 

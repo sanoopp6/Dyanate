@@ -60,7 +60,7 @@
     <string name="Duration">المدة الزمنية</string>
     <string name="EditOrder">تعديل</string>
     <string name="Email">الايميل</string>
-    <string name="EndPoint">نهاية المكان</string>
+    <string name="EndPoint">التسليم</string>
     <string name="EnterDistanceInKMAndDriversCount">حدد نطاقة بحث السائقين بالكيلومتر وعدد من يمكنهم التواصل معك .</string>
     <string name="Facebook">فيس بوك</string>
     <string name="FilledDataWillBeLost">سيتم فقدان البيانات، هل أنت متأكد؟</string>
@@ -177,7 +177,7 @@
     <string name="ShowRoute">اعرض الخارطة</string>
     <string name="Size">مركبة الحجم</string>
     <string name="SmallCompany">شركة صغيرة</string>
-    <string name="StartPoint">بداية المكان</string>
+    <string name="StartPoint">الاستلام</string>
     <string name="Status">الحالة</string>
     <string name="Subject">نوع الشحنة</string>
     <string name="Submit">إرسال</string>

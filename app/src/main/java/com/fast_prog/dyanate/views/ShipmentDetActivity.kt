@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.database.Cursor
+import android.graphics.Color
 import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
@@ -109,9 +110,9 @@ class ShipmentDetActivity : AppCompatActivity(), GregorianDatePickerDialog.OnDat
                 Ride.instance.vehicleSizeId = vehicleSizeIdList[index]
                 Ride.instance.vehicleSizeName = vehicleSizeDataList[index]
 
-                Picasso.get().load(Constants.IMG_URL + "/vehicle_size/" + vehicleImageList[index])
-                    .placeholder(R.drawable.progress_view).error(R.drawable.dynate_1)
-                    .into(vehicle_size_image_view)
+    //                Picasso.get().load(Constants.IMG_URL + "/vehicle_size/" + vehicleImageList[index])
+    //                    .placeholder(R.drawable.progress_view).error(R.drawable.dynate_1)
+    //                    .into(vehicle_size_image_view)
 
             }
 
@@ -413,6 +414,33 @@ class ShipmentDetActivity : AppCompatActivity(), GregorianDatePickerDialog.OnDat
 
             }
         }
+
+        vehicle_one_image_view.setOnClickListener {
+            vehicle_one_image_view.setBackgroundColor(Color.parseColor("#3589c4"))
+            vehicle_two_image_view.setBackgroundColor(Color.parseColor("#FFFFFF"))
+            vehicle_three_image_view.setBackgroundColor(Color.parseColor("#FFFFFF"))
+
+            Ride.instance.vehicleSizeId = vehicleSizeIdList[0]
+            Ride.instance.vehicleSizeName = vehicleSizeDataList[0]
+        }
+
+        vehicle_two_image_view.setOnClickListener {
+            vehicle_one_image_view.setBackgroundColor(Color.parseColor("#FFFFFF"))
+            vehicle_two_image_view.setBackgroundColor(Color.parseColor("#3589c4"))
+            vehicle_three_image_view.setBackgroundColor(Color.parseColor("#FFFFFF"))
+
+            Ride.instance.vehicleSizeId = vehicleSizeIdList[1]
+            Ride.instance.vehicleSizeName = vehicleSizeDataList[1]
+        }
+
+        vehicle_three_image_view.setOnClickListener {
+            vehicle_one_image_view.setBackgroundColor(Color.parseColor("#FFFFFF"))
+            vehicle_two_image_view.setBackgroundColor(Color.parseColor("#FFFFFF"))
+            vehicle_three_image_view.setBackgroundColor(Color.parseColor("#3589c4"))
+
+            Ride.instance.vehicleSizeId = vehicleSizeIdList[2]
+            Ride.instance.vehicleSizeName = vehicleSizeDataList[2]
+        }
     }
 
     override fun onDateSet(
@@ -707,21 +735,38 @@ class ShipmentDetActivity : AppCompatActivity(), GregorianDatePickerDialog.OnDat
                                     position = i
                                 }
                             }
-                            vehicleSizeAdapter = MySpinnerAdapter(
-                                this@ShipmentDetActivity,
-                                android.R.layout.select_dialog_item,
-                                vehicleSizeDataList
-                            )
-                            spnr_veh_size.adapter = vehicleSizeAdapter
 
-                            if (!Ride.instance.vehicleSizeId.isNullOrEmpty()) {
-                                Ride.instance.vehicleSizeId =
-                                    vehicleSizeArray.getJSONObject(0).getString("id").trim()
-                                Ride.instance.vehicleSizeName =
-                                    vehicleSizeArray.getJSONObject(0).getString("size").trim()
-                            } else {
-                                spnr_veh_size.setSelection(position)
-                            }
+                            Picasso.get().load(Constants.IMG_URL + "/vehicle_size/" + vehicleImageList[0])
+                                .placeholder(R.drawable.progress_view).error(R.drawable.dynate_1)
+                                .into(vehicle_one_image_view)
+                            vehicle_one_text_view.text = vehicleSizeArray.getJSONObject(0).getString("size")
+
+                            Picasso.get().load(Constants.IMG_URL + "/vehicle_size/" + vehicleImageList[1])
+                                .placeholder(R.drawable.progress_view).error(R.drawable.dynate_1)
+                                .into(vehicle_two_image_view)
+                            vehicle_two_text_view.text = vehicleSizeArray.getJSONObject(1).getString("size")
+
+                            Picasso.get().load(Constants.IMG_URL + "/vehicle_size/" + vehicleImageList[2])
+                                .placeholder(R.drawable.progress_view).error(R.drawable.dynate_1)
+                                .into(vehicle_three_image_view)
+                            vehicle_three_text_view.text = vehicleSizeArray.getJSONObject(2).getString("size")
+
+
+//                            vehicleSizeAdapter = MySpinnerAdapter(
+//                                this@ShipmentDetActivity,
+//                                android.R.layout.select_dialog_item,
+//                                vehicleSizeDataList
+//                            )
+//                            spnr_veh_size.adapter = vehicleSizeAdapter
+//
+//                            if (!Ride.instance.vehicleSizeId.isNullOrEmpty()) {
+//                                Ride.instance.vehicleSizeId =
+//                                    vehicleSizeArray.getJSONObject(0).getString("id").trim()
+//                                Ride.instance.vehicleSizeName =
+//                                    vehicleSizeArray.getJSONObject(0).getString("size").trim()
+//                            } else {
+//                                spnr_veh_size.setSelection(position)
+//                            }
                         }
                     }
                 } catch (e: JSONException) {
@@ -859,10 +904,12 @@ class ShipmentDetActivity : AppCompatActivity(), GregorianDatePickerDialog.OnDat
 
             if (clickedImg.equals("sender", ignoreCase = true)) {
 //                edit_from_name.setText(nameIndex.toString())
-                countryCodePicker_from.fullNumber = phoneNo.replace("[^\\d]".toRegex(), "")
+//                countryCodePicker_from.fullNumber = phoneNo.replace("[^\\d]".toRegex(), "")
+                countryCodePicker_from.fullNumber = phoneNo
             } else {
 //                edit_to_name.setText(nameIndex.toString())
-                countryCodePicker_to.fullNumber = phoneNo.replace("[^\\d]".toRegex(), "")
+//                countryCodePicker_to.fullNumber = phoneNo.replace("[^\\d]".toRegex(), "")
+                countryCodePicker_to.fullNumber = phoneNo
             }
 
             cursor.close()
