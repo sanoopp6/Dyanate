@@ -11,6 +11,7 @@ import android.os.AsyncTask
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,6 +47,8 @@ class PickLocationActivity : AppCompatActivity() {
     private var sharedPreferences: SharedPreferences? = null
 
     private val PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place"
+
+    private val PLACES_NEARBY = "https://maps.googleapis.com/maps/api/place/findplacefromtext"
 
     private val TYPE_NEARBY = "/nearbysearch"
 
@@ -187,14 +190,22 @@ class PickLocationActivity : AppCompatActivity() {
         var conn: HttpURLConnection? = null
         val jsonResults = StringBuilder()
         try {
-            val sb = PLACES_API_BASE + TYPE_NEARBY + OUT_JSON + "?key=" + Constants.GOOGLE_API_KEY +
-                    "&location=" + sharedPreferences!!.getString(
-                Constants.PREFS_SEARCH_LOCATION_AREA,
-                cityLatLngArray!![0]
-            ) +
-                    "&name=" + input.trim().replace(" ", "+") +
-                    "&language=" + sharedPreferences!!.getString(Constants.PREFS_LANG, "ar") +
-                    "&radius=" + 50000
+//            val sb = PLACES_API_BASE + TYPE_NEARBY + OUT_JSON + "?key=" + Constants.GOOGLE_API_KEY +
+//                    "&location=" + sharedPreferences!!.getString(
+//                Constants.PREFS_SEARCH_LOCATION_AREA,
+//                cityLatLngArray!![0]
+//            ) +
+//                    "&name=" + input.trim().replace(" ", "+") +
+//                    "&language=" + sharedPreferences!!.getString(Constants.PREFS_LANG, "ar") +
+//                    "&radius=" + 50000
+
+            val sb = PLACES_NEARBY + OUT_JSON + "?key=" + Constants.GOOGLE_API_KEY +
+                    "&input=" + input.trim().replace(" ", "+") +
+                    "&language=" + sharedPreferences!!.getString(Constants.PREFS_LANG, "ar") + "&inputtype=textquery&fields=formatted_address,geometry,name"
+
+
+            Log.d("place_", sb)
+
 
             val url = URL(sb)
             conn = url.openConnection() as HttpURLConnection
@@ -217,10 +228,13 @@ class PickLocationActivity : AppCompatActivity() {
         }
 
         try {
+
+            Log.d("place_", jsonResults.toString())
             // Create a JSON object hierarchy from the results
+
             val jsonObj = JSONObject(jsonResults.toString())
 
-            val resultsJsonArray = jsonObj.getJSONArray("results")
+            val resultsJsonArray = jsonObj.getJSONArray("candidates")
 
             if (resultsJsonArray != null) {
                 resultList = ArrayList()
@@ -229,9 +243,9 @@ class PickLocationActivity : AppCompatActivity() {
                     val placeItem = PlaceItem()
                     placeItem.plName = resultsJsonArray.getJSONObject(i).getString("name")
 
-                    if (resultsJsonArray.getJSONObject(i).getString("vicinity") != null)
+                    if (resultsJsonArray.getJSONObject(i).getString("formatted_address") != null)
                         placeItem.pVicinity =
-                            resultsJsonArray.getJSONObject(i).getString("vicinity")
+                            resultsJsonArray.getJSONObject(i).getString("formatted_address")
 
                     placeItem.pLatitude =
                         resultsJsonArray.getJSONObject(i).getJSONObject("geometry")
@@ -242,6 +256,32 @@ class PickLocationActivity : AppCompatActivity() {
                     resultList.add(placeItem)
                 }
             }
+
+
+//            val jsonObj = JSONObject(jsonResults.toString())
+//
+//            val resultsJsonArray = jsonObj.getJSONArray("results")
+//
+//            if (resultsJsonArray != null) {
+//                resultList = ArrayList()
+//
+//                for (i in 0 until resultsJsonArray.length()) {
+//                    val placeItem = PlaceItem()
+//                    placeItem.plName = resultsJsonArray.getJSONObject(i).getString("name")
+//
+//                    if (resultsJsonArray.getJSONObject(i).getString("vicinity") != null)
+//                        placeItem.pVicinity =
+//                            resultsJsonArray.getJSONObject(i).getString("vicinity")
+//
+//                    placeItem.pLatitude =
+//                        resultsJsonArray.getJSONObject(i).getJSONObject("geometry")
+//                            .getJSONObject("location").getString("lat")
+//                    placeItem.pLongitude =
+//                        resultsJsonArray.getJSONObject(i).getJSONObject("geometry")
+//                            .getJSONObject("location").getString("lng")
+//                    resultList.add(placeItem)
+//                }
+//            }
         } catch (ignored: JSONException) {
         }
 

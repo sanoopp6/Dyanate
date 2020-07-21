@@ -2,6 +2,7 @@ package com.fast_prog.dyanate.views
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -42,9 +43,17 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.AutocompleteActivity
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.iid.FirebaseInstanceId
 import com.snappydb.DBFactory
 import com.snappydb.SnappydbException
+import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_sender_location.*
 import kotlinx.android.synthetic.main.content_sender_location.*
@@ -75,7 +84,7 @@ class SenderLocationActivity : AppCompatActivity(), OnMapReadyCallback,
 
     private var mapViewSatellite: Boolean = false
 
-    internal lateinit var sharedPreferences: SharedPreferences
+    lateinit var sharedPreferences: SharedPreferences
 
     internal var placeItem: PlaceItem = PlaceItem()
 
@@ -101,9 +110,15 @@ class SenderLocationActivity : AppCompatActivity(), OnMapReadyCallback,
 
     internal var markerView: View? = null
 
+    var selectedCountry = ""
+
+    val AUTOCOMPLETE_REQUEST_CODE = 100
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sender_location)
+
+        Places.initialize(applicationContext, Constants.GOOGLE_API_KEY)
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -123,8 +138,24 @@ class SenderLocationActivity : AppCompatActivity(), OnMapReadyCallback,
                 textView_nav_name.text = String.format(
                     "%s : %s",
                     resources.getString(R.string.Welcome),
-                    sharedPreferences.getString(Constants.PREFS_USER_NAME, "")
+                    sharedPreferences.getString(Constants.PREFS_USER_FULL_NAME, "")
                 )
+
+                Picasso.get().load(
+                    Constants.IMG_URL + "/profile_pic/customer/" + sharedPreferences.getString(
+                        Constants.PREFS_USER_PIC,
+                        ""
+                    )
+                ).into(imageView)
+
+                frameLayout_add_photo.setOnClickListener {
+                    startActivity(
+                        Intent(
+                            this@SenderLocationActivity,
+                            ChangeNmPhActivity::class.java
+                        )
+                    )
+                }
             }
 
             override fun onDrawerClosed(drawerView: View) {}
@@ -133,6 +164,7 @@ class SenderLocationActivity : AppCompatActivity(), OnMapReadyCallback,
         })
         drawer.addDrawerListener(toggle)
         toggle.syncState()
+
 
         val navigationView =
             findViewById<com.google.android.material.navigation.NavigationView>(R.id.nav_view)
@@ -167,18 +199,33 @@ class SenderLocationActivity : AppCompatActivity(), OnMapReadyCallback,
         mapFragment.getMapAsync(this)
 
         type_location_text_view.setOnClickListener {
-            val intent = Intent(this@SenderLocationActivity, PickLocationActivity::class.java)
-            startActivityForResult(intent, REQUEST_CODE_AUTOCOMPLETE)
+//            val intent = Intent(this@SenderLocationActivity, PickLocationActivity::class.java)
+//            startActivityForResult(intent, REQUEST_CODE_AUTOCOMPLETE)
+            val fields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.ADDRESS_COMPONENTS, Place.Field.LAT_LNG)
+
+            val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
+                .build(this)
+            startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE)
         }
 
         location_select_gps_image_view.setOnClickListener {
-            val intent = Intent(this@SenderLocationActivity, PickLocationActivity::class.java)
-            startActivityForResult(intent, REQUEST_CODE_AUTOCOMPLETE)
+//            val intent = Intent(this@SenderLocationActivity, PickLocationActivity::class.java)
+//            startActivityForResult(intent, REQUEST_CODE_AUTOCOMPLETE)
+            val fields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.ADDRESS_COMPONENTS, Place.Field.LAT_LNG)
+
+            val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
+                .build(this)
+            startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE)
         }
 
         search_location_image_view.setOnClickListener {
-            val intent = Intent(this@SenderLocationActivity, PickLocationActivity::class.java)
-            startActivityForResult(intent, REQUEST_CODE_AUTOCOMPLETE)
+//            val intent = Intent(this@SenderLocationActivity, PickLocationActivity::class.java)
+//            startActivityForResult(intent, REQUEST_CODE_AUTOCOMPLETE)
+            val fields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.ADDRESS_COMPONENTS, Place.Field.LAT_LNG)
+
+            val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
+                .build(this)
+            startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE)
         }
 
         bookmark_location_image_view.setOnClickListener {
@@ -323,36 +370,50 @@ class SenderLocationActivity : AppCompatActivity(), OnMapReadyCallback,
         }
 
         btn_select_location.setOnClickListener {
-//            UtilityFunctions.showAlertOnActivity(this@SenderLocationActivity,
+            //            UtilityFunctions.showAlertOnActivity(this@SenderLocationActivity,
 //                resources.getString(R.string.AreYouSure), resources.getString(R.string.Yes),
 //                resources.getString(R.string.No), true, false,
 //                {
-                    if (!type_location_text_view.text.toString().equals(
-                            resources.getString(R.string.TypeYourLocation),
-                            true
-                        )
-                    ) {
-                        if (sharedPreferences.getString(Constants.PREFS_LANG, "en")!!.equals(
-                                "ar",
-                                true
-                            )
-                        ) {
-                            Ride.instance.pickUpLocation =
-                                text_view_province.text.toString() + " ،" + type_location_text_view.text.toString()
-                        } else {
-                            Ride.instance.pickUpLocation =
-                                type_location_text_view.text.toString() + ", " + text_view_province.text.toString()
-                        }
-                        Ride.instance.pickUpLatitude = userLocation!!.latitude.toString()
-                        Ride.instance.pickUpLongitude = userLocation!!.longitude.toString()
+            if (!type_location_text_view.text.toString().equals(
+                    resources.getString(R.string.TypeYourLocation),
+                    true
+                )
+            ) {
 
-                        startActivity(
-                            Intent(
-                                this@SenderLocationActivity,
-                                ReceiverLocationActivity::class.java
-                            )
-                        )
-                    }
+                Log.d("selected_country", selectedCountry)
+                if (selectedCountry.toUpperCase() != "SA") {
+                    UtilityFunctions.showAlertOnActivity(this@SenderLocationActivity,
+                        getString(R.string.sorry_this_service_only_in_saudi),
+                        getString(R.string.ok),
+                        "",
+                        showCancelButton = false,
+                        setCancelable = true,
+                        actionOk = {},
+                        actionCancel = {})
+                    return@setOnClickListener
+                }
+
+                if (sharedPreferences.getString(Constants.PREFS_LANG, "en")!!.equals(
+                        "ar",
+                        true
+                    )
+                ) {
+                    Ride.instance.pickUpLocation =
+                        text_view_province.text.toString() + " ،" + type_location_text_view.text.toString()
+                } else {
+                    Ride.instance.pickUpLocation =
+                        type_location_text_view.text.toString() + ", " + text_view_province.text.toString()
+                }
+                Ride.instance.pickUpLatitude = userLocation!!.latitude.toString()
+                Ride.instance.pickUpLongitude = userLocation!!.longitude.toString()
+
+                startActivity(
+                    Intent(
+                        this@SenderLocationActivity,
+                        ReceiverLocationActivity::class.java
+                    )
+                )
+            }
 //                }, {})
         }
 
@@ -361,19 +422,20 @@ class SenderLocationActivity : AppCompatActivity(), OnMapReadyCallback,
         btn_select_location.isEnabled = false
         btn_select_location.alpha = 0.5f
 
-        if (ConnectionDetector.isConnected(this@SenderLocationActivity)) {
-            if (sharedPreferences.getString(Constants.PREFS_FCM_TOKEN, "")!!.isNotEmpty()) {
-                Log.e("refreshedToken", sharedPreferences.getString(Constants.PREFS_FCM_TOKEN, ""))
-                UpdateFCMToken(
-                    this@SenderLocationActivity,
-                    true,
-                    sharedPreferences.getString(Constants.PREFS_USER_ID, "")!!
-                ).execute()
-            }
-        }
+        FirebaseInstanceId.getInstance().instanceId
+            .addOnCompleteListener(OnCompleteListener { task ->
+
+                if (!task.isSuccessful) {
+                    return@OnCompleteListener
+                }
+
+                // Get new Instance ID token
+                val token = task.result?.token
+                UpdateFCMToken(token!!).execute()
+
+            })
 
     }
-
 
 
     override fun onBackPressed() {
@@ -653,7 +715,6 @@ class SenderLocationActivity : AppCompatActivity(), OnMapReadyCallback,
 
                     val editor = sharedPreferences.edit()
                     editor.putBoolean(Constants.PREFS_IS_LOGIN, false)
-                    editor.putString(Constants.PREFS_USER_ID, "0")
                     editor.putString(Constants.PREFS_USER_NAME, "0")
                     editor.putString(Constants.PREFS_SHARE_URL, "")
                     editor.commit()
@@ -702,11 +763,10 @@ class SenderLocationActivity : AppCompatActivity(), OnMapReadyCallback,
             sendIntent.action = Intent.ACTION_SEND
             sendIntent.putExtra(
                 Intent.EXTRA_TEXT,
-                resources.getString(R.string.ShareMessage) + " " + sharedPreferences.getString(
-                    Constants.PREFS_SHARE_URL,
-                    ""
+                "هل جربت تطبيق دينتي ؟ لتحميل التطبيق يرجى الضغط على الرابط \n" +
+                        "https://play.google.com/store/apps/details?id=com.fast_prog.dyanate&hl=en"
                 )
-            )
+
             sendIntent.type = "text/plain"
             startActivity(sendIntent)
 
@@ -716,16 +776,12 @@ class SenderLocationActivity : AppCompatActivity(), OnMapReadyCallback,
                 resources.getString(R.string.No), true, false,
                 {
                     if (ConnectionDetector.isConnected(this@SenderLocationActivity)) {
-                        UpdateFCMToken(
-                            this@SenderLocationActivity,
-                            false,
-                            sharedPreferences.getString(Constants.PREFS_USER_ID, "")!!
+                        UpdateFCMToken(""
                         ).execute()
                     }
 
                     val editor = sharedPreferences.edit()
                     editor.putBoolean(Constants.PREFS_IS_LOGIN, false)
-                    editor.putString(Constants.PREFS_USER_ID, "0")
                     editor.putString(Constants.PREFS_USER_NAME, "0")
                     editor.putString(Constants.PREFS_SHARE_URL, "")
                     editor.commit()
@@ -1204,7 +1260,6 @@ class SenderLocationActivity : AppCompatActivity(), OnMapReadyCallback,
         override fun onPostExecute(locationArray: JSONArray?) {
             super.onPostExecute(locationArray)
             showProgressBarMarker(false)
-
             if (locationArray != null) {
                 try {
                     //String locationName = locationArray.getJSONObject(0).getString("formatted_address");
@@ -1225,7 +1280,7 @@ class SenderLocationActivity : AppCompatActivity(), OnMapReadyCallback,
                             ) || types.length() > 1 && types.getString(1).equals(
                                 "sublocality",
                                 ignoreCase = true
-                            )
+                            ) || types.getString(0).equals("country")
                         ) {
 
                             when {
@@ -1237,14 +1292,22 @@ class SenderLocationActivity : AppCompatActivity(), OnMapReadyCallback,
                                             "en"
                                         )!!.equals("ar", true)
                                     ) {
-                                        addressComponents.getJSONObject(i).getString("long_name") + " ،" + locationName
+                                        addressComponents.getJSONObject(i)
+                                            .getString("long_name") + " ،" + locationName
                                     } else {
-                                        locationName + ", " + addressComponents.getJSONObject(i).getString(
-                                            "long_name"
-                                        )
+                                        locationName + ", " + addressComponents.getJSONObject(i)
+                                            .getString(
+                                                "long_name"
+                                            )
                                     }
                                 else -> locationName =
                                     addressComponents.getJSONObject(i).getString("long_name")
+                            }
+
+                            if (types.getString(0).equals("country", true)) {
+
+                                selectedCountry =
+                                    addressComponents.getJSONObject(i).getString("short_name")
                             }
                         }
                     }
@@ -1325,6 +1388,59 @@ class SenderLocationActivity : AppCompatActivity(), OnMapReadyCallback,
             latLng = LatLng(userLocation!!.latitude, userLocation!!.longitude)
             val cameraPosition = CameraPosition.Builder().target(latLng).zoom(17f).build()
             mMap!!.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+        }
+
+
+        if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
+            when (resultCode) {
+                Activity.RESULT_OK -> {
+                    data?.let {
+                        val place = Autocomplete.getPlaceFromIntent(data)
+                        Log.i("Place", "Place: ${place.name}, ${place.id}")
+
+
+                        try {
+                            val mLocation = Location("")
+                            mLocation.latitude = place.latLng!!.latitude
+                            mLocation.longitude = place.latLng!!.longitude
+                            userLocation = mLocation
+                        } catch (ignored: Exception) {
+                        }
+
+                        latLng = LatLng(userLocation!!.latitude, userLocation!!.longitude)
+                        val cameraPosition = CameraPosition.Builder().target(latLng).zoom(17f).build()
+                        mMap!!.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+                    }
+                }
+                AutocompleteActivity.RESULT_ERROR -> {
+                    // TODO: Handle the error.
+                    data?.let {
+                        val status = Autocomplete.getStatusFromIntent(data)
+                        Log.i("Place", status.statusMessage)
+                    }
+                }
+                Activity.RESULT_CANCELED -> {
+                    // The user canceled the operation.
+                }
+            }
+            return
+        }
+    }
+
+    inner class UpdateFCMToken(var fcmToken: String) : AsyncTask<Void, Void, JSONObject>() {
+
+        override fun doInBackground(vararg param: Void): JSONObject? {
+            val jsonParser = JsonParser()
+            val params = HashMap<String, String>()
+
+            params["user_id"] = sharedPreferences.getString(Constants.PREFS_USER_ID, "")!!
+            params["fcm_token"] = fcmToken
+
+            return jsonParser.makeHttpRequest(
+                Constants.BASE_URL + "customer/update_fcm_token",
+                "POST",
+                params
+            )
         }
     }
 }

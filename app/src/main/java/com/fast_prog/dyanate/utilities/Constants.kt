@@ -22,6 +22,8 @@ object Constants {
     val PREFS_COUNTRY_CODE              = "dyna_user_country_code"
     val PREFS_USER_TOKEN                  = "dyna_user_token"
     val PREFS_USER_FULL_MOBILE                  = "dyna_user_full_mobile"
+    val PREFS_USER_FULL_NAME                  = "dyna_user_full_name"
+    val PREFS_USER_PIC                  = "dyna_user_pic"
 
     val LAST_INSTRUCTION_ID             = "last_instruction_id"
 
@@ -29,21 +31,21 @@ object Constants {
     val BASE_URL_AR                     = "https://dyanate.fast-prog.com/ServiceAr.asmx/"
 //    val IMG_URL                         = "https://dyanate.fast-prog.com/"
 //
-    val BASE_URL                        = "http://10.0.2.2/dyanate/api/"
+//    val BASE_URL                        = "http://10.0.2.2/dyanate/api/"
     val DATE_URL                        = "http://myapi.dawammy.com.sa/ServiceEn.asmx/"
-//    val BASE_URL                        = "http://dyanate.eu-central-1.elasticbeanstalk.com/api/"
+    val BASE_URL                        = "http://dyanate.eu-central-1.elasticbeanstalk.com/api/"
     val IMG_URL                         = "https://dyanate.s3.eu-central-1.amazonaws.com"
     val VEHICLE_IMG_URL                 = "https://dyanate.s3.eu-central-1.amazonaws.com"
 
 
     val APP_NAME                        = "dyna"
-    val APP_VERSION                     = "2.0"
+    val APP_VERSION                     = "2.6"
 
     val SMS_ORIGIN                      = "DyanateApp"
     val OTP_DELIMITER                   = ":"
 
     val GOOGLE_LOCATION_NAME_URL        = "https://maps.googleapis.com/maps/api/geocode/json"
-    val GOOGLE_API_KEY                  = "AIzaSyBu0L-ZDx6XiLf2y_bE1jcn5HVv1On5XpM"
+    val GOOGLE_API_KEY                  = "AIzaSyDWskcfK8UDsw7ZlZnBLnc_eHvmDXUX3wE"
     val PREFS_SEARCH_LOCATION_AREA      = "0"
 
     val LOG_CONST_NORMAL                = "normal"

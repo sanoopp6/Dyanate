@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">داينا</string>
+    <string name="app_name">دينتي</string>
     <string name="navigation_drawer_close">درج إغلاق الملاحة</string>
     <string name="navigation_drawer_open">درج الملاحة المفتوحة</string>
     <string name="com_facebook_loginview_log_out_button">فيس بوك</string>
@@ -174,8 +174,8 @@
     <string name="ShowDetails">تفاصيـل الشحـنة</string>
     <string name="ShowInMap">إظهـار السائقـين</string>
     <string name="ShowReplies">مشاهدة الردود</string>
-    <string name="ShowRoute">اعرض الخارطة</string>
-    <string name="Size">مركبة الحجم</string>
+    <string name="ShowRoute">اعرض الخرطة</string>
+    <string name="Size">حجم المركبة</string>
     <string name="SmallCompany">شركة صغيرة</string>
     <string name="StartPoint">الاستلام</string>
     <string name="Status">الحالة</string>
@@ -202,7 +202,7 @@
     <string name="UsernameRequired">اسم المستخدم</string>
     <string name="Vehicle">مركبة</string>
     <string name="VerifyOTP">التحقق من كود</string>
-    <string name="VersionUpdateAvailable">توجـد إصـدار جديـد للتطبيـق.</string>
+    <string name="VersionUpdateAvailable">يوجد إصـدار جديـد للتطبيـق.</string>
     <string name="View">عرض</string>
     <string name="WaitingDriverReply">انتظار سائق الرد</string>
     <string name="Welcome">أهلا بك</string>
@@ -243,8 +243,8 @@
     <string name="ReplyIsEmpty">لا يوجد رد</string>
     <string name="ReplyUpdated">تم الرد</string>
     <string name="Retry">إعادة المحاولة</string>
-    <string name="Route">اعرض الخارطة</string>
-    <string name="ShareMessage">تحميل ديانات التطبيق</string>
+    <string name="Route">عرض الخارطة</string>
+    <string name="ShareMessage"> لتحميل تطبيق دينتي يرجي الضغط علي الرابxط</string>
     <string name="ShootClearly">الرجاء التصوير بشكل واضح قبل التحميل</string>
     <string name="ShowFeedbacks">الشكاوي والاقتراحات</string>
     <string name="SlNo">م</string>
@@ -261,7 +261,7 @@
     <string name="Confirm">تاكيد</string>
     <string name="UpdateNow">انتقل إلى المخزن للتحديث</string>
     <string name="AddATrip">إضافة رحلة</string>
-    <string name="DateAndTime">تاريخ ووقت التوثيق</string>
+    <string name="DateAndTime">تاريخ ووقت الاستلام</string>
     <string name="EnterMessage">أدخل رسالة…</string>
     <string name="SAR">ريال</string>
     <string name="Details">التفاصيل</string>
@@ -279,5 +279,36 @@
     <string name="same_as_sender">نفس المرسل</string>
     <string name="InvalidSenderDetail">تفاصيل المرسل غير صالحة</string>
     <string name="skip_destination">تخطي الوجهة >>  </string>
-
+    <string name="trip_added_successfully">تمت إضافة الرحلة بنجاح! سيتم إعلامك بعد تعيين السائق</string>
+    <string name="minimum_2_hour_required">مطلوب ساعتين على الأقل</string>
+    <string name="call">مكالمة</string>
+    <string name="write_description">اكتب وصف مختصر لشحنتك</string>
+    <string name="enter_name_and_photo">أدخل الاسم والصورة</string>
+    <string name="change_name_and_photo">تغيير الاسم والصورة</string>
+    <string name="invalid_photo_or_name">صورة أو اسم غير صالح</string>
+    <string name="photo_and_name_updated_successfully">تم تحديث الصورة والاسم بنجاح</string>
+    <string name="image_upload_failed">فشل تحميل الصورة</string>
+    <string name="update">تحديث</string>
+    <string name="no_drop_off_detail">لا تفاصيل التسليم</string>
+    <string name="price">السعر:</string>
+    <string name="min">دقيقة</string>
+    <string name="hr">ساعة</string>
+    <string name="km">كم</string>
+    <string name="estimated">مقدر</string>
+    <string name="sorry_this_service_only_in_saudi">عذرا ، هذه الخدمة متاحة فقط في المملكة العربية السعودية</string>
+    <string name="this_type_not_available_now">هذا النوع غير متوفر الان</string>
+    <string name="date_cannot_be_more_than_a_month">لا يمكن أن يكون التاريخ أكثر من شهر واحد</string>
+    <string name="DoYouNeedPackersAndMovers">تحتاج عمال تحميل وتنزيل؟</string>
+    <string name="RequiredPersons">العدد المطلوب من الأشخاص</string>
+    <string name="rate_driver">سائق معدل</string>
+    <string name="WriteAReview">اضافة تقييم</string>
+    <string name="AddYourRating">اضف تقييما للخدمة : </string>
+    <string name="AddNote">أضف ملاحظة:</string>
+    <string name="pls_add_your_rating">يرجى إضافة تقييمك</string>
+    <string name="YourReviewSaved">أشكركم على المراجعة</string>
+    <string name="do_you_need_unpack_and_install"> هل تحتاج فك وتركيب ؟</string>
+    <string name="the_price_does_not_include_dismantling_and_installation_the_price_will_be_agreed_upon_with_the_driver">السعر غير شامل خدمة الفك والتركيب يتم الاتفاق على السعر مع السائق</string>
+    <string name="TripPrice">سعر الرحلة</string>
+    <string name="LabourPrice">سعر التحميل والتنزيل</string>
+    <string name="InstallationCharge">سعر خدمة الفك والتركيب : السعر يتم الإتفاق عليه مع السائق</string>
 </resources>

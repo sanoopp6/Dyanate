@@ -9,25 +9,34 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-<!--    <uses-permission android:name="android.permission.RECEIVE_SMS" />-->
-<!--    <uses-permission android:name="android.permission.READ_SMS" />-->
     <uses-permission android:name="android.permission.CAMERA" />
 
     <uses-feature android:name="android.hardware.camera" />
 
     <dist:module dist:instant="true" />
+    <!--        android:icon="@drawable/dynate_1"-->
 
     <application
         android:name=".utilities.DynateApplication"
         android:allowBackup="true"
         android:fullBackupContent="false"
-        android:icon="@drawable/dynate_1"
         android:label="@string/app_name"
         android:supportsRtl="true"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/AppTheme"
+        android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true">
         <activity android:name=".views.TrackTripActivity"></activity>
         <activity android:name=".views.DriverReplyActivity" />
+
+        <service android:name="com.amazonaws.mobileconnectors.s3.transferutility.TransferService" android:enabled="true" />
+
+        <service android:name=".firebase.DyanateFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 
         <receiver
             android:name=".utilities.SMSReceiver"
@@ -47,7 +56,7 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBu0L-ZDx6XiLf2y_bE1jcn5HVv1On5XpM" /> <!-- <meta-data -->
+            android:value="AIzaSyDWskcfK8UDsw7ZlZnBLnc_eHvmDXUX3wE" /> <!-- <meta-data -->
         <!-- android:name="com.facebook.sdk.ApplicationId" -->
         <!-- android:value="@string/facebook_app_id" /> -->
         <!-- <activity -->
@@ -64,16 +73,6 @@
         <!-- <data android:scheme="@string/fb_login_protocol_scheme" /> -->
         <!-- </intent-filter> -->
         <!-- </activity> -->
-        <service android:name=".utilities.DynateFbInstanceIdService">
-            <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
-            </intent-filter>
-        </service>
-        <service android:name=".utilities.DynateFbMessagingService">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -87,6 +86,9 @@
 
         <activity
             android:name=".views.SettigsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.ChangeNmPhActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.ConfirmDetailsActivity"

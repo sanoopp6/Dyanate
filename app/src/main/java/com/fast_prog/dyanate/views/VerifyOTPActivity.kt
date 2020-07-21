@@ -620,6 +620,16 @@ class VerifyOTPActivity : AppCompatActivity(), MySMSBroadcastReceiver.OTPReceive
                             Constants.PREFS_USER_FULL_MOBILE,
                             result.getJSONObject("data").getJSONObject("user_info").getString("mobile_number").trim()
                         )
+                        editor.putString(
+                            Constants.PREFS_USER_FULL_NAME,
+                            result.getJSONObject("data").getJSONObject("user_info").getString("full_name").trim()
+                        )
+
+                        editor.putString(
+                            Constants.PREFS_USER_PIC,
+                            result.getJSONObject("data").getJSONObject("user_info").getString("profile_pic").trim()
+                        )
+
                         editor.putBoolean(Constants.PREFS_IS_LOGIN, true)
 
                         editor.commit()

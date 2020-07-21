@@ -45,7 +45,9 @@ class Order : Serializable {
     var tripDIsNegotiable: String? = null
     var tripDDateTime: String? = null
     var tripDFilterName: String? = null
-    var dmName: String? = null
-    var dmMobNumber: String? = null
+    var driverName: String = ""
+    var driverMobileNumber: String = ""
+    var driverID: String = ""
+    var estimatedPrice: String = "0"
     var distanceKm: String? = null
 }

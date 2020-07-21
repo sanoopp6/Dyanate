@@ -1,16 +1,18 @@
 package com.fast_prog.dyanate.views
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,11 +23,13 @@ import com.fast_prog.dyanate.utilities.ConnectionDetector
 import com.fast_prog.dyanate.utilities.Constants
 import com.fast_prog.dyanate.utilities.JsonParser
 import com.fast_prog.dyanate.utilities.UtilityFunctions
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_my_orders.*
 import kotlinx.android.synthetic.main.content_my_orders.*
 import org.json.JSONException
 import org.json.JSONObject
 import java.util.*
+
 
 class MyOrdersActivity : AppCompatActivity() {
 
@@ -205,6 +209,10 @@ class MyOrdersActivity : AppCompatActivity() {
                                 order.tripNotes = jsonArr.getJSONObject(i).getString("notes").trim()
                                 order.tripDRate =
                                     jsonArr.getJSONObject(i).getString("trip_rate").trim()
+                                order.estimatedPrice =
+                                    jsonArr.getJSONObject(i).getString("estimated_price").trim()
+                                order.driverID =
+                                    jsonArr.getJSONObject(i).getString("driver_id").trim()
 
                                 ordersArrayList!!.add(order)
 
@@ -242,7 +250,12 @@ class MyOrdersActivity : AppCompatActivity() {
         internal inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
             var priceTextView: TextView = v.findViewById(R.id.priceTextView) as TextView
             var dateTextView: TextView = v.findViewById(R.id.dateTextView) as TextView
+            var sarTextView: TextView = v.findViewById(R.id.sarTextView) as TextView
+            var estimatedTextView: TextView = v.findViewById(R.id.estimatedTextView) as TextView
             var detailsButton: Button = v.findViewById(R.id.detailsButton) as Button
+            var whatsAppButton: ImageView = v.findViewById(R.id.whatsAppButton) as ImageView
+            var rate_driver_text_view: TextView =
+                v.findViewById(R.id.rate_driver_text_view) as TextView
         }
 
         override fun onCreateViewHolder(
@@ -257,16 +270,98 @@ class MyOrdersActivity : AppCompatActivity() {
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             holder.setIsRecyclable(false)
 
+
+            if (ordersArrayList!![position].tripStatus == "3") {
+                holder.whatsAppButton.visibility = View.VISIBLE
+            }
+
+            if (ordersArrayList!![position].tripStatus == "11") {
+                holder.rate_driver_text_view.visibility = View.VISIBLE
+                holder.whatsAppButton.visibility = View.GONE
+            }
+
+            holder.rate_driver_text_view.setOnClickListener {
+
+                val builder = AlertDialog.Builder(this@MyOrdersActivity)
+                val inflaterAlert =
+                    getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+                val viewDialog = inflaterAlert.inflate(R.layout.customer_review_layout, null)
+                builder.setView(viewDialog)
+                val dialog = builder.create()
+
+                val buttonSubmit = viewDialog.findViewById<Button>(R.id.submitButton)
+                val serviceRatingBar = viewDialog.findViewById<RatingBar>(R.id.serviceRatingBar)
+                val notesEditText = viewDialog.findViewById<EditText>(R.id.commentEditText)
+
+
+                buttonSubmit.setOnClickListener {
+                    dialog.dismiss()
+
+                    var rating = serviceRatingBar.rating
+                    var notes = notesEditText.text.toString().trim()
+
+                    if (rating <= 0f) {
+
+                        UtilityFunctions.showAlertOnActivity(this@MyOrdersActivity,
+                            getString(R.string.pls_add_your_rating)
+                            ,
+                            getString(R.string.ok),
+                            "",
+                            false,
+                            true,
+                            {},
+                            {})
+                        return@setOnClickListener
+                    }
+
+                    if (notes.isEmpty()) {
+                        UtilityFunctions.showAlertOnActivity(this@MyOrdersActivity,
+                            getString(R.string.pls_add_your_rating)
+                            ,
+                            getString(R.string.ok),
+                            "",
+                            false,
+                            true,
+                            {},
+                            {})
+                        return@setOnClickListener
+                    }
+
+
+                    SubmitReview(
+                        notes,
+                        rating,
+                        ordersArrayList!![position].tripId!!,
+                        ordersArrayList!![position].driverID!!
+                    ).execute()
+                }
+
+                dialog.setCancelable(true)
+                dialog.show()
+            }
+
+            holder.whatsAppButton.setOnClickListener {
+
+                val url = "https://wa.me/=${ordersArrayList!![position].driverMobileNumber}"
+                val i = Intent(Intent.ACTION_VIEW)
+                i.data = Uri.parse(url)
+                startActivity(i)
+            }
+
             holder.priceTextView.text = ordersArrayList!![position].tripDRate
             holder.dateTextView.text = ordersArrayList!![position].scheduleDate
+
+            if (ordersArrayList!![position].tripDRate.isNullOrEmpty()) {
+                //holder.sarTextView.text = ""
+                holder.estimatedTextView.visibility = View.VISIBLE
+                holder.priceTextView.text = ordersArrayList!![position].estimatedPrice
+            }
 
             holder.detailsButton.setOnClickListener {
                 //orderSelected = ordersArrayList!![position]
                 //selectedId = orderSelected.tripId
 
-                val intent = Intent(this@MyOrdersActivity, ShipmentDetailsActivity::class.java)
-                intent.putExtra("order", ordersArrayList!![position])
-                startActivity(intent)
+                TripDetailsMasterListBackground(ordersArrayList!![position].tripId!!).execute()
 
                 //show_button.isEnabled = true
                 //order_no_value_text_view.text = orderSelected.tripNo
@@ -283,6 +378,193 @@ class MyOrdersActivity : AppCompatActivity() {
 
         override fun getItemCount(): Int {
             return ordersArrayList?.size ?: 0
+        }
+    }
+
+    private inner class SubmitReview internal constructor(
+        val notes: String,
+        val rating: Float,
+        val tripId: String,
+        val driverId: String
+    ) : AsyncTask<Void, Void, JSONObject>() {
+
+        override fun onPreExecute() {
+            super.onPreExecute()
+            UtilityFunctions.showProgressDialog(this@MyOrdersActivity)
+        }
+
+        override fun doInBackground(vararg param: Void): JSONObject? {
+            val jsonParser = JsonParser()
+            val params = HashMap<String, String>()
+
+            params["driver_id"] = driverId
+            params["user_id"] = sharedPreferences.getString(Constants.PREFS_USER_ID, "")!!
+            params["rating"] = rating.toString()
+            params["notes"] = notes
+            params["trip_id"] = tripId
+
+            return jsonParser.makeHttpRequest(
+                Constants.BASE_URL + "customer/add_driver_rating",
+                "POST",
+                params
+            )
+        }
+
+        override fun onPostExecute(response: JSONObject?) {
+            UtilityFunctions.dismissProgressDialog()
+
+            if (response != null) {
+                try {
+
+                    if (response.getBoolean("status")) {
+
+                        UtilityFunctions.showAlertOnActivity(this@MyOrdersActivity,
+                            resources.getString(R.string.YourReviewSaved),
+                            resources.getString(R.string.Ok),
+                            "",
+                            false,
+                            false,
+                            {
+                            },
+                            {})
+                    } else {
+
+                        UtilityFunctions.showAlertOnActivity(this@MyOrdersActivity,
+                            response.getString("message"), resources.getString(R.string.Ok),
+                            "", false, false,
+                            {
+                            }, {})
+                    }
+
+
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                }
+
+            } else {
+                val snackbar = Snackbar.make(
+                    coordinator_layout,
+                    R.string.UnableToConnect,
+                    Snackbar.LENGTH_LONG
+                ).setAction(R.string.Ok) { finish() }
+                snackbar.show()
+            }
+        }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private inner class TripDetailsMasterListBackground internal constructor(internal var tripID: String = "") :
+        AsyncTask<Void, Void, JSONObject>() {
+
+        override fun doInBackground(vararg param: Void): JSONObject? {
+            val jsonParser = JsonParser()
+            val params = HashMap<String, String>()
+
+            params["trip_id"] = tripID
+            return jsonParser.makeHttpRequest(
+                Constants.BASE_URL + "driver/get_trip_detail",
+                "POST",
+                params
+            )
+        }
+
+        override fun onPostExecute(response: JSONObject?) {
+
+            if (response != null) {
+                try {
+                    if (response.getBoolean("status")) {
+                        val ordersJSONArray = response.getJSONArray("data")
+
+                        for (i in 0 until ordersJSONArray.length()) {
+                            val order = Order()
+
+                            order.tripId = ordersJSONArray.getJSONObject(i).getString("id").trim()
+                            order.tripNo = order.tripId + "/ 2020"
+                            order.tripFromAddress =
+                                ordersJSONArray.getJSONObject(i).getString("from_address").trim()
+                            order.tripFromLat =
+                                ordersJSONArray.getJSONObject(i).getString("from_lat").trim()
+                            order.tripFromLng =
+                                ordersJSONArray.getJSONObject(i).getString("from_long").trim()
+                            try {
+                                order.tripFromSelf =
+                                    ordersJSONArray.getJSONObject(i).getString("from_is_self")
+                                        .trim().toBoolean()
+                            } catch (e: Exception) {
+                                order.tripFromSelf = false
+                            }
+
+                            order.tripFromName =
+                                ordersJSONArray.getJSONObject(i).getString("from_name").trim()
+                            order.tripFromMob =
+                                ordersJSONArray.getJSONObject(i).getString("from_mobile").trim()
+                            order.tripToAddress =
+                                ordersJSONArray.getJSONObject(i).getString("to_address").trim()
+                            order.tripToLat =
+                                ordersJSONArray.getJSONObject(i).getString("to_lat").trim()
+                            order.tripToLng =
+                                ordersJSONArray.getJSONObject(i).getString("to_long").trim()
+                            try {
+                                order.tripToSelf =
+                                    ordersJSONArray.getJSONObject(i).getString("to_is_self").trim()
+                                        .toBoolean()
+                            } catch (e: Exception) {
+                                order.tripToSelf = false
+                            }
+
+                            order.tripToName =
+                                ordersJSONArray.getJSONObject(i).getString("to_name").trim()
+                            order.tripToMob =
+                                ordersJSONArray.getJSONObject(i).getString("to_mobile").trim()
+//                                order.vehicleModel = jsonArr.getJSONObject(i).getString("VsName").trim()
+                            order.scheduleDate =
+                                ordersJSONArray.getJSONObject(i).getString("scheduled_date").trim()
+                            order.scheduleTime =
+                                ordersJSONArray.getJSONObject(i).getString("scheduled_time").trim()
+//                                order.userName = jsonArr.getJSONObject(i).getString("UsrName").trim()
+//                                order.userMobile = jsonArr.getJSONObject(i).getString("UsrMobNumber").trim()
+//                                order.tripFilter = jsonArr.getJSONObject(i).getString("TripMFilterName").trim()
+                            order.tripStatus =
+                                ordersJSONArray.getJSONObject(i).getString("trip_status").trim()
+                            order.tripSubject =
+                                ordersJSONArray.getJSONObject(i).getString("subject").trim()
+                            order.tripNotes =
+                                ordersJSONArray.getJSONObject(i).getString("notes").trim()
+                            order.tripDRate =
+                                ordersJSONArray.getJSONObject(i).getString("trip_rate").trim()
+                            order.driverID =
+                                ordersJSONArray.getJSONObject(i).getString("driver_id").trim()
+
+                            if (order.driverID != "0" && order.driverID.isNotEmpty()) {
+
+                                order.driverName =
+                                    ordersJSONArray.getJSONObject(i).getJSONObject("0")
+                                        .getString("name").trim()
+                                order.driverMobileNumber =
+                                    "+${ordersJSONArray.getJSONObject(i).getJSONObject("0")
+                                        .getString(
+                                            "country_code"
+                                        ).trim()}${ordersJSONArray.getJSONObject(i)
+                                        .getJSONObject("0").getString(
+                                        "mobile_number"
+                                    ).trim()}"
+
+                                Log.d("url_", order!!.driverName)
+                            }
+
+                            val intent =
+                                Intent(this@MyOrdersActivity, ShipmentDetailsActivity::class.java)
+                            intent.putExtra("order", order)
+                            startActivity(intent)
+                        }
+
+                    } else {
+//                        noRowMsg = response.getString("message").trim()
+                    }
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                }
+            }
         }
     }
 }

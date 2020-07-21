@@ -45,7 +45,7 @@ class UtilityFunctions {
         private var dialog: Dialog? = null
         private var anim: ObjectAnimator? = null
 
-        fun showProgressDialog(context: Context) {
+        fun showProgressDialog(context: Context): Dialog {
             dialog = Dialog(context)
             dialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
             dialog!!.setContentView(R.layout.layout_circular_progress_dialog)
@@ -57,6 +57,7 @@ class UtilityFunctions {
             anim!!.start()
             dialog!!.setCancelable(false)
             dialog!!.show()
+            return dialog!!
         }
 
         fun dismissProgressDialog() {
@@ -202,12 +203,14 @@ class UtilityFunctions {
 
         fun createImageFile(): File {
             val root =
-                File(Environment.getExternalStorageDirectory().toString() + File.separator + "Dynate" + File.separator)
+                File(Environment.getExternalStorageDirectory().toString() + File.separator + "dyanate_image" + File.separator)
+//            val root =
+//                File(Environment.DIRECTORY_PICTURES + File.separator + "Dyanate" + File.separator)
             if (!root.exists() || !root.isDirectory) {
                 root.mkdirs()
             }
 
-            val image = File.createTempFile("IMG-", "DYNATE.jpg", root)
+            val image = File.createTempFile("IMG_", "dyanate.jpg", root)
 
             return image
         }

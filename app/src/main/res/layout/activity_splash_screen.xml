@@ -38,7 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:background="@drawable/background"
+            android:background="@drawable/app_bg"
             android:gravity="center"
             android:fitsSystemWindows="true"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -48,6 +48,7 @@
                 android:scaleType="fitCenter"
                 android:layout_width="200dp"
                 android:layout_height="200dp"
+                android:visibility="gone"
                 android:src="@drawable/dynate" />
 
         </LinearLayout>

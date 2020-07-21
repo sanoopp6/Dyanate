@@ -137,11 +137,24 @@ class LoginActivity : AppCompatActivity() {
             if (result != null) {
                 if (result.getBoolean("status")) {
 
-                    SendOTPBackground(result.getJSONObject("data").getString("user_id")).execute()
-                    VerifyOTPActivity.userId = result.getJSONObject("data").getString("user_id")
-                    VerifyOTPActivity.otpAction = "login"
-                    VerifyOTPActivity.mobileNumber = countryCode!! + mobileNumber!!
-                    startActivity(Intent(this@LoginActivity, VerifyOTPActivity::class.java))
+                    if ((countryCode!! == sharedPreferences.getString(
+                            Constants.PREFS_COUNTRY_CODE,
+                            ""
+                        )) && (mobileNumber!! == sharedPreferences.getString(
+                            Constants.PREFS_USER_MOBILE_WITHOUT_COUNTRY,
+                            ""
+                        ))
+                    ) {
+
+                        GetUserDetailBackground().execute()
+                    } else {
+
+                        SendOTPBackground(result.getJSONObject("data").getString("user_id")).execute()
+                        VerifyOTPActivity.userId = result.getJSONObject("data").getString("user_id")
+                        VerifyOTPActivity.otpAction = "login"
+                        VerifyOTPActivity.mobileNumber = countryCode!! + mobileNumber!!
+                        startActivity(Intent(this@LoginActivity, VerifyOTPActivity::class.java))
+                    }
 
 
                 } else {
@@ -150,6 +163,95 @@ class LoginActivity : AppCompatActivity() {
                         "", false, true, {}, {})
                 }
 
+            }
+        }
+    }
+
+    private inner class GetUserDetailBackground : AsyncTask<Void, Void, JSONObject?>() {
+
+        override fun onPreExecute() {
+            super.onPreExecute()
+            UtilityFunctions.showProgressDialog(this@LoginActivity)
+        }
+
+        override fun doInBackground(vararg p0: Void?): JSONObject? {
+
+            val jsonParser = JsonParser()
+            val params = HashMap<String, String>()
+            params["lang"] = sharedPreferences.getString(Constants.PREFS_LANG, "en")!!
+            params["user_id"] = sharedPreferences.getString(Constants.PREFS_USER_ID, "")!!
+
+            return jsonParser.makeHttpRequest(
+                Constants.BASE_URL + "customer/get_user_detail",
+                "POST",
+                params
+            )
+        }
+
+        override fun onPostExecute(result: JSONObject?) {
+            UtilityFunctions.dismissProgressDialog()
+            if (result != null) {
+                if (result.getBoolean("status")) {
+
+                    val editor = sharedPreferences!!.edit()
+                    editor.putString(
+                        Constants.PREFS_USER_MOBILE_WITHOUT_COUNTRY,
+                        result.getJSONObject("data").getJSONObject("user_info").getString("mobile_number")
+                    )
+                    editor.putString(
+                        Constants.PREFS_COUNTRY_CODE,
+                        result.getJSONObject("data").getJSONObject("user_info").getString("country_code")
+                    )
+                    editor.putString(
+                        Constants.PREFS_USER_ID,
+                        result.getJSONObject("data").getJSONObject("user_info").getString("user_id").trim()
+                    )
+                    editor.putString(
+                        Constants.PREFS_USER_TOKEN,
+                        result.getJSONObject("data").getJSONObject("user_info").getString("token").trim()
+                    )
+                    editor.putString(
+                        Constants.PREFS_USER_FULL_MOBILE,
+                        result.getJSONObject("data").getJSONObject("user_info").getString("mobile_number").trim()
+                    )
+
+                    editor.putString(
+                        Constants.PREFS_USER_FULL_NAME,
+                        result.getJSONObject("data").getJSONObject("user_info").getString("full_name").trim()
+                    )
+
+                    editor.putString(
+                        Constants.PREFS_USER_PIC,
+                        result.getJSONObject("data").getJSONObject("user_info").getString("profile_pic").trim()
+                    )
+
+                    editor.putString(
+                        Constants.PREFS_USER_PIC,
+                        result.getJSONObject("data").getJSONObject("user_info").getString("profile_pic").trim()
+                    )
+
+                    editor.putBoolean(Constants.PREFS_IS_LOGIN, true)
+
+                    editor.commit()
+                    startActivity(
+                        Intent(
+                            this@LoginActivity,
+                            SenderLocationActivity::class.java
+                        )
+                    )
+                    finishAffinity()
+
+
+                } else {
+                    UtilityFunctions.showAlertOnActivity(this@LoginActivity,
+                        result.getString("message"),
+                        resources.getString(R.string.Ok).toString(),
+                        "",
+                        false,
+                        true,
+                        {},
+                        {})
+                }
             }
         }
     }

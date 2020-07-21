@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.AsyncTask
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
@@ -58,107 +59,15 @@ class ShipmentDetailsActivity : AppCompatActivity() {
         container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
         tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(container))
 
-        if (ConnectionDetector.isConnected(this@ShipmentDetailsActivity)) {
-            //UpdateTripNotifiedCustStatusBackground(order?.tripId!!).execute()
-            TripDetailsMasterListBackground().execute()
-        } else {
-            ConnectionDetector.errorSnackbar(main_content)
-        }
+//        if (ConnectionDetector.isConnected(this@ShipmentDetailsActivity)) {
+//            //UpdateTripNotifiedCustStatusBackground(order?.tripId!!).execute()
+//            TripDetailsMasterListBackground().execute()
+//        } else {
+//            ConnectionDetector.errorSnackbar(main_content)
+//        }
     }
 
-    @SuppressLint("StaticFieldLeak")
-    private inner class TripDetailsMasterListBackground : AsyncTask<Void, Void, JSONObject>() {
 
-        override fun doInBackground(vararg param: Void): JSONObject? {
-            val jsonParser = JsonParser()
-            val params = HashMap<String, String>()
-
-            params["trip_id"] = order!!.tripId ?: ""
-            return jsonParser.makeHttpRequest(
-                Constants.BASE_URL + "driver/get_trip_detail",
-                "POST",
-                params
-            )
-        }
-
-        override fun onPostExecute(response: JSONObject?) {
-
-            if (response != null) {
-                try {
-                    if (response.getBoolean("status")) {
-                        val ordersJSONArray = response.getJSONArray("data")
-                        orderList = ArrayList()
-
-                        for (i in 0 until ordersJSONArray.length()) {
-                            val order = Order()
-
-                            order.tripId = ordersJSONArray.getJSONObject(i).getString("id").trim()
-                            order.tripNo = order.tripId + "/ 2020"
-                            order.tripFromAddress =
-                                ordersJSONArray.getJSONObject(i).getString("from_address").trim()
-                            order.tripFromLat =
-                                ordersJSONArray.getJSONObject(i).getString("from_lat").trim()
-                            order.tripFromLng =
-                                ordersJSONArray.getJSONObject(i).getString("from_long").trim()
-                            try {
-                                order.tripFromSelf =
-                                    ordersJSONArray.getJSONObject(i).getString("from_is_self")
-                                        .trim().toBoolean()
-                            } catch (e: Exception) {
-                                order.tripFromSelf = false
-                            }
-
-                            order.tripFromName =
-                                ordersJSONArray.getJSONObject(i).getString("from_name").trim()
-                            order.tripFromMob =
-                                ordersJSONArray.getJSONObject(i).getString("from_mobile").trim()
-                            order.tripToAddress =
-                                ordersJSONArray.getJSONObject(i).getString("to_address").trim()
-                            order.tripToLat =
-                                ordersJSONArray.getJSONObject(i).getString("to_lat").trim()
-                            order.tripToLng =
-                                ordersJSONArray.getJSONObject(i).getString("to_long").trim()
-                            try {
-                                order.tripToSelf =
-                                    ordersJSONArray.getJSONObject(i).getString("to_is_self").trim()
-                                        .toBoolean()
-                            } catch (e: Exception) {
-                                order.tripToSelf = false
-                            }
-
-                            order.tripToName =
-                                ordersJSONArray.getJSONObject(i).getString("to_name").trim()
-                            order.tripToMob =
-                                ordersJSONArray.getJSONObject(i).getString("to_mobile").trim()
-//                                order.vehicleModel = jsonArr.getJSONObject(i).getString("VsName").trim()
-                            order.scheduleDate =
-                                ordersJSONArray.getJSONObject(i).getString("scheduled_date").trim()
-                            order.scheduleTime =
-                                ordersJSONArray.getJSONObject(i).getString("scheduled_time").trim()
-//                                order.userName = jsonArr.getJSONObject(i).getString("UsrName").trim()
-//                                order.userMobile = jsonArr.getJSONObject(i).getString("UsrMobNumber").trim()
-//                                order.tripFilter = jsonArr.getJSONObject(i).getString("TripMFilterName").trim()
-                            order.tripStatus =
-                                ordersJSONArray.getJSONObject(i).getString("trip_status").trim()
-                            order.tripSubject =
-                                ordersJSONArray.getJSONObject(i).getString("subject").trim()
-                            order.tripNotes =
-                                ordersJSONArray.getJSONObject(i).getString("notes").trim()
-                            order.tripDRate =
-                                ordersJSONArray.getJSONObject(i).getString("trip_rate").trim()
-
-                            (orderList as ArrayList<Order>).add(order)
-                        }
-
-                    } else {
-                        noRowMsg = response.getString("message").trim()
-                    }
-                } catch (e: JSONException) {
-                    e.printStackTrace()
-                }
-            }
-        }
-    }
 
     @SuppressLint("StaticFieldLeak")
     private inner class UpdateTripNotifiedCustStatusBackground internal constructor(internal var tripId: String) :

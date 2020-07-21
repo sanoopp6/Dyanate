@@ -298,5 +298,36 @@
     <string name="same_as_sender">Same as sender</string>
     <string name="InvalidSenderDetail">Invalid sender details</string>
     <string name="skip_destination"><![CDATA[Skip destination >>]]></string>
-
+    <string name="trip_added_successfully">Trip added successfully! you will be notified after assigning driver</string>
+    <string name="minimum_2_hour_required">Minimum 2 hour required</string>
+    <string name="call">CALL</string>
+    <string name="write_description">Write description</string>
+    <string name="enter_name_and_photo">Enter name and photo</string>
+    <string name="change_name_and_photo">Change name and photo</string>
+    <string name="invalid_photo_or_name">Invalid photo or name</string>
+    <string name="photo_and_name_updated_successfully">Photo and name updated succesfully</string>
+    <string name="image_upload_failed">Image upload failed</string>
+    <string name="update">Update</string>
+    <string name="no_drop_off_detail">No drop off detail</string>
+    <string name="price">Price:</string>
+    <string name="min">min</string>
+    <string name="hr">hr</string>
+    <string name="km">KM</string>
+    <string name="estimated">Estimated</string>
+    <string name="sorry_this_service_only_in_saudi">Sorry, this service is available only in Saudi Arabia</string>
+    <string name="this_type_not_available_now">This type of vehicle not available now</string>
+    <string name="date_cannot_be_more_than_a_month">Date cannot be more than a month</string>
+    <string name="DoYouNeedPackersAndMovers">Do you need packers and movers?</string>
+    <string name="RequiredPersons">Required number of persons</string>
+    <string name="rate_driver">Rate driver</string>
+    <string name="WriteAReview">Write a review</string>
+    <string name="AddYourRating">Add your rating</string>
+    <string name="AddNote">Add a note</string>
+    <string name="pls_add_your_rating">Please add your rating</string>
+    <string name="YourReviewSaved">Thank you for the review</string>
+    <string name="do_you_need_unpack_and_install">Do you need unpack and install?</string>
+    <string name="the_price_does_not_include_dismantling_and_installation_the_price_will_be_agreed_upon_with_the_driver">The price does not include dismantling and installation. The price will be agreed upon with the driver.</string>
+    <string name="TripPrice">Trip price</string>
+    <string name="LabourPrice">Labour charge</string>
+    <string name="InstallationCharge">InstallationCharge: The price is agreed upon with the driver</string>
 </resources>

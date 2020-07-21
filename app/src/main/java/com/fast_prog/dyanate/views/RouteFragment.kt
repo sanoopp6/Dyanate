@@ -2,10 +2,13 @@ package com.fast_prog.dyanate.views
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
+import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,13 +18,16 @@ import com.fast_prog.dyanate.R
 import com.fast_prog.dyanate.models.Order
 import com.fast_prog.dyanate.utilities.Constants
 import com.fast_prog.dyanate.utilities.DirectionsJSONParser
+import com.fast_prog.dyanate.utilities.JsonParser
 import com.fast_prog.dyanate.utilities.UtilityFunctions
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import kotlinx.android.synthetic.main.fragment_route.*
 import kotlinx.android.synthetic.main.fragment_route.view.*
+import org.json.JSONException
 import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.IOException
@@ -62,6 +68,7 @@ class RouteFragment : Fragment(), OnMapReadyCallback {
 
     internal var txtDistance: TextView? = null
 
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -72,19 +79,46 @@ class RouteFragment : Fragment(), OnMapReadyCallback {
             activity!!.getSharedPreferences(Constants.PREFS_NAME, Context.MODE_PRIVATE)
 
         val view = inflater.inflate(R.layout.fragment_route, container, false)
-
-        order = (activity as ShipmentDetailsActivity).order
-
         distanceStrLabel = resources.getString(R.string.Distance)
 
         durationStrLabel = resources.getString(R.string.Duration)
 
         builder = LatLngBounds.Builder()
 
+        order = (activity as ShipmentDetailsActivity).order
+
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
         txtDistance = view.txt_distance
+
+        if (order!!.tripStatus!! == "2" || order!!.tripStatus!! == "3" || order!!.tripStatus!! == "5" || order!!.tripStatus!! == "8") {
+            view.cancelButton.visibility = View.VISIBLE
+        }
+
+        Log.d("url_", order!!.driverName)
+        if (order!!.driverID != "0") {
+            view.driver_layout.visibility = View.VISIBLE
+            view.driverNameTextView.text = order!!.driverName
+
+            view.callButton.setOnClickListener {
+                val intent = Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", order!!.driverMobileNumber, null))
+                startActivity(intent)
+            }
+        }
+
+        view.cancelButton.setOnClickListener {
+
+            UtilityFunctions.showAlertOnActivity(activity!!,
+                getString(R.string.are_you_sure_cancel_trip),
+                getString(R.string.Yes),
+                getString(R.string.No),
+                true,
+                setCancelable = true,
+                actionOk = {
+                    CancelTripBackground().execute()
+                }, actionCancel = {})
+        }
 
         view.image_view_map_change_icon.setOnClickListener {
             if (mMap != null) {
@@ -108,6 +142,47 @@ class RouteFragment : Fragment(), OnMapReadyCallback {
         }
 
         return view
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private inner class CancelTripBackground internal constructor(): AsyncTask<Void, Void, JSONObject>() {
+
+        override fun onPreExecute() {
+            super.onPreExecute()
+            UtilityFunctions.showProgressDialog(activity!!)
+        }
+
+        override fun doInBackground(vararg param: Void): JSONObject? {
+            val jsonParser = JsonParser()
+            val params = HashMap<String, String>()
+
+            params["trip_id"] = order!!.tripId!!
+
+            return jsonParser.makeHttpRequest(Constants.BASE_URL + "customer/cancel_trip", "POST", params)
+        }
+
+        override fun onPostExecute(response: JSONObject?) {
+            UtilityFunctions.dismissProgressDialog()
+
+            if (response != null) {
+                try {
+                    if (response.getBoolean("status")) {
+                        UtilityFunctions.showAlertOnActivity(activity!!, getString(R.string.trip_cancelled_successfully), getString(R.string.ok)
+                            , "", showCancelButton = false, setCancelable = true, actionOk = {
+                                activity!!.finish()
+                            }, actionCancel = {})
+                    } else {
+                        UtilityFunctions.showAlertOnActivity(activity!!, getString(R.string.error_occurred_pls_try_later), getString(R.string.ok)
+                            , "", showCancelButton = false, setCancelable = true, actionOk = {}, actionCancel = {})
+                    }
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                }
+            } else {
+                UtilityFunctions.showAlertOnActivity(activity!!, getString(R.string.error_occurred_pls_try_later), getString(R.string.ok)
+                    , "", showCancelButton = false, setCancelable = true, actionOk = {}, actionCancel = {})
+            }
+        }
     }
 
     override fun onMapReady(googleMap: GoogleMap) {

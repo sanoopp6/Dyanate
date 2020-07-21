@@ -39,6 +39,7 @@ import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.*
+import kotlin.math.round
 
 class ConfirmFromToActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -62,6 +63,11 @@ class ConfirmFromToActivity : AppCompatActivity(), OnMapReadyCallback {
 
     internal var distanceStr = ""
     internal var durationStr = ""
+    internal var price = ""
+
+    internal var estimated_distance = ""
+    internal var estimated_duration = ""
+    internal var estimated_price = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,6 +92,29 @@ class ConfirmFromToActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         customTitle(resources.getString(R.string.ConfirmTrip))
+
+        estimated_price = intent.getStringExtra("price")
+        estimated_duration = intent.getStringExtra("time")
+        estimated_distance = intent.getStringExtra("distance")
+
+        var time = round(intent.getStringExtra("time").toDouble() / 60)
+
+        distanceStr = (round((intent.getStringExtra("distance").toDouble() / 1000))).toString() + getString(
+                    R.string.km)
+        if (time > 60) {
+            durationStr = (time / 60).toString() + getString(R.string.hr) + (time % 60) + getString(R.string.min)
+        } else {
+            durationStr = "$time ${getString(R.string.min)}"
+        }
+
+        price = intent.getStringExtra("price") + " SAR"
+
+
+        Ride.instance.distanceStr = resources.getString(R.string.Distance) + " : " + distanceStr + ", " + resources.getString(R.string.Duration) + " : " + durationStr
+        txt_distance.text = Ride.instance.distanceStr
+        txt_price.text = "${getString(R.string.TripPrice)} ${intent.getStringExtra("trip_price")} SAR"
+        txt_labour_price.text = "${getString(R.string.LabourPrice)} ${intent.getStringExtra("labour_price")} SAR"
+        installation_price.text = getString(R.string.InstallationCharge)
 
         try {
             Ride.instance
@@ -116,7 +145,12 @@ class ConfirmFromToActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         btn_show_details.setOnClickListener {
-            startActivity(Intent(this@ConfirmFromToActivity, ConfirmDetailsActivity::class.java))
+            startActivity(Intent(this@ConfirmFromToActivity, ConfirmDetailsActivity::class.java)
+                .putExtra("estimated_price", estimated_price)
+                .putExtra("estimated_distance", estimated_distance)
+                .putExtra("estimated_duration", estimated_duration)
+
+            )
         }
 
         image_view_map_change_icon.setOnClickListener {
@@ -316,10 +350,10 @@ class ConfirmFromToActivity : AppCompatActivity(), OnMapReadyCallback {
                     val point = path[j]
 
                     if (j == 0) {    // Get distance from the list
-                        distanceStr = point["distance"].toString()
+//                        distanceStr = point["distance"].toString()
                         continue
                     } else if (j == 1) { // Get duration from the list
-                        durationStr = point["duration"].toString()
+//                        durationStr = point["duration"].toString()
                         continue
                     }
 
@@ -340,8 +374,8 @@ class ConfirmFromToActivity : AppCompatActivity(), OnMapReadyCallback {
 
             if (lineOptions != null) {
                 mMap!!.addPolyline(lineOptions)
-                Ride.instance.distanceStr = resources.getString(R.string.Distance) + " : " + distanceStr + ", " + resources.getString(R.string.Duration) + " : " + durationStr
-                txt_distance.text = Ride.instance.distanceStr
+//                Ride.instance.distanceStr = resources.getString(R.string.Distance) + " : " + distanceStr + ", " + resources.getString(R.string.Duration) + " : " + durationStr
+//                txt_distance.text = Ride.instance.distanceStr
             }
 
             btn_confirm_route.visibility = View.VISIBLE
@@ -383,12 +417,16 @@ class ConfirmFromToActivity : AppCompatActivity(), OnMapReadyCallback {
             params["ArgTripMCustLng"] = "0"
             params["ArgTripMNoOfDrivers"] = "0"
             params["ArgTripMDistanceRadiusKm"] = "0"
+            params["estimated_price"] = estimated_price
+            params["estimated_distance"] = estimated_distance
+            params["estimated_duration"] = estimated_duration
             if (Ride.instance.distanceStr != null) {
                 params["ArgTripMDistanceString"] = Ride.instance.distanceStr!!
             } else {
                 params["ArgTripMDistanceString"] = "NA"
             }
-
+            params["required_persons"] = Ride.instance.requiredPersons
+            params["unpack_and_install_requirement"] = Ride.instance.requiredUnpackAndInstall
 
             return jsonParser.makeHttpRequest(Constants.BASE_URL + "customer/add_trip", "POST", params)
         }
@@ -400,12 +438,20 @@ class ConfirmFromToActivity : AppCompatActivity(), OnMapReadyCallback {
                         tripID = response.getString("data").toInt().toString()
 //                        AutoAllocateNearestDriverByCustLatLngTripMIdBackground().execute()
 
-                        val intent = Intent(this@ConfirmFromToActivity, WaitDriverActivity::class.java)
-                        intent.putExtra("from_lat", Ride.instance.pickUpLatitude!!.toDouble())
-                        intent.putExtra("from_long", Ride.instance.pickUpLongitude!!.toDouble())
-                        intent.putExtra("trip_id", tripID)
-//                        intent.putExtra("driver", driver)
-                        startActivity(intent)
+//                        val intent = Intent(this@ConfirmFromToActivity, WaitDriverActivity::class.java)
+//                        intent.putExtra("from_lat", Ride.instance.pickUpLatitude!!.toDouble())
+//                        intent.putExtra("from_long", Ride.instance.pickUpLongitude!!.toDouble())
+//                        intent.putExtra("trip_id", tripID)
+//                        startActivity(intent)
+
+
+                        UtilityFunctions.showAlertOnActivity(this@ConfirmFromToActivity,
+                            getString(R.string.trip_added_successfully), resources.getString(R.string.Ok),
+                            "", false, false, {
+                                startActivity(Intent(this@ConfirmFromToActivity, SenderLocationActivity::class.java))
+                            }, {})
+
+                        //                        intent.putExtra("driver", driver)
 
                     } else {
                         UtilityFunctions.dismissProgressDialog()

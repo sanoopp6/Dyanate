@@ -7,6 +7,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="8dp"
         android:orientation="vertical">
 
         <TextView
@@ -19,16 +20,30 @@
             android:paddingEnd="10dp"
             android:text="10"
             android:textColor="@color/lightBlueColor"
-            android:textSize="35sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/sarTextView"
             style="@style/FontSizeFourteen"
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:text="@string/SAR"
             android:textAlignment="center"
             android:textColor="@color/darkest_gray" />
+
+        <TextView
+            android:id="@+id/estimatedTextView"
+            style="@style/FontSizeFourteen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/estimated"
+            android:textAlignment="center"
+            android:textColor="@color/darkest_gray"
+            android:textSize="10sp"
+            android:visibility="gone" />
 
     </LinearLayout>
 
@@ -36,6 +51,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
+        android:gravity="center"
         android:orientation="vertical">
 
         <TextView
@@ -56,14 +72,44 @@
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/detailsButton"
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="35dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="@drawable/layout_rect_white_lightblue"
-        android:text="@string/Details"
-        android:textColor="@color/lightBlueColor" />
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/detailsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:background="@drawable/layout_rect_white_lightblue"
+            android:text="@string/Details"
+            android:textColor="@color/lightBlueColor" />
+
+        <ImageView
+            android:id="@+id/whatsAppButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/whatspp_icon"
+            android:textColor="@color/lightBlueColor"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/rate_driver_text_view"
+            style="@style/FontSizeFourteen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/rate_driver"
+            android:textColor="@color/blueColor"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
 
     <View
         android:layout_width="15dp"

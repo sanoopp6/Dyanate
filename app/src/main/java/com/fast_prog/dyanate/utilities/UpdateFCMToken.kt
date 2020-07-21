@@ -29,7 +29,6 @@ class UpdateFCMToken(
             params["fcm_token"] = preferences.getString(Constants.PREFS_FCM_TOKEN, "")!!
         } else {
             params["fcm_token"] = ""
-
         }
 
         return jsonParser.makeHttpRequest(

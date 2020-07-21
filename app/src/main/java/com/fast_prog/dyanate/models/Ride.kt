@@ -31,6 +31,8 @@ class Ride : Serializable {
     var time: String = ""
     //var isMessage: Boolean? = null
     var distanceStr: String? = null
+    var requiredPersons = "0"
+    var requiredUnpackAndInstall = "0"
 
     companion object { lateinit var instance: Ride }
 

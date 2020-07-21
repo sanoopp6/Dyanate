@@ -45,11 +45,13 @@
 
         <View
             android:layout_width="1dp"
+            android:visibility="gone"
             android:layout_height="match_parent"
             android:background="@color/darkest_gray" />
 
         <Spinner
             android:id="@+id/city_spinner"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"/>
 

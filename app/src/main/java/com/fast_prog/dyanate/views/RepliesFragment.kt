@@ -144,8 +144,8 @@ class RepliesFragment : Fragment() {
             holder.edittextRate.setText(orderList!![position].tripDRate)
             holder.textNegotiable.text = orderList!![position].tripDIsNegotiable
 //            holder.textStatus.text = orderList!![position].tripDFilterName
-            holder.textDriver.text = orderList!![position].dmName
-            holder.textDriverNo.text = orderList!![position].dmMobNumber
+            holder.textDriver.text = orderList!![position].driverName
+            holder.textDriverNo.text = orderList!![position].driverMobileNumber
 
             val tripDStatus = orderList!![position].tripDStatus
 

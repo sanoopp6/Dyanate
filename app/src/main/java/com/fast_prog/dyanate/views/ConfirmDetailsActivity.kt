@@ -39,6 +39,10 @@ class ConfirmDetailsActivity : AppCompatActivity() {
 
     private var tripID: String? = null
 
+    var estimated_price = "0"
+    var estimated_distance = "0"
+    var estimated_duration = "0"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_confirm_details)
@@ -49,6 +53,10 @@ class ConfirmDetailsActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         sharedPreferences = getSharedPreferences(Constants.PREFS_NAME, Context.MODE_PRIVATE)
+
+        estimated_price = intent.getStringExtra("estimated_price")
+        estimated_distance = intent.getStringExtra("estimated_distance")
+        estimated_duration = intent.getStringExtra("estimated_duration")
 
         toolbar.setNavigationOnClickListener {
             if (tripID != null && Integer.parseInt(tripID!!) > 0) {
@@ -121,15 +129,15 @@ class ConfirmDetailsActivity : AppCompatActivity() {
         toMobTextView.text = Ride.instance.toMobile.trimStart { it <= '+' }
 
         confirmTripButton.setOnClickListener {
-//            UtilityFunctions.showAlertOnActivity(this@ConfirmDetailsActivity,
+            //            UtilityFunctions.showAlertOnActivity(this@ConfirmDetailsActivity,
 //                resources.getString(R.string.AreYouSure), resources.getString(R.string.Yes),
 //                resources.getString(R.string.No), true, false,
 //                {
-                    if (ConnectionDetector.isConnected(this@ConfirmDetailsActivity)) {
-                        AddTripMasterBackground().execute()
-                    } else {
-                        ConnectionDetector.errorSnackbar(coordinator_layout)
-                    }
+            if (ConnectionDetector.isConnected(this@ConfirmDetailsActivity)) {
+                AddTripMasterBackground().execute()
+            } else {
+                ConnectionDetector.errorSnackbar(coordinator_layout)
+            }
 //                }, {})
         }
 
@@ -186,14 +194,23 @@ class ConfirmDetailsActivity : AppCompatActivity() {
             params["ArgTripMCustLng"] = "0"
             params["ArgTripMNoOfDrivers"] = "0"
             params["ArgTripMDistanceRadiusKm"] = "0"
+            params["estimated_price"] = estimated_price
+            params["estimated_distance"] = estimated_distance
+            params["estimated_duration"] = estimated_duration
             if (Ride.instance.distanceStr != null) {
                 params["ArgTripMDistanceString"] = Ride.instance.distanceStr!!
             } else {
                 params["ArgTripMDistanceString"] = "NA"
             }
 
+            params["required_persons"] = Ride.instance.requiredPersons
+            params["unpack_and_install_requirement"] = Ride.instance.requiredUnpackAndInstall
 
-            return jsonParser.makeHttpRequest(Constants.BASE_URL + "customer/add_trip", "POST", params)
+            return jsonParser.makeHttpRequest(
+                Constants.BASE_URL + "customer/add_trip",
+                "POST",
+                params
+            )
         }
 
         override fun onPostExecute(response: JSONObject?) {
@@ -203,12 +220,28 @@ class ConfirmDetailsActivity : AppCompatActivity() {
                         tripID = response.getString("data").toInt().toString()
 //                        AutoAllocateNearestDriverByCustLatLngTripMIdBackground().execute()
 
-                        val intent = Intent(this@ConfirmDetailsActivity, WaitDriverActivity::class.java)
-                        intent.putExtra("from_lat", Ride.instance.pickUpLatitude!!.toDouble())
-                        intent.putExtra("from_long", Ride.instance.pickUpLongitude!!.toDouble())
-                        intent.putExtra("trip_id", tripID)
-//                        intent.putExtra("driver", driver)
-                        startActivity(intent)
+//                        val intent = Intent(this@ConfirmDetailsActivity, WaitDriverActivity::class.java)
+//                        intent.putExtra("from_lat", Ride.instance.pickUpLatitude!!.toDouble())
+//                        intent.putExtra("from_long", Ride.instance.pickUpLongitude!!.toDouble())
+//                        intent.putExtra("trip_id", tripID)
+////                        intent.putExtra("driver", driver)
+//                        startActivity(intent)
+
+                        UtilityFunctions.showAlertOnActivity(this@ConfirmDetailsActivity,
+                            getString(R.string.trip_added_successfully),
+                            resources.getString(R.string.Ok),
+                            "",
+                            false,
+                            false,
+                            {
+                                startActivity(
+                                    Intent(
+                                        this@ConfirmDetailsActivity,
+                                        SenderLocationActivity::class.java
+                                    )
+                                )
+                            },
+                            {})
 
                     } else {
                         UtilityFunctions.dismissProgressDialog()

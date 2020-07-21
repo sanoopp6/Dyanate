@@ -1,0 +1,101 @@
+{
+  "project_info": {
+    "project_number": "222465367748",
+    "firebase_url": "https://dyanate-d6b76.firebaseio.com",
+    "project_id": "dyanate-d6b76",
+    "storage_bucket": "dyanate-d6b76.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:222465367748:android:a20e694e3677d828d07391",
+        "android_client_info": {
+          "package_name": "com.fast_prog.dyanate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "222465367748-pp3torahrna63kdae0u8k05hdnmtcevc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fast_prog.dyanate",
+            "certificate_hash": "765684be5929589b9d0b635de963611518feb17c"
+          }
+        },
+        {
+          "client_id": "222465367748-9is8epqb4rl61514ih21r1pm0s435ise.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDROv-meg9U3_2VUlD2l2jmFGP7oRnIbYE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "222465367748-9is8epqb4rl61514ih21r1pm0s435ise.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "222465367748-h2321n16hvfngkf9n7dk84p6mlkpl76u.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.fast-prog.Dynate",
+                "app_store_id": "1249820630"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:222465367748:android:0223ab01a756013cd07391",
+        "android_client_info": {
+          "package_name": "com.fast_prog.dyanate_driver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "222465367748-5dpant9ved2p24kqh1kuof7udnubcgqa.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fast_prog.dyanate_driver",
+            "certificate_hash": "765684be5929589b9d0b635de963611518feb17c"
+          }
+        },
+        {
+          "client_id": "222465367748-9is8epqb4rl61514ih21r1pm0s435ise.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDROv-meg9U3_2VUlD2l2jmFGP7oRnIbYE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "222465367748-9is8epqb4rl61514ih21r1pm0s435ise.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "222465367748-h2321n16hvfngkf9n7dk84p6mlkpl76u.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.fast-prog.Dynate",
+                "app_store_id": "1249820630"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

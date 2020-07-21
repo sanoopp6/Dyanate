@@ -2,6 +2,7 @@ package com.fast_prog.dyanate.views
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -31,6 +32,11 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.AutocompleteActivity
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.snappydb.DBFactory
 import com.snappydb.SnappydbException
 import kotlinx.android.synthetic.main.activity_receiver_location.*
@@ -67,12 +73,16 @@ class ReceiverLocationActivity : AppCompatActivity(), OnMapReadyCallback,
 
     private var mGoogleApiClient: GoogleApiClient? = null
 
+    val AUTOCOMPLETE_REQUEST_CODE = 100
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_receiver_location)
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
+
+        Places.initialize(applicationContext, Constants.GOOGLE_API_KEY)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
@@ -95,18 +105,35 @@ class ReceiverLocationActivity : AppCompatActivity(), OnMapReadyCallback,
         mapFragment.getMapAsync(this)
 
         type_location_text_view.setOnClickListener {
-            val intent = Intent(this@ReceiverLocationActivity, PickLocationActivity::class.java)
-            startActivityForResult(intent, REQUEST_CODE_AUTOCOMPLETE)
+
+            val fields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.ADDRESS_COMPONENTS, Place.Field.LAT_LNG)
+
+            val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
+                .build(this)
+            startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE)
+
+//            val intent = Intent(this@ReceiverLocationActivity, PickLocationActivity::class.java)
+//            startActivityForResult(intent, REQUEST_CODE_AUTOCOMPLETE)
         }
 
         location_select_gps_image_view.setOnClickListener {
-            val intent = Intent(this@ReceiverLocationActivity, PickLocationActivity::class.java)
-            startActivityForResult(intent, REQUEST_CODE_AUTOCOMPLETE)
+            val fields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.ADDRESS_COMPONENTS, Place.Field.LAT_LNG)
+
+            val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
+                .build(this)
+            startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE)
+//            val intent = Intent(this@ReceiverLocationActivity, PickLocationActivity::class.java)
+//            startActivityForResult(intent, REQUEST_CODE_AUTOCOMPLETE)
         }
 
         search_location_image_view.setOnClickListener {
-            val intent = Intent(this@ReceiverLocationActivity, PickLocationActivity::class.java)
-            startActivityForResult(intent, REQUEST_CODE_AUTOCOMPLETE)
+            val fields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.ADDRESS_COMPONENTS, Place.Field.LAT_LNG)
+
+            val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
+                .build(this)
+            startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE)
+//            val intent = Intent(this@ReceiverLocationActivity, PickLocationActivity::class.java)
+//            startActivityForResult(intent, REQUEST_CODE_AUTOCOMPLETE)
         }
 
         skip_destination_button.setOnClickListener {
@@ -262,74 +289,74 @@ class ReceiverLocationActivity : AppCompatActivity(), OnMapReadyCallback,
         }
 
         btn_preview.setOnClickListener {
-//            UtilityFunctions.showAlertOnActivity(this@ReceiverLocationActivity,
+            //            UtilityFunctions.showAlertOnActivity(this@ReceiverLocationActivity,
 //                resources.getString(R.string.AreYouSure), resources.getString(R.string.Yes),
 //                resources.getString(R.string.No), true, false,
 //                {
-                    if (!type_location_text_view.text.toString().equals(
-                            resources.getString(R.string.TypeYourLocation),
-                            ignoreCase = true
-                        )
-                    ) {
-                        if (sharedPreferences.getString(Constants.PREFS_LANG, "en")!!.equals(
-                                "ar",
-                                true
-                            )
-                        ) {
-                            Ride.instance.dropOffLocation =
-                                text_view_province.text.toString() + " ،" + type_location_text_view.text.toString()
-                        } else {
-                            Ride.instance.dropOffLocation =
-                                type_location_text_view.text.toString() + ", " + text_view_province.text.toString()
-                        }
-                        Ride.instance.dropOffLatitude = userLocation!!.latitude.toString()
-                        Ride.instance.dropOffLongitude = userLocation!!.longitude.toString()
+            if (!type_location_text_view.text.toString().equals(
+                    resources.getString(R.string.TypeYourLocation),
+                    ignoreCase = true
+                )
+            ) {
+                if (sharedPreferences.getString(Constants.PREFS_LANG, "en")!!.equals(
+                        "ar",
+                        true
+                    )
+                ) {
+                    Ride.instance.dropOffLocation =
+                        text_view_province.text.toString() + " ،" + type_location_text_view.text.toString()
+                } else {
+                    Ride.instance.dropOffLocation =
+                        type_location_text_view.text.toString() + ", " + text_view_province.text.toString()
+                }
+                Ride.instance.dropOffLatitude = userLocation!!.latitude.toString()
+                Ride.instance.dropOffLongitude = userLocation!!.longitude.toString()
 
-                        val loc1 = Location("SenderLocation")
-                        val loc2 = Location("ReceiverLocation")
+                val loc1 = Location("SenderLocation")
+                val loc2 = Location("ReceiverLocation")
 
-                        try {
-                            loc1.latitude = Ride.instance.pickUpLatitude!!.toDouble()
-                            loc1.longitude = Ride.instance.pickUpLongitude!!.toDouble()
-                            loc2.latitude = Ride.instance.dropOffLatitude!!.toDouble()
-                            loc2.longitude = Ride.instance.dropOffLongitude!!.toDouble()
+                try {
+                    loc1.latitude = Ride.instance.pickUpLatitude!!.toDouble()
+                    loc1.longitude = Ride.instance.pickUpLongitude!!.toDouble()
+                    loc2.latitude = Ride.instance.dropOffLatitude!!.toDouble()
+                    loc2.longitude = Ride.instance.dropOffLongitude!!.toDouble()
 
-                        } catch (e: Exception) {
-                            gpsTracker.getLocation()
+                } catch (e: Exception) {
+                    gpsTracker.getLocation()
 
-                            loc1.latitude = gpsTracker.getLatitude()
-                            loc1.longitude = gpsTracker.getLongitude()
-                            loc2.latitude = gpsTracker.getLatitude()
-                            loc2.longitude = gpsTracker.getLongitude()
-                        }
+                    loc1.latitude = gpsTracker.getLatitude()
+                    loc1.longitude = gpsTracker.getLongitude()
+                    loc2.latitude = gpsTracker.getLatitude()
+                    loc2.longitude = gpsTracker.getLongitude()
+                }
 
-                        val distanceInMeters = loc1.distanceTo(loc2)
+                val distanceInMeters = loc1.distanceTo(loc2)
 
-                        if (distanceInMeters < 1000.0) {
-                            UtilityFunctions.showAlertOnActivity(this@ReceiverLocationActivity,
-                                resources.getString(R.string.DistanceWithinAKM),
-                                resources.getString(R.string.Yes),
-                                resources.getString(R.string.No),
-                                true,
-                                false,
-                                {
-                                    startActivity(
-                                        Intent(
-                                            this@ReceiverLocationActivity,
-                                            ShipmentDetActivity::class.java
-                                        )
-                                    )
-                                },
-                                {})
-                        } else {
-                            startActivity(
-                                Intent(
-                                    this@ReceiverLocationActivity,
-                                    ShipmentDetActivity::class.java
-                                )
-                            )
-                        }
-                    }
+//                        if (distanceInMeters < 1000.0) {
+//                            UtilityFunctions.showAlertOnActivity(this@ReceiverLocationActivity,
+//                                resources.getString(R.string.DistanceWithinAKM),
+//                                resources.getString(R.string.Yes),
+//                                resources.getString(R.string.No),
+//                                true,
+//                                false,
+//                                {
+//                                    startActivity(
+//                                        Intent(
+//                                            this@ReceiverLocationActivity,
+//                                            ShipmentDetActivity::class.java
+//                                        )
+//                                    )
+//                                },
+//                                {})
+//                        } else {
+                startActivity(
+                    Intent(
+                        this@ReceiverLocationActivity,
+                        ShipmentDetActivity::class.java
+                    )
+                )
+//                        }
+            }
 //                }, {})
         }
 
@@ -751,6 +778,41 @@ class ReceiverLocationActivity : AppCompatActivity(), OnMapReadyCallback,
             latLng = LatLng(userLocation!!.latitude, userLocation!!.longitude)
             val cameraPosition = CameraPosition.Builder().target(latLng).zoom(17f).build()
             mMap!!.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+        }
+
+        if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
+            when (resultCode) {
+                Activity.RESULT_OK -> {
+                    data?.let {
+                        val place = Autocomplete.getPlaceFromIntent(data)
+                        Log.i("Place", "Place: ${place.name}, ${place.id}")
+
+
+                        try {
+                            val mLocation = Location("")
+                            mLocation.latitude = place.latLng!!.latitude
+                            mLocation.longitude = place.latLng!!.longitude
+                            userLocation = mLocation
+                        } catch (ignored: Exception) {
+                        }
+
+                        latLng = LatLng(userLocation!!.latitude, userLocation!!.longitude)
+                        val cameraPosition = CameraPosition.Builder().target(latLng).zoom(17f).build()
+                        mMap!!.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+                    }
+                }
+                AutocompleteActivity.RESULT_ERROR -> {
+                    // TODO: Handle the error.
+                    data?.let {
+                        val status = Autocomplete.getStatusFromIntent(data)
+                        Log.i("Place", status.statusMessage)
+                    }
+                }
+                Activity.RESULT_CANCELED -> {
+                    // The user canceled the operation.
+                }
+            }
+            return
         }
     }
 }
