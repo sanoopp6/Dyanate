@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">دينتي</string>
+    <string name="app_name"> دينتي | Dyanate</string>
+    <string name="app_name_lang"> دينتي </string>
     <string name="navigation_drawer_close">درج إغلاق الملاحة</string>
     <string name="navigation_drawer_open">درج الملاحة المفتوحة</string>
     <string name="com_facebook_loginview_log_out_button">فيس بوك</string>
@@ -30,7 +31,7 @@
     <string name="AlphanumericUsername">يجب أن يكون اسم المستخدم الحروف الهجائية والأرقام!</string>
     <string name="AppPermissionDenied">تم رفض الاذن</string>
     <string name="Approve">يوافق</string>
-    <string name="AreYouSure">هل أنت واثق ؟</string>
+    <string name="AreYouSure">هل أنت متأكد ؟</string>
     <string name="AreYouSureNew">هل ترغب في تغير الحاله ؟</string>
     <string name="BookmarkLocation">هل تريد حفظ هذا الموقع؟</string>
     <string name="Buraidah">بريدة</string>
@@ -41,9 +42,11 @@
     <string name="ConfirmPassword">تأكيد كلمة المرور</string>
     <string name="ConfirmTrip">تأكيد بيانات الشحنة</string>
     <string name="Continue">استمرار‎</string>
-    <string name="Customer">زبون</string>
+    <string name="Customer">عميل</string>
     <string name="Dammam">الدمام</string>
     <string name="Date">تاريخ الشحن</string>
+    <string name="DateEn">تاريخ الشحن: ميلاذي‎</string>
+    <string name="DateAr">تاريخ الشحن: هجري</string>
     <string name="DeleteBookmarkedLocation">هل تريد حذف الموقع المحفوظ؟</string>
     <string name="Distance">مسافة القيادة</string>
     <string name="DistanceInKM">مسافة نطاق بحث السائقين بالـ KM</string>
@@ -60,7 +63,8 @@
     <string name="Duration">المدة الزمنية</string>
     <string name="EditOrder">تعديل</string>
     <string name="Email">الايميل</string>
-    <string name="EndPoint">التسليم</string>
+<!--    <string name="EndPoint">التسليم</string>-->
+    <string name="EndPoint">موقع التسليم</string>
     <string name="EnterDistanceInKMAndDriversCount">حدد نطاقة بحث السائقين بالكيلومتر وعدد من يمكنهم التواصل معك .</string>
     <string name="Facebook">فيس بوك</string>
     <string name="FilledDataWillBeLost">سيتم فقدان البيانات، هل أنت متأكد؟</string>
@@ -107,7 +111,7 @@
     <string name="MobileRequired">الجوال</string>
     <string name="Model">فئة السيارة</string>
     <string name="MyLocation">في نطاق تسليم الشحنة</string>
-    <string name="MyOrders">طلباتي</string>
+    <string name="MyOrders">رحلاتي</string>
     <string name="Name">الاسم</string>
     <string name="NameRequired">الاسم</string>
     <string name="Negotiable">قابل للتفاوض</string>
@@ -134,8 +138,8 @@
     <string name="PreviousDateOrTime">التاريخ أو الوقت السابق المحدد</string>
     <string name="PutInWait">انتظر أكثر</string>
     <string name="Rate">معدل</string>
-    <string name="ReceiverDetails">بيانات مستلم الشحنة</string>
-    <string name="ReceiverIs">مستلم الشحنة</string>
+    <string name="ReceiverDetails">بيانات اسم المستلم </string>
+    <string name="ReceiverIs">اسم المستلم</string>
     <string name="ReceiverUpdatedWaitingSender">استقبال التحديث الموقع، والانتظار المرسل</string>
     <string name="Register">تسجيل</string>
     <string name="RegistrationSuccessful">تم التسجيل بنجاح</string>
@@ -150,17 +154,17 @@
     <string name="SearchingForDriver">جـاري البحـث…</string>
     <string name="Select">تحديد</string>
     <string name="SelectAddress">حدد الموقع من الخريطة</string>
-    <string name="SelectDropOffLocation">تحديد مكان تسليم الشحنة</string>
+    <string name="SelectDropOffLocation">حدد مكان استلام الشحنة</string>
     <string name="SelectModel">تحديد</string>
-    <string name="SelectPickUpLocation">تحديد مكان انطلاق الشحنة</string>
+    <string name="SelectPickUpLocation">حدد مكان انطلاق الشحنة</string>
     <string name="SelectReceiverType">اختر نوع المتلقي!</string>
     <string name="SelectSenderType">حدد نوع المرسل!</string>
     <string name="SelectSize">حدد حجم السيارة</string>
     <string name="SelectType">تحديد</string>
     <string name="Self">مستخـدم التطبيـق</string>
     <string name="Send">ارسال</string>
-    <string name="SenderDetails">بيانات مرسل الشحنة‎</string>
-    <string name="SenderIs">مرسل الشحنة</string>
+    <string name="SenderDetails">بيانات اسم المرسل</string>
+    <string name="SenderIs">اسم المرسل</string>
     <string name="SenderReceiverDetails">تفاصيل مرسل و مستلم</string>
     <string name="SenderReceiverUpdated">استقبال والمرسل تحديث موقع</string>
     <string name="SenderUpdatedWaitingReceiver">مرسل موقع المحدثة، في انتظار استقبال</string>
@@ -176,11 +180,14 @@
     <string name="ShowReplies">مشاهدة الردود</string>
     <string name="ShowRoute">اعرض الخرطة</string>
     <string name="Size">حجم المركبة</string>
+    <string name="SelectVehicleType"> حدد نوع المركبة</string>
     <string name="SmallCompany">شركة صغيرة</string>
-    <string name="StartPoint">الاستلام</string>
+<!--    <string name="StartPoint">الاستلام</string>-->
+    <string name="StartPoint">موقع الانطلاق</string>
     <string name="Status">الحالة</string>
     <string name="Subject">نوع الشحنة</string>
     <string name="Submit">إرسال</string>
+    <string name="confirm">تاكيد</string>
     <string name="SwitchLang">تبديل اللغة إلى English</string>
     <string name="Tabuk">تابوك</string>
     <string name="Taif">الطاىف</string>
@@ -207,7 +214,7 @@
     <string name="WaitingDriverReply">انتظار سائق الرد</string>
     <string name="Welcome">أهلا بك</string>
     <string name="WeSendAMessageToNumber"> تم ارسال رمز التحقق عن طريق الرسائل القصيرة إلى</string>
-    <string name="Yes">موافق</string>
+    <string name="Yes">نعم‎</string>
     <string name="YouAreHere">أنت هنا</string>
     <string name="YouMustAgreeToTermsAndConditions">يجب عليك الموافقة على الاحكام والشروط!</string>
     <string name="YouMustConfirmPassword">كلمات المرور لا تتطابق!</string>
@@ -263,7 +270,7 @@
     <string name="AddATrip">إضافة رحلة</string>
     <string name="DateAndTime">تاريخ ووقت الاستلام</string>
     <string name="EnterMessage">أدخل رسالة…</string>
-    <string name="SAR">ريال</string>
+    <string name="SAR">SR</string>
     <string name="Details">التفاصيل</string>
     <string name="ChangeLanguageRestart">هل تريد تغير اللغة؟ تغير اللغه يودي الي اعاده تشغيل التطبيق</string>
     <string name="HomeText">من خلال التطبيق وبدون صداع يمكنك تحديد موقع الشحن ومكان بداية المكان وتاريخ ووقت الشحن وبعد الموافقة على السعر ، يمكن تتبع الشحنة من هاتفك المحمول.</string>
@@ -279,8 +286,8 @@
     <string name="same_as_sender">نفس المرسل</string>
     <string name="InvalidSenderDetail">تفاصيل المرسل غير صالحة</string>
     <string name="skip_destination">تخطي الوجهة >>  </string>
-    <string name="trip_added_successfully">تمت إضافة الرحلة بنجاح! سيتم إعلامك بعد تعيين السائق</string>
-    <string name="minimum_2_hour_required">مطلوب ساعتين على الأقل</string>
+    <string name="trip_added_successfully">تم اضافة الرحلة بنجاح وتم ارسال رسالة الي مسلم الشحنة وسيتم شعاركم بعد تعيين السائق</string>
+    <string name="minimum_2_hour_required">يرجي تعديل الوقت علي ان يكون اكثر من ساعتين من تاريخ الطلب</string>
     <string name="call">مكالمة</string>
     <string name="write_description">اكتب وصف مختصر لشحنتك</string>
     <string name="enter_name_and_photo">أدخل الاسم والصورة</string>
@@ -298,9 +305,9 @@
     <string name="sorry_this_service_only_in_saudi">عذرا ، هذه الخدمة متاحة فقط في المملكة العربية السعودية</string>
     <string name="this_type_not_available_now">هذا النوع غير متوفر الان</string>
     <string name="date_cannot_be_more_than_a_month">لا يمكن أن يكون التاريخ أكثر من شهر واحد</string>
-    <string name="DoYouNeedPackersAndMovers">تحتاج عمال تحميل وتنزيل؟</string>
-    <string name="RequiredPersons">العدد المطلوب من الأشخاص</string>
-    <string name="rate_driver">سائق معدل</string>
+    <string name="DoYouNeedPackersAndMovers">هل تحتاج عمال تحميل فقط؟</string>
+    <string name="RequiredPersons">عمال التحميل والتنزيل‎</string>
+    <string name="rate_driver">اضافة تقييم للسائق</string>
     <string name="WriteAReview">اضافة تقييم</string>
     <string name="AddYourRating">اضف تقييما للخدمة : </string>
     <string name="AddNote">أضف ملاحظة:</string>
@@ -311,4 +318,20 @@
     <string name="TripPrice">سعر الرحلة</string>
     <string name="LabourPrice">سعر التحميل والتنزيل</string>
     <string name="InstallationCharge">سعر خدمة الفك والتركيب : السعر يتم الإتفاق عليه مع السائق</string>
+    <string name="view_my_trips">عرض رحلاتي</string>
+    <string name="new_trip">رحلة جديدة</string>
+    <string name="assigned_to_driver">معين للسائق</string>
+    <string name="on_trip">في رحلة</string>
+    <string name="trip_finished">انتهت الرحلة</string>
+    <string name="contact_support">اتصل بالدعم</string>
+    <string name="TripUpdated">  تم تحديث بيانات الرحلة</string>
+    <string name="choose">اختر</string>
+    <string name="LaboursRequired">عدد العمال</string>
+    <string name="RequireInstalment">تحتاج فك وتركيب</string>
+    <string name="EstimatedPrice">السعر المتوقع</string>
+    <string name="shipment_description">يجب ان يكون الوصف دقيقا حتي لا يوثر علي سعر الرحلة ‎</string>
+    <string name="verify_number_text_view">تم ارسال رمز التحقق عن طريق الرسائل القصيرة إلى</string>
+    <string name="upload_and_download">عمال التحميل والتنزيل</string>
+    <string name="loading">عمال تحميل‎</string>
+    <string name="unloading">عمال تنزيل</string>
 </resources>

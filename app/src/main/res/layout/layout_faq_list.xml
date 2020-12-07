@@ -21,6 +21,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <TextView
+                android:fontFamily="@font/droid_arabic_kufi"
         android:layout_margin="2dp"
         android:id="@+id/textView_question"
         android:layout_width="match_parent"
@@ -31,6 +32,7 @@
         android:textColor="@color/lightBlueColor" />
 
     <TextView
+                android:fontFamily="@font/droid_arabic_kufi"
         android:layout_marginLeft="2dp"
         android:layout_marginRight="2dp"
         android:layout_marginBottom="2dp"

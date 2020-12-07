@@ -41,26 +41,28 @@
             android:src="@drawable/ic_blue_triangle" />
 
         <TextView
+                android:fontFamily="@font/droid_arabic_kufi"
             style="@style/FontSizeFifteen"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginTop="-60dp"
             android:background="@color/blueColor"
             android:gravity="center"
-            android:text="@string/Login"
+            android:text="@string/Customer"
             android:textAllCaps="true"
             android:textColor="@color/whiteColor" />
 
-<!--        <TextView-->
-<!--            style="@style/FontSizeSixteen"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:layout_marginTop="8dp"-->
-<!--            android:text="@string/app_name"-->
-<!--            android:textAllCaps="true"-->
-<!--            android:textColor="@color/blueColor"-->
-<!--            android:textStyle="bold" />-->
+        <!--        <TextView
+                android:fontFamily="@font/droid_arabic_kufi"-->
+        <!--            style="@style/FontSizeSixteen"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_gravity="center"-->
+        <!--            android:layout_marginTop="8dp"-->
+        <!--            android:text="@string/app_name"-->
+        <!--            android:textAllCaps="true"-->
+        <!--            android:textColor="@color/blueColor"-->
+        <!--            android:textStyle="bold" />-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -93,10 +95,11 @@
                 android:id="@+id/edt_mobile_number"
                 style="@style/FontSizeFifteen"
                 android:layout_width="match_parent"
-                android:layout_height="35dp"
+                android:layout_height="match_parent"
                 android:background="@android:color/transparent"
                 android:hint="@string/Mobile"
                 android:inputType="phone"
+                android:maxLength="10"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:singleLine="true"
@@ -121,10 +124,50 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="2dp"
                 android:background="@color/lighter_gray" />
 
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/checkBox_i_agree"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom" />
+
+            <TextView
+                style="@style/FontSizeTwelve"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:fontFamily="@font/droid_arabic_kufi"
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp"
+                android:text="@string/IAgreeTo"
+                android:textColor="#000" />
+
+            <TextView
+                android:id="@+id/textView_terms_conditions"
+                style="@style/FontSizeTwelve"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp"
+                android:fontFamily="@font/droid_arabic_kufi"
+                android:text="@string/TermsAndConditions"
+                android:textColor="@color/colorAccent" />
+
+        </LinearLayout>
+
 
         <Button
             android:id="@+id/btn_login"

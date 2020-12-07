@@ -93,6 +93,13 @@ class MyOrdersActivity : AppCompatActivity() {
         recycler_my_orders.layoutManager = homeLayoutManager
         mHomeAdapter = MyOrdersAdapter()
         recycler_my_orders.adapter = mHomeAdapter
+
+        contactSupportLayout.setOnClickListener {
+            val url = "https://wa.me/966500280135"
+            val i = Intent(Intent.ACTION_VIEW)
+            i.data = Uri.parse(url)
+            startActivity(i)
+        }
     }
 
     override fun onBackPressed() {
@@ -131,6 +138,7 @@ class MyOrdersActivity : AppCompatActivity() {
             val jsonParser = JsonParser()
             val params = HashMap<String, String>()
 
+            params["lang"] = sharedPreferences.getString(Constants.PREFS_LANG, "en")!!
             params["user_id"] = sharedPreferences.getString(Constants.PREFS_USER_ID, "0")!!
 
             return jsonParser.makeHttpRequest(
@@ -157,7 +165,8 @@ class MyOrdersActivity : AppCompatActivity() {
                                 val order = Order()
 
                                 order.tripId = jsonArr.getJSONObject(i).getString("id").trim()
-                                order.tripNo = order.tripId + "/ 2020"
+//                                order.tripNo = order.tripId + "/ 2020"
+                                order.tripNo = jsonArr.getJSONObject(i).getString("trip_no").trim()
                                 order.tripFromAddress =
                                     jsonArr.getJSONObject(i).getString("from_address").trim()
                                 order.tripFromLat =
@@ -213,7 +222,29 @@ class MyOrdersActivity : AppCompatActivity() {
                                     jsonArr.getJSONObject(i).getString("estimated_price").trim()
                                 order.driverID =
                                     jsonArr.getJSONObject(i).getString("driver_id").trim()
-
+                                order.driverMobileNumber =
+                                    jsonArr.getJSONObject(i).getString("driver_mobile").trim()
+                                    order.vehicleSizeID =
+                                    jsonArr.getJSONObject(i).getString("vehicle_size_id").trim()
+                                order.isUnpackInstallRequired =
+                                    jsonArr.getJSONObject(i).getString("unpack_install_required")
+                                        .trim()
+                                order.workersRequired =
+                                    jsonArr.getJSONObject(i).getString("workers_required").trim()
+                                order.currentStatusText =
+                                    jsonArr.getJSONObject(i).getString("trip_status_text").trim()
+                                order.chatEnabled =
+                                    jsonArr.getJSONObject(i).getBoolean("chat_enabled")
+                                order.shipmentId =
+                                    jsonArr.getJSONObject(i).getString("shipment_id")
+                                order.vehicleModel =
+                                    jsonArr.getJSONObject(i).getString("vehicle_size")
+                                order.loadingCount =
+                                    jsonArr.getJSONObject(i).getString("loading_count")
+                                order.unloadingCount =
+                                    jsonArr.getJSONObject(i).getString("unloading_count")
+                                order.is_loading_unloading_calculation =
+                                    jsonArr.getJSONObject(i).getString("is_loading_unloading_calculation")
                                 ordersArrayList!!.add(order)
 
                                 //if (selectedId != null && selectedId == order.tripId) {
@@ -249,6 +280,8 @@ class MyOrdersActivity : AppCompatActivity() {
 
         internal inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
             var priceTextView: TextView = v.findViewById(R.id.priceTextView) as TextView
+            var tripNoTextView: TextView = v.findViewById(R.id.tripNoTextView) as TextView
+            var tripStatusTextView: TextView = v.findViewById(R.id.tripStatusTextView) as TextView
             var dateTextView: TextView = v.findViewById(R.id.dateTextView) as TextView
             var sarTextView: TextView = v.findViewById(R.id.sarTextView) as TextView
             var estimatedTextView: TextView = v.findViewById(R.id.estimatedTextView) as TextView
@@ -270,14 +303,26 @@ class MyOrdersActivity : AppCompatActivity() {
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             holder.setIsRecyclable(false)
 
+            holder.whatsAppButton.visibility = View.VISIBLE
 
-            if (ordersArrayList!![position].tripStatus == "3") {
-                holder.whatsAppButton.visibility = View.VISIBLE
-            }
+//            if (ordersArrayList!![position].tripStatus == "3") {
+//            }
 
             if (ordersArrayList!![position].tripStatus == "11") {
                 holder.rate_driver_text_view.visibility = View.VISIBLE
                 holder.whatsAppButton.visibility = View.GONE
+            }
+
+            holder.tripNoTextView.text = ordersArrayList!![position].tripNo
+
+            if (ordersArrayList!![position].tripStatus == "2") {
+                holder.tripStatusTextView.text = getString(R.string.new_trip)
+            } else if (ordersArrayList!![position].tripStatus == "13") {
+                holder.tripStatusTextView.text = getString(R.string.assigned_to_driver)
+            } else if (ordersArrayList!![position].tripStatus == "7") {
+                holder.tripStatusTextView.text = getString(R.string.on_trip)
+            } else if (ordersArrayList!![position].tripStatus == "11") {
+                holder.tripStatusTextView.text = getString(R.string.trip_finished)
             }
 
             holder.rate_driver_text_view.setOnClickListener {
@@ -349,11 +394,12 @@ class MyOrdersActivity : AppCompatActivity() {
             }
 
             holder.priceTextView.text = ordersArrayList!![position].tripDRate
-            holder.dateTextView.text = ordersArrayList!![position].scheduleDate
+            holder.dateTextView.text =
+                ordersArrayList!![position].scheduleDate + " " + ordersArrayList!![position].scheduleTime
 
             if (ordersArrayList!![position].tripDRate.isNullOrEmpty()) {
                 //holder.sarTextView.text = ""
-                holder.estimatedTextView.visibility = View.VISIBLE
+//                holder.estimatedTextView.visibility = View.VISIBLE
                 holder.priceTextView.text = ordersArrayList!![position].estimatedPrice
             }
 
@@ -361,7 +407,11 @@ class MyOrdersActivity : AppCompatActivity() {
                 //orderSelected = ordersArrayList!![position]
                 //selectedId = orderSelected.tripId
 
-                TripDetailsMasterListBackground(ordersArrayList!![position].tripId!!).execute()
+//                TripDetailsMasterListBackground(ordersArrayList!![position].tripId!!).execute()
+                val intent =
+                    Intent(this@MyOrdersActivity, ShipmentDetailsActivity::class.java)
+                intent.putExtra("order", ordersArrayList!![position])
+                startActivity(intent)
 
                 //show_button.isEnabled = true
                 //order_no_value_text_view.text = orderSelected.tripNo
@@ -546,8 +596,8 @@ class MyOrdersActivity : AppCompatActivity() {
                                             "country_code"
                                         ).trim()}${ordersJSONArray.getJSONObject(i)
                                         .getJSONObject("0").getString(
-                                        "mobile_number"
-                                    ).trim()}"
+                                            "mobile_number"
+                                        ).trim()}"
 
                                 Log.d("url_", order!!.driverName)
                             }

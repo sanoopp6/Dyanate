@@ -86,6 +86,7 @@ class VerifyOTPActivity : AppCompatActivity(), MySMSBroadcastReceiver.OTPReceive
         setSupportActionBar(toolbar)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.hide()
 
         sharedPreferences = getSharedPreferences(Constants.PREFS_NAME, Context.MODE_PRIVATE)
 
@@ -216,7 +217,7 @@ class VerifyOTPActivity : AppCompatActivity(), MySMSBroadcastReceiver.OTPReceive
             return@setOnKeyListener false
         }
 
-        object : CountDownTimer(45000, 1000) {
+        object : CountDownTimer(60000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 textView_timer.text =
                     String.format(Locale.getDefault(), "00: %d", millisUntilFinished / 1000)
@@ -225,6 +226,7 @@ class VerifyOTPActivity : AppCompatActivity(), MySMSBroadcastReceiver.OTPReceive
             override fun onFinish() {
                 textView_timer.visibility = View.GONE
                 textView_resend_otp.isEnabled = true
+                textView_resend_otp.visibility = View.VISIBLE
                 textView_resend_otp.alpha = 1.0f
             }
         }.start()
@@ -239,11 +241,13 @@ class VerifyOTPActivity : AppCompatActivity(), MySMSBroadcastReceiver.OTPReceive
             }
         }
 
-        textView_otp2.text = String.format(
-            "%s %s",
-            this@VerifyOTPActivity.resources.getString(R.string.WeSendAMessageToNumber),
-            username
-        )
+//        textView_otp2.text = String.format(
+//            "%s %s",
+//            this@VerifyOTPActivity.resources.getString(R.string.WeSendAMessageToNumber),
+//            mobileNumber
+//        )
+
+        textView_otp2.text = mobileNumber
 
         textView_resend_otp.setOnClickListener {
             if (ConnectionDetector.isConnected(this@VerifyOTPActivity)) {
@@ -277,6 +281,8 @@ class VerifyOTPActivity : AppCompatActivity(), MySMSBroadcastReceiver.OTPReceive
         intentFilter.addAction(SmsRetriever.SMS_RETRIEVED_ACTION)
 
         applicationContext.registerReceiver(smsBroadcast, intentFilter)
+
+        textView_resend_otp.visibility = View.GONE
     }
 
     override fun onOTPReceived(otp: String) {
@@ -513,7 +519,7 @@ class VerifyOTPActivity : AppCompatActivity(), MySMSBroadcastReceiver.OTPReceive
 //            val params = HashMap<String, String>()
 //
 //            params["ArgUserName"] = "testcust"//registerUserExtra.username!!
-//            params["ArgPassword"] = "123456"//registerUserExtra.password!!
+//            params["ArgPassword"] = "123606"//registerUserExtra.password!!
 //            params["ArgUsrLoginType"] = Constants.LOG_CONST_NORMAL//registerUserExtra.loginMethod!!
 //
 //            var BASE_URL = Constants.BASE_URL_EN + "CustLogin"
@@ -690,9 +696,15 @@ class VerifyOTPActivity : AppCompatActivity(), MySMSBroadcastReceiver.OTPReceive
                         otpArray.add(otpExtra)
                         textView_timer.visibility = View.VISIBLE
                         textView_resend_otp.isEnabled = false
+                        textView_resend_otp.visibility = View.GONE
                         textView_resend_otp.alpha = 0.4f
+                        editText_otp1.setText("")
+                        editText_otp2.setText("")
+                        editText_otp3.setText("")
+                        editText_otp4.setText("")
+                        editText_otp1.requestFocus()
 
-                        object : CountDownTimer(45000, 1000) {
+                        object : CountDownTimer(60000, 1000) {
                             override fun onTick(millisUntilFinished: Long) {
                                 textView_timer.text = String.format(
                                     Locale.getDefault(),
@@ -704,6 +716,7 @@ class VerifyOTPActivity : AppCompatActivity(), MySMSBroadcastReceiver.OTPReceive
                             override fun onFinish() {
                                 textView_timer.visibility = View.GONE
                                 textView_resend_otp.isEnabled = true
+                                textView_resend_otp.visibility = View.VISIBLE
                                 textView_resend_otp.alpha = 1.0f
                             }
                         }.start()
@@ -769,7 +782,7 @@ class VerifyOTPActivity : AppCompatActivity(), MySMSBroadcastReceiver.OTPReceive
     //                    textView_resend_otp.isEnabled = false
     //                    textView_resend_otp.alpha = 0.4f
     //
-    //                    object : CountDownTimer(45000, 1000) {
+    //                    object : CountDownTimer(60000, 1000) {
     //                        override fun onTick(millisUntilFinished: Long) {
     //                            textView_timer.text = String.format(Locale.getDefault(), "00: %d", millisUntilFinished / 1000)
     //                        }

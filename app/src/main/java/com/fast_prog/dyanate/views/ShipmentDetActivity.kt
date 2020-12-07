@@ -11,9 +11,11 @@ import android.graphics.Color
 import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.provider.ContactsContract
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -45,6 +47,7 @@ import java.util.regex.Pattern
 class ShipmentDetActivity : AppCompatActivity(), GregorianDatePickerDialog.OnDateSetListener,
     HijriDatePickerDialog.OnDateSetListener {
 
+    private var blinkText: Boolean = false
     internal lateinit var sharedPreferences: SharedPreferences
 
     private lateinit var orderList: List<Order>
@@ -72,7 +75,7 @@ class ShipmentDetActivity : AppCompatActivity(), GregorianDatePickerDialog.OnDat
 
     private var clickedImg: String = ""
 
-    private var dateTimeUpdate: Thread? = null
+//    private var dateTimeUpdate: Thread? = null
 
     private var simpleDateFormat1 = SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH)
     private val simpleDateFormat2 = SimpleDateFormat("yyyy/MM/dd hh:mm aa", Locale.ENGLISH)
@@ -106,6 +109,9 @@ class ShipmentDetActivity : AppCompatActivity(), GregorianDatePickerDialog.OnDat
             Ride.instance = Ride()
         }
 
+        DisplayPrice().execute()
+        dateTimeUpdateTextView()
+
         countryCodePicker_from.registerCarrierNumberEditText(edit_from_mobile)
         countryCodePicker_to.registerCarrierNumberEditText(edit_to_mobile)
 
@@ -135,16 +141,64 @@ class ShipmentDetActivity : AppCompatActivity(), GregorianDatePickerDialog.OnDat
             android.R.layout.select_dialog_item,
             workerCountList
         )
-        spnr_worker_count.adapter = workerCountAdapter
+        loading_spnr_worker_count.adapter = workerCountAdapter
 
-        spnr_worker_count.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(p0: AdapterView<*>?) {
+        loading_spnr_worker_count.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(p0: AdapterView<*>?) {
 
+                }
+
+                override fun onItemSelected(
+                    p0: AdapterView<*>?,
+                    p1: View?,
+                    position: Int,
+                    p3: Long
+                ) {
+                    Ride.instance.loadingCount = workerCountList[position]
+                    DisplayPrice().execute()
+                }
             }
 
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
-                Ride.instance.requiredPersons = workerCountList[position]
+        unloading_spnr_worker_count.adapter = workerCountAdapter
+
+        unloading_spnr_worker_count.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+
+                }
+
+                override fun onItemSelected(
+                    p0: AdapterView<*>?,
+                    p1: View?,
+                    position: Int,
+                    p3: Long
+                ) {
+                    Ride.instance.unloadingCount = workerCountList[position]
+                    DisplayPrice().execute()
+                }
             }
+
+        loading_check_box.setOnCheckedChangeListener { compoundButton, b ->
+            if (b) {
+                loading_spinner_container.visibility = View.VISIBLE
+                loading_spnr_worker_count.setSelection(0)
+            } else {
+                loading_spinner_container.visibility = View.GONE
+                Ride.instance.loadingCount = "0"
+            }
+            DisplayPrice().execute()
+        }
+
+        unloading_check_box.setOnCheckedChangeListener { compoundButton, b ->
+            if (b) {
+                unloading_spinner_container.visibility = View.VISIBLE
+                unloading_spnr_worker_count.setSelection(0)
+            } else {
+                unloading_spinner_container.visibility = View.GONE
+                Ride.instance.unloadingCount = "0"
+            }
+            DisplayPrice().execute()
         }
 
         spnr_shipment_type.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -156,8 +210,13 @@ class ShipmentDetActivity : AppCompatActivity(), GregorianDatePickerDialog.OnDat
             ) {
                 val index = parent.selectedItemPosition
 
-                Ride.instance.shipmentTypeID = shipmentTypeIdList[index]
-                Ride.instance.shipmentTypeName = shipmentTypeDataList[index]
+                if (position == 0) {
+                    Ride.instance.shipmentTypeID = ""
+                    Ride.instance.shipmentTypeName = ""
+                } else {
+                    Ride.instance.shipmentTypeID = shipmentTypeIdList[index]
+                    Ride.instance.shipmentTypeName = shipmentTypeDataList[index]
+                }
                 edit_shipment.setText("")
             }
 
@@ -186,7 +245,6 @@ class ShipmentDetActivity : AppCompatActivity(), GregorianDatePickerDialog.OnDat
 
         installNoButton.setOnCheckedChangeListener { compoundButton, b ->
             if (b) {
-
                 unpackAndInstallMsgTextView.visibility = View.GONE
                 Ride.instance.requiredUnpackAndInstall = "0"
             }
@@ -197,7 +255,7 @@ class ShipmentDetActivity : AppCompatActivity(), GregorianDatePickerDialog.OnDat
 
                 unpackAndInstallContainer.visibility = View.VISIBLE
                 worker_layout.visibility = View.VISIBLE
-                spnr_worker_count.setSelection(0)
+                DisplayPrice().execute()
             }
         }
 
@@ -205,7 +263,10 @@ class ShipmentDetActivity : AppCompatActivity(), GregorianDatePickerDialog.OnDat
             if (b) {
                 unpackAndInstallContainer.visibility = View.GONE
                 worker_layout.visibility = View.GONE
-                Ride.instance.requiredPersons= "0"
+                Ride.instance.requiredPersons = "0"
+                Ride.instance.loadingCount = "0"
+                Ride.instance.unloadingCount = "0"
+                DisplayPrice().execute()
             }
         }
 
@@ -260,7 +321,7 @@ class ShipmentDetActivity : AppCompatActivity(), GregorianDatePickerDialog.OnDat
                         false,
                         {},
                         {})
-                } else if (stringContainsNumber(name)){
+                } else if (stringContainsNumber(name)) {
 
                     UtilityFunctions.showAlertOnActivity(this@ShipmentDetActivity,
                         resources.getString(R.string.InvalidSenderName),
@@ -314,7 +375,9 @@ class ShipmentDetActivity : AppCompatActivity(), GregorianDatePickerDialog.OnDat
         sameSenderCheckBox.setOnCheckedChangeListener { compoundButton, b ->
             if (b) {
 
-                if (edit_from_name.text.toString().trim().isNotEmpty() && edit_from_mobile.text.toString().trim().isNotEmpty()) {
+                if (edit_from_name.text.toString().trim()
+                        .isNotEmpty() && edit_from_mobile.text.toString().trim().isNotEmpty()
+                ) {
                     edit_to_name.setText(edit_from_name.text.toString().trim())
                     edit_to_mobile.setText(edit_from_mobile.text.toString().trim())
                 } else {
@@ -541,22 +604,37 @@ class ShipmentDetActivity : AppCompatActivity(), GregorianDatePickerDialog.OnDat
             first_disable_view.setOnClickListener {
 
                 UtilityFunctions.showAlertOnActivity(this@ShipmentDetActivity,
-                    getString(R.string.this_type_not_available_now), resources.getString(R.string.Ok),
-                    "", false, false, {}, {})
+                    getString(R.string.this_type_not_available_now),
+                    resources.getString(R.string.Ok),
+                    "",
+                    false,
+                    false,
+                    {},
+                    {})
             }
 
             second_disable_view.setOnClickListener {
 
                 UtilityFunctions.showAlertOnActivity(this@ShipmentDetActivity,
-                    getString(R.string.this_type_not_available_now), resources.getString(R.string.Ok),
-                    "", false, false, {}, {})
+                    getString(R.string.this_type_not_available_now),
+                    resources.getString(R.string.Ok),
+                    "",
+                    false,
+                    false,
+                    {},
+                    {})
             }
 
             third_disable_view.setOnClickListener {
 
                 UtilityFunctions.showAlertOnActivity(this@ShipmentDetActivity,
-                    getString(R.string.this_type_not_available_now), resources.getString(R.string.Ok),
-                    "", false, false, {}, {})
+                    getString(R.string.this_type_not_available_now),
+                    resources.getString(R.string.Ok),
+                    "",
+                    false,
+                    false,
+                    {},
+                    {})
             }
         }
 
@@ -600,12 +678,15 @@ class ShipmentDetActivity : AppCompatActivity(), GregorianDatePickerDialog.OnDat
         override fun doInBackground(vararg param: Void): JSONObject? {
             val jsonParser = JsonParser()
             val params = HashMap<String, String>()
-
-            params["persons"] = Ride.instance.requiredPersons
+            params["lang"] = sharedPreferences.getString(Constants.PREFS_LANG, "ar")!!
+//            params["persons"] = Ride.instance.requiredPersons
+            params["loading_count"] = Ride.instance.loadingCount
+            params["unloading_count"] = Ride.instance.unloadingCount
             params["start_lat"] = Ride.instance.pickUpLatitude!!
             params["start_lon"] = Ride.instance.pickUpLongitude!!
             params["end_lat"] = Ride.instance.dropOffLatitude!!
             params["end_lon"] = Ride.instance.dropOffLongitude!!
+            params["is_loading_unloading_calculation"] = "1"
 
             return jsonParser.makeHttpRequest(
                 Constants.BASE_URL + "customer/calculate_price",
@@ -622,15 +703,27 @@ class ShipmentDetActivity : AppCompatActivity(), GregorianDatePickerDialog.OnDat
                 try {
                     if (response.getBoolean("status")) {
 
-                            startActivity(
-                                Intent(
-                                    this@ShipmentDetActivity,
-                                    ConfirmFromToActivity::class.java
-                                ).putExtra("distance", response.getJSONObject("data").getString("distance"))
-                                    .putExtra("time", response.getJSONObject("data").getString("time"))
-                                    .putExtra("price", response.getJSONObject("data").getString("price"))
-                                    .putExtra("trip_price", response.getJSONObject("data").getString("trip_price"))
-                                    .putExtra("labour_price", response.getJSONObject("data").getString("labour_price"))
+                        startActivity(
+                            Intent(
+                                this@ShipmentDetActivity,
+                                ConfirmFromToActivity::class.java
+                            ).putExtra(
+                                "distance",
+                                response.getJSONObject("data").getString("distance")
+                            )
+                                .putExtra("time", response.getJSONObject("data").getString("time"))
+                                .putExtra(
+                                    "price",
+                                    response.getJSONObject("data").getString("price")
+                                )
+                                .putExtra(
+                                    "trip_price",
+                                    response.getJSONObject("data").getString("trip_price")
+                                )
+                                .putExtra(
+                                    "labour_price",
+                                    response.getJSONObject("data").getString("labour_price")
+                                )
                         )
                     } else {
 
@@ -713,30 +806,30 @@ class ShipmentDetActivity : AppCompatActivity(), GregorianDatePickerDialog.OnDat
     override fun onPause() {
         super.onPause()
 
-        if (dateTimeUpdate != null) {
-            runThread = false
-            dateTimeUpdate!!.interrupt()
-        }
+//        if (dateTimeUpdate != null) {
+//            runThread = false
+//            dateTimeUpdate!!.interrupt()
+//        }
     }
 
     override fun onResume() {
         super.onResume()
 
-        runThread = true
-
-        dateTimeUpdate = object : Thread() {
-            override fun run() {
-                try {
-                    while (!isInterrupted && runThread!!) {
-                        runOnUiThread { dateTimeUpdateTextView() }
-                        Thread.sleep(10000)
-                    }
-                } catch (ignored: InterruptedException) {
-                }
-
-            }
-        }
-        dateTimeUpdate!!.start()
+//        runThread = true
+//
+//        dateTimeUpdate = object : Thread() {
+//            override fun run() {
+//                try {
+//                    while (!isInterrupted && runThread!!) {
+//                        runOnUiThread { dateTimeUpdateTextView() }
+//                        Thread.sleep(10000)
+//                    }
+//                } catch (ignored: InterruptedException) {
+//                }
+//
+//            }
+//        }
+//        dateTimeUpdate!!.start()
     }
 
     private fun dateTimeUpdateTextView() {
@@ -777,6 +870,49 @@ class ShipmentDetActivity : AppCompatActivity(), GregorianDatePickerDialog.OnDat
         }
     }
 
+    private fun dateTimeAdd2HourUpdateTextView() {
+        val cal = Calendar.getInstance()
+        cal.add(Calendar.HOUR, 2)
+        cal.add(Calendar.MINUTE, 2)
+        val date = cal.time
+        var temp: String
+        val getMyDateTime = txt_datepicker1.text.toString().trim()
+
+        if (getMyDateTime.isNotEmpty()) {
+            var getMyDate: Date? = null
+
+            try {
+                getMyDate = simpleDateFormat1.parse(getMyDateTime)
+            } catch (e: ParseException) {
+                e.printStackTrace()
+            }
+
+            if (getMyDate!!.before(date) || getMyDate == date) {
+                temp = simpleDateFormat3.format(date)
+                Ride.instance.time = temp
+                txt_timepicker.text = temp
+
+
+                Log.d("date_", temp)
+
+                temp = simpleDateFormat1.format(date)
+
+                if (ConnectionDetector.isConnected(this@ShipmentDetActivity)) {
+                    GetDateBackground(true, temp).execute()
+                }
+            }
+        } else {
+            temp = simpleDateFormat3.format(date)
+            Ride.instance.time = temp
+            txt_timepicker.text = temp
+            temp = simpleDateFormat1.format(date)
+
+            if (ConnectionDetector.isConnected(this@ShipmentDetActivity)) {
+                GetDateBackground(true, temp).execute()
+            }
+        }
+    }
+
     private fun validate(): Boolean {
 //        val subject = edit_subject.text.toString()
         val shipment = edit_shipment.text.toString()
@@ -794,17 +930,19 @@ class ShipmentDetActivity : AppCompatActivity(), GregorianDatePickerDialog.OnDat
         }
         val fromName = edit_from_name.text.toString().trim()
         val fromNumber =
-            countryCodePicker_from.selectedCountryCodeWithPlus + edit_from_mobile.text.toString().trim().removePrefix(
-                "0"
-            )
+            countryCodePicker_from.selectedCountryCodeWithPlus + edit_from_mobile.text.toString()
+                .trim().removePrefix(
+                    "0"
+                )
         val dateText1 = txt_datepicker1.text.toString().trim()
         val dateText2 = txt_datepicker2.text.toString().trim()
         val timeText = txt_timepicker.text.toString().trim()
         val toName = edit_to_name.text.toString().trim()
         val toNumber =
-            countryCodePicker_to.selectedCountryCodeWithPlus + edit_to_mobile.text.toString().trim().removePrefix(
-                "0"
-            )
+            countryCodePicker_to.selectedCountryCodeWithPlus + edit_to_mobile.text.toString().trim()
+                .removePrefix(
+                    "0"
+                )
 
         if (Ride.instance.vehicleSizeId.isNullOrEmpty()) {
             UtilityFunctions.showAlertOnActivity(this@ShipmentDetActivity,
@@ -870,7 +1008,8 @@ class ShipmentDetActivity : AppCompatActivity(), GregorianDatePickerDialog.OnDat
         if (getMyDate!!.before(getCurrentDate) || getMyDate == getCurrentDate) {
             UtilityFunctions.showAlertOnActivity(this@ShipmentDetActivity,
                 resources.getString(R.string.PreviousDateOrTime), resources.getString(R.string.Ok),
-                "", false, false, {}, {})
+                "", false, false, {
+                }, {})
             return false
         }
 
@@ -888,7 +1027,10 @@ class ShipmentDetActivity : AppCompatActivity(), GregorianDatePickerDialog.OnDat
                 "",
                 false,
                 false,
-                {},
+                {
+                    dateTimeAdd2HourUpdateTextView()
+
+                },
                 {})
             return false
         }
@@ -986,7 +1128,9 @@ class ShipmentDetActivity : AppCompatActivity(), GregorianDatePickerDialog.OnDat
                             var position = 0
 
                             for (i in 0 until vehicleSizeArray.length()) {
-                                vehicleSizeIdList.add(vehicleSizeArray.getJSONObject(i).getString("id").trim())
+                                vehicleSizeIdList.add(
+                                    vehicleSizeArray.getJSONObject(i).getString("id").trim()
+                                )
                                 vehicleSizeDataList.add(
                                     vehicleSizeArray.getJSONObject(i).getString(
                                         "size"
@@ -999,9 +1143,10 @@ class ShipmentDetActivity : AppCompatActivity(), GregorianDatePickerDialog.OnDat
                                     ).trim()
                                 )
 
-                                if (Ride.instance.vehicleSizeId == vehicleSizeArray.getJSONObject(i).getString(
-                                        "id"
-                                    ).trim()
+                                if (Ride.instance.vehicleSizeId == vehicleSizeArray.getJSONObject(i)
+                                        .getString(
+                                            "id"
+                                        ).trim()
                                 ) {
                                     position = i
                                 }
@@ -1099,6 +1244,9 @@ class ShipmentDetActivity : AppCompatActivity(), GregorianDatePickerDialog.OnDat
                             shipmentTypeDataList = ArrayList()
                             var position = 0
 
+                            shipmentTypeIdList.add("-1")
+                            shipmentTypeDataList.add(getString(R.string.choose))
+
                             for (i in 0 until shipmentTypeArray.length()) {
                                 shipmentTypeIdList.add(
                                     shipmentTypeArray.getJSONObject(i).getString(
@@ -1127,15 +1275,67 @@ class ShipmentDetActivity : AppCompatActivity(), GregorianDatePickerDialog.OnDat
                             )
                             spnr_shipment_type.adapter = shipmentTypeAdapter
 
-                            if (!Ride.instance.shipmentTypeID.isNullOrEmpty()) {
+                            if (Ride.instance.shipmentTypeID.isNullOrEmpty()) {
                                 Ride.instance.shipmentTypeID =
                                     shipmentTypeArray.getJSONObject(0).getString("id").trim()
                                 Ride.instance.shipmentTypeName =
                                     shipmentTypeArray.getJSONObject(0).getString("type").trim()
                             } else {
-                                spnr_veh_size.setSelection(position)
+                                spnr_shipment_type.setSelection(position)
                             }
                         }
+                    }
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                }
+            }
+        }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private inner class DisplayPrice : AsyncTask<Void, Void, JSONObject>() {
+
+        override fun onPreExecute() {
+            super.onPreExecute()
+//            UtilityFunctions.showProgressDialog(this@ShipmentDetActivity)
+        }
+
+        override fun doInBackground(vararg param: Void): JSONObject? {
+            val jsonParser = JsonParser()
+            val params = HashMap<String, String>()
+            params["lang"] = sharedPreferences.getString(Constants.PREFS_LANG, "en")!!
+//            params["persons"] = Ride.instance.requiredPersons
+            params["loading_count"] = Ride.instance.loadingCount
+            params["unloading_count"] = Ride.instance.unloadingCount
+            params["start_lat"] = Ride.instance.pickUpLatitude!!
+            params["start_lon"] = Ride.instance.pickUpLongitude!!
+            params["end_lat"] = Ride.instance.dropOffLatitude!!
+            params["end_lon"] = Ride.instance.dropOffLongitude!!
+            params["is_loading_unloading_calculation"] = "1"
+            return jsonParser.makeHttpRequest(
+                Constants.BASE_URL + "customer/calculate_price",
+                "POST",
+                params
+            )
+        }
+
+        override fun onPostExecute(response: JSONObject?) {
+//            UtilityFunctions.dismissProgressDialog()
+
+            if (response != null) {
+                try {
+                    if (response.getBoolean("status")) {
+
+                        priceTextView.visibility = View.VISIBLE
+                        priceTextView.text =
+                            getString(R.string.TripPrice) + ": " + response.getJSONObject("data")
+                                .getString("trip_price") + " SAR" + getString(R.string.LabourPrice) + ": " + response.getJSONObject(
+                                "data"
+                            ).getString("labour_price") + " SAR"
+                    } else {
+                        UtilityFunctions.showAlertOnActivity(this@ShipmentDetActivity,
+                            response.getString("message"), resources.getString(R.string.Ok),
+                            "", false, false, {}, {})
                     }
                 } catch (e: JSONException) {
                     e.printStackTrace()
@@ -1285,4 +1485,28 @@ class ShipmentDetActivity : AppCompatActivity(), GregorianDatePickerDialog.OnDat
             }
         }
     }
+
+    private fun blink() {
+        val handler = Handler()
+        Thread(Runnable {
+            val timeToBlink = 1000 //in milissegunds
+            try {
+                Thread.sleep(timeToBlink.toLong())
+            } catch (e: java.lang.Exception) {
+            }
+            handler.post(Runnable {
+                if (blinkText) {
+                    val txt = unpackAndInstallMsgTextView
+                    if (txt.visibility == View.VISIBLE) {
+                        txt.visibility = View.INVISIBLE
+                    } else {
+                        txt.visibility = View.VISIBLE
+                    }
+                    blink()
+                }
+
+            })
+        }).start()
+    }
+
 }

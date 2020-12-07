@@ -47,13 +47,13 @@
                     android:id="@+id/tabItem"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/Route" />
+                    android:text="@string/Details" />
 
                 <com.google.android.material.tabs.TabItem
                     android:id="@+id/tabItem2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/Details" />
+                    android:text="@string/Route" />
 
 <!--                <com.google.android.material.tabs.TabItem-->
 <!--                    android:id="@+id/tabItem3"-->

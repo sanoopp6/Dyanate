@@ -50,4 +50,13 @@ class Order : Serializable {
     var driverID: String = ""
     var estimatedPrice: String = "0"
     var distanceKm: String? = null
+    var vehicleSizeID = ""
+    var workersRequired = "0"
+    var isUnpackInstallRequired = ""
+    var currentStatusText = ""
+    var chatEnabled = false
+    var shipmentId = ""
+    var loadingCount = "0"
+    var unloadingCount = "0"
+    var is_loading_unloading_calculation = "0"
 }

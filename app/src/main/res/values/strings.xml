@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Dynate</string>
+    <string name="app_name"> دينتي | Dyanate</string>
+    <string name="app_name_lang">Dyanate</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="com_facebook_loginview_log_out_button">Facebook</string>
@@ -58,6 +59,8 @@
     <string name="Customer">Customer</string>
     <string name="Dammam">Dammam</string>
     <string name="Date">Date</string>
+    <string name="DateEn">Date: Gregorian</string>
+    <string name="DateAr">Date: Hijri</string>
     <string name="DeleteBookmarkedLocation">Delete saved location ?</string>
     <string name="Distance">Driving distance</string>
     <string name="DistanceInKM">Distance in KM to Drivers</string>
@@ -190,11 +193,13 @@
     <string name="ShowReplies">Show Replies</string>
     <string name="ShowRoute">Show Route</string>
     <string name="Size">Vehicle Size</string>
+    <string name="SelectVehicleType">Select vehicle type</string>
     <string name="SmallCompany">Small Company</string>
     <string name="StartPoint">Starting Point</string>
     <string name="Status">Status</string>
     <string name="Subject">Subject</string>
     <string name="Submit">Submit</string>
+    <string name="confirm">Submit</string>
     <string name="Tabuk">Tabuk</string>
     <string name="Taif">Taif</string>
     <string name="TermsAndConditions">Terms and Conditions</string>
@@ -276,7 +281,7 @@
     <string name="AddATrip">Add A Trip</string>
     <string name="DateAndTime">Date and Time</string>
     <string name="EnterMessage">Type a message</string>
-    <string name="SAR">SAR</string>
+    <string name="SAR">SR</string>
     <string name="Details">Details</string>
     <string name="ChangeLanguageRestart">Change the language will restart the application, are you sure ?</string>
     <string name="HomeText">Through the application and without a headache can you define the shipping location, location of receipt, date and time of shipment and after you have agreed to the price, then the shipment can be tracked from your mobile.</string>
@@ -330,4 +335,20 @@
     <string name="TripPrice">Trip price</string>
     <string name="LabourPrice">Labour charge</string>
     <string name="InstallationCharge">InstallationCharge: The price is agreed upon with the driver</string>
+    <string name="view_my_trips">View my trips</string>
+    <string name="new_trip">New Trip</string>
+    <string name="assigned_to_driver">Assigned to driver</string>
+    <string name="on_trip">\"On trip \"</string>
+    <string name="trip_finished">Trip finished</string>
+    <string name="contact_support">Contact support</string>
+    <string name="TripUpdated">Trip updated successfully</string>
+    <string name="choose">Choose</string>
+    <string name="LaboursRequired">Labour count</string>
+    <string name="RequireInstalment">Need disassembly and installation</string>
+    <string name="EstimatedPrice">Estimated price</string>
+    <string name="shipment_description">The description must be accurate so as not to affect the price of the trip‎</string>
+    <string name="verify_number_text_view">We have sent an OTP via SMS to</string>
+    <string name="upload_and_download">Loading and unloading</string>
+    <string name="loading">loading</string>
+    <string name="unloading">unloading</string>
 </resources>

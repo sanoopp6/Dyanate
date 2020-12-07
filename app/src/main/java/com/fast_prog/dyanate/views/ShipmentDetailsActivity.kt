@@ -110,10 +110,10 @@ class ShipmentDetailsActivity : AppCompatActivity() {
 
         override fun getItem(position: Int): Fragment {
             return when (position) {
-                0 -> RouteFragment()
-                1 -> DetailsFragment()
+                0 -> DetailsFragment()
+                1 -> RouteFragment()
 //                else -> RepliesFragment()
-                else -> RouteFragment()
+                else -> DetailsFragment()
             }
         }
 

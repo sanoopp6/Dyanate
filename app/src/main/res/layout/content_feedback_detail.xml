@@ -33,6 +33,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                android:fontFamily="@font/droid_arabic_kufi"
                     android:id="@+id/textView_username"
                     style="@style/FontSizeFourteen"
                     android:layout_width="match_parent"
@@ -44,6 +45,7 @@
                     android:textColor="@color/blackColor" />
 
                 <TextView
+                android:fontFamily="@font/droid_arabic_kufi"
                     android:id="@+id/textView_mobile"
                     style="@style/FontSizeFourteen"
                     android:layout_width="match_parent"
@@ -54,6 +56,7 @@
                     android:textColor="@color/blackColor" />
 
                 <TextView
+                android:fontFamily="@font/droid_arabic_kufi"
                     android:id="@+id/textView_date"
                     style="@style/FontSizeFourteen"
                     android:layout_width="match_parent"
@@ -73,6 +76,7 @@
                     android:background="@color/darkest_gray" />
 
                 <TextView
+                android:fontFamily="@font/droid_arabic_kufi"
                     style="@style/FontSizeTwelve"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -83,6 +87,7 @@
                     android:textColor="@color/blackColor" />
 
                 <TextView
+                android:fontFamily="@font/droid_arabic_kufi"
                     android:id="@+id/textView_message"
                     style="@style/FontSizeFourteen"
                     android:layout_width="match_parent"
@@ -106,6 +111,7 @@
                     android:background="@color/darkest_gray" />
 
                 <TextView
+                android:fontFamily="@font/droid_arabic_kufi"
                     android:id="@+id/textView_admin_reply_title"
                     style="@style/FontSizeTwelve"
                     android:layout_width="match_parent"
@@ -131,6 +137,7 @@
                     android:visibility="gone" />
 
                 <TextView
+                android:fontFamily="@font/droid_arabic_kufi"
                     android:id="@+id/textView_admin_reply"
                     style="@style/FontSizeFourteen"
                     android:layout_width="match_parent"

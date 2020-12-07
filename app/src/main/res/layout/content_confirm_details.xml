@@ -21,6 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
+            android:fontFamily="@font/droid_arabic_kufi"
             android:text="@string/Subject" />
 
         <TextView
@@ -30,6 +31,7 @@
             android:layout_height="30dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
+            android:fontFamily="@font/droid_arabic_kufi"
             android:text="@string/Shipment"
             android:textColor="@color/lightBlueColor" />
 
@@ -40,6 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="13dp"
             android:layout_marginRight="13dp"
+            android:fontFamily="@font/droid_arabic_kufi"
             android:textAlignment="viewStart"
             android:textColor="@color/darkest_gray" />
 
@@ -50,7 +53,87 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
+            android:fontFamily="@font/droid_arabic_kufi"
             android:text="@string/Size" />
+
+        <TextView
+            android:id="@+id/estimatedTextView"
+            style="@style/FontSizeFifteen"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/droid_arabic_kufi"
+            android:text="@string/EstimatedPrice"
+            android:textColor="@color/lightBlueColor" />
+
+        <TextView
+            android:id="@+id/estimatedValueTextView"
+            style="@style/FontSizeFifteen"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/droid_arabic_kufi"
+            android:textColor="@color/darkest_gray" />
+
+        <TextView
+            style="@style/FontSizeFifteen"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/droid_arabic_kufi"
+            android:text="@string/LaboursRequired"
+            android:textColor="@color/lightBlueColor" />
+
+        <TextView
+            android:id="@+id/loading_labour_count"
+            style="@style/FontSizeFifteen"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/droid_arabic_kufi"
+            android:text="@string/LaboursRequired"
+            android:textColor="@color/lightBlueColor" />
+
+        <TextView
+            android:id="@+id/unloading_labour_count"
+            style="@style/FontSizeFifteen"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/droid_arabic_kufi"
+            android:text="@string/LaboursRequired"
+            android:textColor="@color/lightBlueColor" />
+
+
+        <TextView
+            android:id="@+id/workersRequiredValueTextView"
+            style="@style/FontSizeFifteen"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/droid_arabic_kufi"
+            android:textColor="@color/darkest_gray" />
+
+        <TextView
+            android:id="@+id/installationRequiredTitle"
+            style="@style/FontSizeFifteen"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/droid_arabic_kufi"
+            android:text="@string/RequireInstalment"
+            android:textColor="@color/lightBlueColor" />
+
+        <TextView
+            android:id="@+id/installationRequiredValue"
+            style="@style/FontSizeFifteen"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/droid_arabic_kufi"
+            android:textColor="@color/darkest_gray" />
 
         <View
             android:layout_width="match_parent"
@@ -65,6 +148,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
             android:layout_marginRight="10dp"
+            android:fontFamily="@font/droid_arabic_kufi"
             android:text="@string/SenderDetails"
             android:textColor="@color/lightBlueColor"
             android:textStyle="bold" />
@@ -81,6 +165,7 @@
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_weight="1"
+                android:fontFamily="@font/droid_arabic_kufi"
                 android:text="@string/Name"
                 android:textColor="@color/lightBlueColor" />
 
@@ -90,6 +175,7 @@
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_weight="1"
+                android:fontFamily="@font/droid_arabic_kufi"
                 android:text="@string/Mobile"
                 android:textColor="@color/lightBlueColor" />
 
@@ -107,6 +193,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:fontFamily="@font/droid_arabic_kufi"
                 android:textAlignment="viewStart"
                 android:textColor="@color/darkest_gray" />
 
@@ -116,6 +203,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:fontFamily="@font/droid_arabic_kufi"
                 android:textColor="@color/darkest_gray" />
 
         </LinearLayout>
@@ -134,6 +222,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
             android:layout_marginRight="10dp"
+            android:fontFamily="@font/droid_arabic_kufi"
             android:text="@string/ReceiverDetails"
             android:textColor="@color/lightBlueColor"
             android:textStyle="bold" />
@@ -150,6 +239,7 @@
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_weight="1"
+                android:fontFamily="@font/droid_arabic_kufi"
                 android:text="@string/Name"
                 android:textColor="@color/lightBlueColor" />
 
@@ -159,6 +249,7 @@
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_weight="1"
+                android:fontFamily="@font/droid_arabic_kufi"
                 android:text="@string/Mobile"
                 android:textColor="@color/lightBlueColor" />
 
@@ -176,6 +267,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:fontFamily="@font/droid_arabic_kufi"
                 android:textAlignment="viewStart"
                 android:textColor="@color/darkest_gray" />
 
@@ -185,6 +277,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:fontFamily="@font/droid_arabic_kufi"
                 android:textColor="@color/darkest_gray" />
 
         </LinearLayout>
@@ -203,6 +296,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
             android:layout_marginRight="10dp"
+            android:fontFamily="@font/droid_arabic_kufi"
             android:text="@string/DateAndTime"
             android:textColor="@color/lightBlueColor"
             android:textStyle="bold" />
@@ -219,7 +313,8 @@
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_weight="1"
-                android:text="@string/Date"
+                android:fontFamily="@font/droid_arabic_kufi"
+                android:text="@string/DateEn"
                 android:textColor="@color/lightBlueColor" />
 
             <TextView
@@ -228,9 +323,9 @@
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_weight="1"
-                android:text="@string/Date"
-                android:textColor="@color/lightBlueColor"
-                android:visibility="gone" />
+                android:fontFamily="@font/droid_arabic_kufi"
+                android:text="@string/DateAr"
+                android:textColor="@color/lightBlueColor" />
 
         </LinearLayout>
 
@@ -246,6 +341,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:fontFamily="@font/droid_arabic_kufi"
                 android:textColor="@color/darkest_gray" />
 
             <TextView
@@ -254,6 +350,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:fontFamily="@font/droid_arabic_kufi"
                 android:textColor="@color/darkest_gray" />
 
         </LinearLayout>
@@ -265,6 +362,7 @@
             android:layout_height="30dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
+            android:fontFamily="@font/droid_arabic_kufi"
             android:text="@string/Time"
             android:textAlignment="viewStart"
             android:textColor="@color/lightBlueColor" />
@@ -276,6 +374,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
+            android:fontFamily="@font/droid_arabic_kufi"
             android:textColor="@color/darkest_gray" />
 
 

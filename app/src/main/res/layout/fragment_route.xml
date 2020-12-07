@@ -44,6 +44,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                android:fontFamily="@font/droid_arabic_kufi"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/Driver"
@@ -51,6 +52,7 @@
 
 
                     <TextView
+                android:fontFamily="@font/droid_arabic_kufi"
                         android:id="@+id/driverNameTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -108,6 +110,7 @@
     </LinearLayout>
 
     <TextView
+                android:fontFamily="@font/droid_arabic_kufi"
         android:id="@+id/txt_distance"
         style="@style/FontSizeTwelve"
         android:layout_width="wrap_content"

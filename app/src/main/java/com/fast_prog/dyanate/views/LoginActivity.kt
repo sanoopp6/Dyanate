@@ -1,13 +1,17 @@
 package com.fast_prog.dyanate.views
 
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Configuration
+import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.FileProvider
 import com.fast_prog.dyanate.R
 import com.fast_prog.dyanate.utilities.ConnectionDetector
 import com.fast_prog.dyanate.utilities.Constants
@@ -17,6 +21,10 @@ import com.yariksoffice.lingver.Lingver
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.content_login.*
 import org.json.JSONObject
+import java.io.File
+import java.io.IOException
+import java.io.InputStream
+import java.io.OutputStream
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -33,6 +41,7 @@ class LoginActivity : AppCompatActivity() {
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
+        supportActionBar?.hide()
 
 //        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
@@ -57,6 +66,10 @@ class LoginActivity : AppCompatActivity() {
 //            }
 //        }
 
+        textView_terms_conditions.setOnClickListener {
+            getTermsAndConditions()
+        }
+
         button_lang.setOnClickListener {
             if (sharedPreferences.getString(Constants.PREFS_LANG, "").equals("ar", true)) {
                 reloadActivity("en")
@@ -78,6 +91,51 @@ class LoginActivity : AppCompatActivity() {
                     ConnectionDetector.errorSnackbar(coordinator_layout)
                 }
             }
+        }
+    }
+
+    private fun getTermsAndConditions() {
+        val assetManager = assets
+        var `in`: InputStream? = null
+        var out: OutputStream? = null
+        val file = File(filesDir, "terms_conditions.pdf")
+
+        try {
+            `in` = assetManager.open("terms_conditions.pdf")
+            out = openFileOutput(file.name, Context.MODE_PRIVATE)
+            copyFile(`in`, out)
+            `in`!!.close()
+            `in` = null
+            out!!.flush()
+            out.close()
+            out = null
+        } catch (e: Exception) {
+            //Log.e("tag_", e.getMessage());
+        }
+
+        try {
+            val intent = Intent(Intent.ACTION_VIEW)
+            val apkURI = FileProvider.getUriForFile(
+                this@LoginActivity,
+                applicationContext.packageName + ".provider",
+                file
+            )
+            intent.setDataAndType(apkURI, "application/pdf")
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            startActivity(intent)
+
+        } catch (e: ActivityNotFoundException) {
+            Toast.makeText(applicationContext, R.string.NoAppPDF, Toast.LENGTH_SHORT).show()
+        }
+
+    }
+
+    @Throws(IOException::class)
+    private fun copyFile(`in`: InputStream?, out: OutputStream?) {
+        val buffer = ByteArray(1024)
+        var read: Int = -1
+        while ({ read = `in`!!.read(buffer); read }() != -1) {
+            out!!.write(buffer, 0, read)
         }
     }
 
@@ -108,6 +166,18 @@ class LoginActivity : AppCompatActivity() {
             edt_mobile_number.error = null
             countryCode = countryCodePicker.selectedCountryCode
             mobileNumber = edt_mobile_number.text.toString().trim().removePrefix("0")
+        }
+
+        if (!checkBox_i_agree.isChecked) {
+            UtilityFunctions.showAlertOnActivity(this@LoginActivity,
+                resources.getText(R.string.YouMustAgreeToTermsAndConditions).toString(),
+                resources.getString(R.string.Ok).toString(),
+                "",
+                false,
+                false,
+                { checkBox_i_agree.requestFocus() },
+                {})
+            return false
         }
 
         return true
@@ -149,7 +219,9 @@ class LoginActivity : AppCompatActivity() {
                         GetUserDetailBackground().execute()
                     } else {
 
-                        SendOTPBackground(result.getJSONObject("data").getString("user_id")).execute()
+                        SendOTPBackground(
+                            result.getJSONObject("data").getString("user_id")
+                        ).execute()
                         VerifyOTPActivity.userId = result.getJSONObject("data").getString("user_id")
                         VerifyOTPActivity.otpAction = "login"
                         VerifyOTPActivity.mobileNumber = countryCode!! + mobileNumber!!
@@ -196,38 +268,46 @@ class LoginActivity : AppCompatActivity() {
                     val editor = sharedPreferences!!.edit()
                     editor.putString(
                         Constants.PREFS_USER_MOBILE_WITHOUT_COUNTRY,
-                        result.getJSONObject("data").getJSONObject("user_info").getString("mobile_number")
+                        result.getJSONObject("data").getJSONObject("user_info")
+                            .getString("mobile_number")
                     )
                     editor.putString(
                         Constants.PREFS_COUNTRY_CODE,
-                        result.getJSONObject("data").getJSONObject("user_info").getString("country_code")
+                        result.getJSONObject("data").getJSONObject("user_info")
+                            .getString("country_code")
                     )
                     editor.putString(
                         Constants.PREFS_USER_ID,
-                        result.getJSONObject("data").getJSONObject("user_info").getString("user_id").trim()
+                        result.getJSONObject("data").getJSONObject("user_info").getString("user_id")
+                            .trim()
                     )
                     editor.putString(
                         Constants.PREFS_USER_TOKEN,
-                        result.getJSONObject("data").getJSONObject("user_info").getString("token").trim()
+                        result.getJSONObject("data").getJSONObject("user_info").getString("token")
+                            .trim()
                     )
                     editor.putString(
                         Constants.PREFS_USER_FULL_MOBILE,
-                        result.getJSONObject("data").getJSONObject("user_info").getString("mobile_number").trim()
+                        result.getJSONObject("data").getJSONObject("user_info")
+                            .getString("mobile_number").trim()
                     )
 
                     editor.putString(
                         Constants.PREFS_USER_FULL_NAME,
-                        result.getJSONObject("data").getJSONObject("user_info").getString("full_name").trim()
+                        result.getJSONObject("data").getJSONObject("user_info")
+                            .getString("full_name").trim()
                     )
 
                     editor.putString(
                         Constants.PREFS_USER_PIC,
-                        result.getJSONObject("data").getJSONObject("user_info").getString("profile_pic").trim()
+                        result.getJSONObject("data").getJSONObject("user_info")
+                            .getString("profile_pic").trim()
                     )
 
                     editor.putString(
                         Constants.PREFS_USER_PIC,
-                        result.getJSONObject("data").getJSONObject("user_info").getString("profile_pic").trim()
+                        result.getJSONObject("data").getJSONObject("user_info")
+                            .getString("profile_pic").trim()
                     )
 
                     editor.putBoolean(Constants.PREFS_IS_LOGIN, true)
@@ -276,6 +356,27 @@ class LoginActivity : AppCompatActivity() {
             )
         }
     }
+
+//    private inner class checkUpdate :
+//        AsyncTask<Void, Void, JSONObject?>() {
+//
+//        override fun doInBackground(vararg p0: Void?): JSONObject? {
+//
+//            val jsonParser = JsonParser()
+//            val params = HashMap<String, String>()
+//            params["lang"] = sharedPreferences.getString(Constants.PREFS_LANG, "en")!!
+//            params["user_id"] = userID
+//            params["country_code"] = countryCode!!
+//            params["mobile_number"] = mobileNumber!!
+//            params["action"] = "login"
+//
+//            return jsonParser.makeHttpRequest(
+//                Constants.BASE_URL + "customer/generate_otp",
+//                "POST",
+//                params
+//            )
+//        }
+//    }
 
 
     //@SuppressLint("StaticFieldLeak")

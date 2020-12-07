@@ -25,6 +25,7 @@
                 android:scaleType="fitCenter" />
 
             <TextView
+                android:fontFamily="@font/droid_arabic_kufi"
                 style="@style/FontSizeTwelve"
                 android:id="@+id/textView_slNo"
                 android:layout_width="20dp"

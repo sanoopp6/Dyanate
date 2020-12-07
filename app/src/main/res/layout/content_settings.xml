@@ -11,6 +11,7 @@
     android:orientation="vertical">
 
     <TextView
+                android:fontFamily="@font/droid_arabic_kufi"
         android:id="@+id/textView_change_lang"
         android:layout_marginTop="10dp"
         android:textColor="@color/darkest_gray"

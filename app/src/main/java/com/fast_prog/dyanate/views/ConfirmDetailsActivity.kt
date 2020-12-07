@@ -39,6 +39,8 @@ class ConfirmDetailsActivity : AppCompatActivity() {
 
     private var tripID: String? = null
 
+    var estimated_trip_price = "0"
+    var estimated_labour_price = "0"
     var estimated_price = "0"
     var estimated_distance = "0"
     var estimated_duration = "0"
@@ -57,6 +59,8 @@ class ConfirmDetailsActivity : AppCompatActivity() {
         estimated_price = intent.getStringExtra("estimated_price")
         estimated_distance = intent.getStringExtra("estimated_distance")
         estimated_duration = intent.getStringExtra("estimated_duration")
+        estimated_trip_price = intent.getStringExtra("estimated_trip_price")
+        estimated_labour_price = intent.getStringExtra("estimated_labour_price")
 
         toolbar.setNavigationOnClickListener {
             if (tripID != null && Integer.parseInt(tripID!!) > 0) {
@@ -85,10 +89,10 @@ class ConfirmDetailsActivity : AppCompatActivity() {
             String.format(Locale.getDefault(), "%s :", resources.getString(R.string.Name))
         fromMobTitleTextView.text =
             String.format(Locale.getDefault(), "%s :", resources.getString(R.string.Mobile))
-        engDateTitleTextView.text =
-            String.format(Locale.getDefault(), "%s :", resources.getString(R.string.Date))
-        arDateTitleTextView.text =
-            String.format(Locale.getDefault(), "%s :", resources.getString(R.string.Date))
+//        engDateTitleTextView.text =
+//            String.format(Locale.getDefault(), "%s :", resources.getString(R.string.Date))
+//        arDateTitleTextView.text =
+//            String.format(Locale.getDefault(), "%s :", resources.getString(R.string.Date))
         timeTitleTextView.text =
             String.format(Locale.getDefault(), "%s :", resources.getString(R.string.Time))
         toNameTitleTextView.text =
@@ -127,18 +131,28 @@ class ConfirmDetailsActivity : AppCompatActivity() {
         timeTextView.text = Ride.instance.time
         toNameTextView.text = Ride.instance.toName
         toMobTextView.text = Ride.instance.toMobile.trimStart { it <= '+' }
+        estimatedValueTextView.text = estimated_price + " " + getString(R.string.SAR)
+//        workersRequiredValueTextView.text = Ride.instance.requiredPersons
+        loading_labour_count.text = getString(R.string.loading) + ": " + Ride.instance.loadingCount
+        unloading_labour_count.text =
+            getString(R.string.unloading) + ": " + Ride.instance.unloadingCount
+        if (Ride.instance.requiredUnpackAndInstall == "1") {
+            installationRequiredValue.text = getString(R.string.Yes)
+        } else {
+            installationRequiredValue.text = getString(R.string.No)
+        }
 
         confirmTripButton.setOnClickListener {
-            //            UtilityFunctions.showAlertOnActivity(this@ConfirmDetailsActivity,
-//                resources.getString(R.string.AreYouSure), resources.getString(R.string.Yes),
-//                resources.getString(R.string.No), true, false,
-//                {
-            if (ConnectionDetector.isConnected(this@ConfirmDetailsActivity)) {
-                AddTripMasterBackground().execute()
-            } else {
-                ConnectionDetector.errorSnackbar(coordinator_layout)
-            }
-//                }, {})
+            UtilityFunctions.showAlertOnActivity(this@ConfirmDetailsActivity,
+                resources.getString(R.string.AreYouSure), resources.getString(R.string.Yes),
+                resources.getString(R.string.No), true, false,
+                {
+                    if (ConnectionDetector.isConnected(this@ConfirmDetailsActivity)) {
+                        AddTripMasterBackground().execute()
+                    } else {
+                        ConnectionDetector.errorSnackbar(coordinator_layout)
+                    }
+                }, {})
         }
 
         goingBack = true
@@ -195,6 +209,8 @@ class ConfirmDetailsActivity : AppCompatActivity() {
             params["ArgTripMNoOfDrivers"] = "0"
             params["ArgTripMDistanceRadiusKm"] = "0"
             params["estimated_price"] = estimated_price
+            params["estimated_trip_price"] = estimated_trip_price
+            params["estimated_labour_price"] = estimated_labour_price
             params["estimated_distance"] = estimated_distance
             params["estimated_duration"] = estimated_duration
             if (Ride.instance.distanceStr != null) {
@@ -205,6 +221,9 @@ class ConfirmDetailsActivity : AppCompatActivity() {
 
             params["required_persons"] = Ride.instance.requiredPersons
             params["unpack_and_install_requirement"] = Ride.instance.requiredUnpackAndInstall
+            params["loading_count"] = Ride.instance.loadingCount
+            params["unloading_count"] = Ride.instance.unloadingCount
+            params["is_loading_unloading_calculation"] = "1"
 
             return jsonParser.makeHttpRequest(
                 Constants.BASE_URL + "customer/add_trip",

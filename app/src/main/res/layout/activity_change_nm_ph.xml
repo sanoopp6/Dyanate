@@ -41,6 +41,7 @@
             tools:context="fast_prog.com.wakala.views.ChangeEmailActivity">
 
             <TextView
+                android:fontFamily="@font/droid_arabic_kufi"
                 style="@style/FontSizeFifteen"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

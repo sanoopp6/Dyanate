@@ -48,6 +48,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                android:fontFamily="@font/droid_arabic_kufi"
                     style="@style/FontSizeTwelve"
                     android:layout_width="50dp"
                     android:layout_height="match_parent"
@@ -57,6 +58,7 @@
                     android:textColor="@color/blackColor" />
 
                 <TextView
+                android:fontFamily="@font/droid_arabic_kufi"
                     style="@style/FontSizeTwelve"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
@@ -68,6 +70,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                android:fontFamily="@font/droid_arabic_kufi"
                     style="@style/FontSizeTwelve"
                     android:layout_width="85dp"
                     android:layout_height="match_parent"

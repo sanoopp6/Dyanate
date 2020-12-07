@@ -125,6 +125,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.ShipmentDetActivity"
+            android:windowSoftInputMode="adjustNothing"
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.SplashScreenActivity"
@@ -188,6 +189,21 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.SuccessActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.edit.EditSenderLocationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.edit.EditReceiverLocationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.edit.EditShipmentDetActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.edit.EditConfirmFromToActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.edit.EditConfirmDetailsActivity"
             android:screenOrientation="portrait" />
     </application>
 

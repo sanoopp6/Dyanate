@@ -201,9 +201,16 @@ class SenderLocationActivity : AppCompatActivity(), OnMapReadyCallback,
         type_location_text_view.setOnClickListener {
 //            val intent = Intent(this@SenderLocationActivity, PickLocationActivity::class.java)
 //            startActivityForResult(intent, REQUEST_CODE_AUTOCOMPLETE)
-            val fields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.ADDRESS_COMPONENTS, Place.Field.LAT_LNG)
+            val fields = listOf(
+                Place.Field.ID,
+                Place.Field.NAME,
+                Place.Field.ADDRESS,
+                Place.Field.ADDRESS_COMPONENTS,
+                Place.Field.LAT_LNG
+            )
 
             val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
+                .setCountry("SA")
                 .build(this)
             startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE)
         }
@@ -211,9 +218,16 @@ class SenderLocationActivity : AppCompatActivity(), OnMapReadyCallback,
         location_select_gps_image_view.setOnClickListener {
 //            val intent = Intent(this@SenderLocationActivity, PickLocationActivity::class.java)
 //            startActivityForResult(intent, REQUEST_CODE_AUTOCOMPLETE)
-            val fields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.ADDRESS_COMPONENTS, Place.Field.LAT_LNG)
+            val fields = listOf(
+                Place.Field.ID,
+                Place.Field.NAME,
+                Place.Field.ADDRESS,
+                Place.Field.ADDRESS_COMPONENTS,
+                Place.Field.LAT_LNG
+            )
 
             val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
+                .setCountry("SA")
                 .build(this)
             startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE)
         }
@@ -221,9 +235,16 @@ class SenderLocationActivity : AppCompatActivity(), OnMapReadyCallback,
         search_location_image_view.setOnClickListener {
 //            val intent = Intent(this@SenderLocationActivity, PickLocationActivity::class.java)
 //            startActivityForResult(intent, REQUEST_CODE_AUTOCOMPLETE)
-            val fields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.ADDRESS_COMPONENTS, Place.Field.LAT_LNG)
+            val fields = listOf(
+                Place.Field.ID,
+                Place.Field.NAME,
+                Place.Field.ADDRESS,
+                Place.Field.ADDRESS_COMPONENTS,
+                Place.Field.LAT_LNG
+            )
 
             val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
+                .setCountry("SA")
                 .build(this)
             startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE)
         }
@@ -435,6 +456,9 @@ class SenderLocationActivity : AppCompatActivity(), OnMapReadyCallback,
 
             })
 
+        viewMyTripsTextView.setOnClickListener {
+            startActivity(Intent(this@SenderLocationActivity, MyOrdersActivity::class.java))
+        }
     }
 
 
@@ -478,8 +502,10 @@ class SenderLocationActivity : AppCompatActivity(), OnMapReadyCallback,
             object : Handler() {
                 override fun handleMessage(msg: Message) {
                     super.handleMessage(msg)
-                    GetOnlineDyanaLocBackground().execute()
+//                    GetOnlineDyanaLocBackground().execute()
+                    GetCurrentTrip().execute()
                 }
+
             }
 
             override fun run() {
@@ -668,6 +694,42 @@ class SenderLocationActivity : AppCompatActivity(), OnMapReadyCallback,
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
+    private inner class GetCurrentTrip : AsyncTask<Void, Void, JSONObject>() {
+
+        override fun doInBackground(vararg param: Void): JSONObject? {
+            val jsonParser = JsonParser()
+            val params = HashMap<String, String>()
+
+            params["lang"] = sharedPreferences.getString(Constants.PREFS_LANG, "en")!!
+            params["user_id"] = sharedPreferences.getString(Constants.PREFS_USER_ID, "")!!
+
+            return jsonParser.makeHttpRequest(
+                Constants.BASE_URL + "customer/get_current_trip",
+                "POST",
+                params
+            )
+        }
+
+        override fun onPostExecute(response: JSONObject?) {
+
+            if (response != null) {
+                try {
+
+                    if (response.getBoolean("status")) {
+                        viewMyTripsTextView.visibility = View.VISIBLE
+                    } else {
+                        viewMyTripsTextView.visibility = View.GONE
+                    }
+
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                }
+
+            }
+        }
+    }
+
     private fun createDrawableFromView(view: View): Bitmap {
         val displayMetrics = DisplayMetrics()
 
@@ -765,7 +827,7 @@ class SenderLocationActivity : AppCompatActivity(), OnMapReadyCallback,
                 Intent.EXTRA_TEXT,
                 "هل جربت تطبيق دينتي ؟ لتحميل التطبيق يرجى الضغط على الرابط \n" +
                         "https://play.google.com/store/apps/details?id=com.fast_prog.dyanate&hl=en"
-                )
+            )
 
             sendIntent.type = "text/plain"
             startActivity(sendIntent)
@@ -776,7 +838,8 @@ class SenderLocationActivity : AppCompatActivity(), OnMapReadyCallback,
                 resources.getString(R.string.No), true, false,
                 {
                     if (ConnectionDetector.isConnected(this@SenderLocationActivity)) {
-                        UpdateFCMToken(""
+                        UpdateFCMToken(
+                            ""
                         ).execute()
                     }
 
@@ -1001,6 +1064,15 @@ class SenderLocationActivity : AppCompatActivity(), OnMapReadyCallback,
             val mLocation = Location("")
             mLocation.latitude = Ride.instance.pickUpLatitude!!.toDouble()
             mLocation.longitude = Ride.instance.pickUpLongitude!!.toDouble()
+            userLocation = mLocation
+
+            latLng = LatLng(userLocation!!.latitude, userLocation!!.longitude)
+            val cameraPosition = CameraPosition.Builder().target(latLng).zoom(17f).build()
+            mMap!!.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+        } else {
+            val mLocation = Location("")
+            mLocation.latitude = gpsTracker.latitude
+            mLocation.longitude = gpsTracker.longitude
             userLocation = mLocation
 
             latLng = LatLng(userLocation!!.latitude, userLocation!!.longitude)
@@ -1408,7 +1480,8 @@ class SenderLocationActivity : AppCompatActivity(), OnMapReadyCallback,
                         }
 
                         latLng = LatLng(userLocation!!.latitude, userLocation!!.longitude)
-                        val cameraPosition = CameraPosition.Builder().target(latLng).zoom(17f).build()
+                        val cameraPosition =
+                            CameraPosition.Builder().target(latLng).zoom(17f).build()
                         mMap!!.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
                     }
                 }

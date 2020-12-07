@@ -7,7 +7,7 @@ import java.io.Serializable
  */
 
 class Ride : Serializable {
-
+    var tripId = ""
     var vehicleSizeId: String? = null
     var vehicleSizeName: String = ""
     var pickUpLatitude: String? = null
@@ -33,6 +33,8 @@ class Ride : Serializable {
     var distanceStr: String? = null
     var requiredPersons = "0"
     var requiredUnpackAndInstall = "0"
+    var loadingCount = "0"
+    var unloadingCount = "0"
 
     companion object { lateinit var instance: Ride }
 

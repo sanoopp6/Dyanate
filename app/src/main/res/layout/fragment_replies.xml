@@ -8,6 +8,7 @@
     android:orientation="vertical">
 
     <TextView
+                android:fontFamily="@font/droid_arabic_kufi"
         android:id="@+id/noRowTextView"
         style="@style/FontSizeFifteen"
         android:layout_width="match_parent"

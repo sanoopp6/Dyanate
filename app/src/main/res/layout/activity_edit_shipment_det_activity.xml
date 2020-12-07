@@ -1,0 +1,794 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".views.edit.EditShipmentDetActivity"
+    tools:openDrawer="start">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/coordinator_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/FontSizeFifteen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/droid_arabic_kufi"
+                    android:text="@string/SelectVehicleType"
+                    android:textColor="@color/lightBlueColor" />
+
+                <Spinner
+                    android:id="@+id/spnr_veh_size"
+                    style="@style/FontSizeFifteen"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:background="@drawable/layout_rect_tranparent_grey"
+                    android:textAlignment="center"
+                    android:textColor="@color/blackColor"
+                    android:visibility="gone" />
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:id="@+id/first_vehicle_image_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <FrameLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical">
+
+                                    <ImageView
+                                        android:id="@+id/vehicle_one_image_view"
+                                        android:layout_width="100dp"
+                                        android:layout_height="70dp"
+                                        android:background="@color/colorPrimary"
+                                        android:padding="5dp"
+                                        android:scaleType="fitXY"
+                                        android:src="@drawable/dynate_1"></ImageView>
+
+                                    <TextView
+                                        android:id="@+id/vehicle_one_text_view"
+                                        style="@style/FontSizeTwelve"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:fontFamily="@font/droid_arabic_kufi"
+                                        android:text="@string/Vehicle"
+                                        android:textColor="@color/blackColor" />
+
+                                </LinearLayout>
+
+                                <Button
+                                    android:id="@+id/first_disable_view"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="#6B9D9B9B"
+                                    android:visibility="gone" />
+                            </FrameLayout>
+
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:id="@+id/second_vehicle_image_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:orientation="vertical">
+
+                            <FrameLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:clickable="true">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical">
+
+                                    <ImageView
+                                        android:id="@+id/vehicle_two_image_view"
+                                        android:layout_width="100dp"
+                                        android:layout_height="70dp"
+                                        android:background="#FFF"
+                                        android:padding="5dp"
+                                        android:scaleType="fitXY"
+                                        android:src="@drawable/dynate_1"></ImageView>
+
+                                    <TextView
+                                        android:id="@+id/vehicle_two_text_view"
+                                        style="@style/FontSizeTwelve"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:fontFamily="@font/droid_arabic_kufi"
+                                        android:text="@string/Vehicle"
+                                        android:textColor="@color/blackColor" />
+
+                                </LinearLayout>
+
+                                <Button
+                                    android:id="@+id/second_disable_view"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="#6B9D9B9B"
+                                    android:visibility="gone" />
+                            </FrameLayout>
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/third_vehicle_image_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:orientation="vertical">
+
+                            <FrameLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical">
+
+                                    <ImageView
+                                        android:id="@+id/vehicle_three_image_view"
+                                        android:layout_width="100dp"
+                                        android:layout_height="70dp"
+                                        android:background="#FFF"
+                                        android:padding="5dp"
+                                        android:scaleType="fitXY"
+                                        android:src="@drawable/dynate_1"></ImageView>
+
+                                    <TextView
+                                        android:id="@+id/vehicle_three_text_view"
+                                        style="@style/FontSizeTwelve"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:fontFamily="@font/droid_arabic_kufi"
+                                        android:text="@string/Vehicle"
+                                        android:textColor="@color/blackColor" />
+                                </LinearLayout>
+
+                                <Button
+                                    android:id="@+id/third_disable_view"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="#6B9D9B9B"
+                                    android:visibility="gone" />
+                            </FrameLayout>
+
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+
+                </HorizontalScrollView>
+
+                <TextView
+                    style="@style/FontSizeFifteen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/droid_arabic_kufi"
+                    android:text="@string/Subject"
+                    android:textColor="@color/lightBlueColor" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <Spinner
+                        android:id="@+id/spnr_shipment_type"
+                        style="@style/FontSizeFifteen"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:background="@drawable/layout_rect_tranparent_grey"
+                        android:textAlignment="center"
+                        android:textColor="@color/blackColor" />
+
+                    <ImageView
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:layout_gravity="center_vertical|end"
+                        android:layout_marginEnd="3dp"
+                        android:src="@drawable/ccp_down_arrow"></ImageView>
+
+                </FrameLayout>
+
+                <!--        <EditText-->
+                <!--            android:id="@+id/edit_subject"-->
+                <!--            style="@style/FontSizeFifteen"-->
+                <!--            android:layout_width="match_parent"-->
+                <!--            android:layout_height="35dp"-->
+                <!--            android:background="@drawable/layout_rect_tranparent_grey"-->
+                <!--            android:inputType="text"-->
+                <!--            android:singleLine="true"-->
+                <!--            android:textAlignment="center"-->
+                <!--            android:textColor="@color/blackColor" />-->
+
+                <TextView
+                    style="@style/FontSizeFifteen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/droid_arabic_kufi"
+                    android:text="@string/Shipment"
+                    android:textColor="@color/lightBlueColor" />
+
+
+                <EditText
+                    android:id="@+id/edit_shipment"
+                    style="@style/FontSizeFifteen"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:background="@drawable/layout_rect_tranparent_grey"
+                    android:gravity="start"
+                    android:hint="@string/shipment_description"
+                    android:inputType="textMultiLine"
+                    android:lines="3"
+                    android:padding="5dp"
+                    android:scrollbars="vertical"
+                    android:textColor="@color/blackColor">
+
+                    <requestFocus />
+                </EditText>
+
+                <TextView
+                    style="@style/FontSizeFifteen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/droid_arabic_kufi"
+                    android:text="@string/SenderIs"
+                    android:textColor="@color/lightBlueColor" />
+
+                <EditText
+                    android:id="@+id/edit_from_name"
+                    style="@style/FontSizeFifteen"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:background="@drawable/layout_rect_tranparent_grey"
+                    android:hint="@string/Name"
+                    android:inputType="textPersonName"
+                    android:singleLine="true"
+                    android:textAlignment="center"
+                    android:textColor="@color/blackColor" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="5dp"
+                    android:clipChildren="false"
+                    android:layoutDirection="ltr">
+
+                    <com.hbb20.CountryCodePicker
+                        android:id="@+id/countryCodePicker_from"
+                        android:layout_width="75dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/layout_rect_tranparent_grey"
+                        android:textColor="@color/blackColor"
+                        app:ccp_autoDetectCountry="false"
+                        app:ccp_autoDetectLanguage="true"
+                        app:ccp_autoFormatNumber="false"
+                        app:ccp_defaultNameCode="SA"
+                        app:ccp_showFlag="false"
+                        app:ccp_showNameCode="false"
+                        app:ccp_textSize="15sp" />
+
+                    <View
+                        android:layout_width="2dp"
+                        android:layout_height="match_parent" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/layout_rect_tranparent_grey">
+
+                        <EditText
+                            android:id="@+id/edit_from_mobile"
+                            style="@style/FontSizeFifteen"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@android:color/transparent"
+                            android:gravity="center"
+                            android:hint="@string/Mobile"
+                            android:inputType="phone"
+                            android:singleLine="true"
+                            android:textColor="@color/blackColor"
+                            android:textDirection="ltr" />
+
+                        <ImageView
+                            android:id="@+id/img_from_mobile"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:padding="5dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/ic_address_book" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+                <!--        <LinearLayout-->
+                <!--            android:layout_width="match_parent"-->
+                <!--            android:layout_height="35dp"-->
+                <!--            android:layout_marginTop="5dp"-->
+                <!--            android:orientation="horizontal">-->
+
+                <!--            <FrameLayout-->
+                <!--                android:layout_width="0dp"-->
+                <!--                android:layout_height="match_parent"-->
+                <!--                android:layout_weight="1"-->
+                <!--                android:background="@drawable/layout_rect_tranparent_grey"-->
+                <!--                android:clipChildren="false">-->
+
+                <!--                <Button-->
+                <!--                    android:id="@+id/txt_timepicker"-->
+                <!--                    style="@style/FontSizeFourteen"-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="match_parent"-->
+                <!--                    android:background="@android:color/transparent"-->
+                <!--                    android:textColor="@color/blackColor" />-->
+
+                <!--                <ImageView-->
+                <!--                    android:layout_width="22dp"-->
+                <!--                    android:layout_height="22dp"-->
+                <!--                    android:layout_gravity="end|center_vertical"-->
+                <!--                    android:padding="2dp"-->
+                <!--                    android:scaleType="fitCenter"-->
+                <!--                    android:src="@drawable/ic_time" />-->
+
+                <!--            </FrameLayout>-->
+
+                <!--            <View-->
+                <!--                android:layout_width="0dp"-->
+                <!--                android:layout_height="match_parent"-->
+                <!--                android:layout_weight="1" />-->
+
+                <!--        </LinearLayout>-->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        style="@style/FontSizeFifteen"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/droid_arabic_kufi"
+                        android:text="@string/ReceiverIs"
+                        android:textColor="@color/lightBlueColor" />
+
+                    <CheckBox
+                        android:id="@+id/sameSenderCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="@string/same_as_sender" />
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/edit_to_name"
+                    style="@style/FontSizeFifteen"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:background="@drawable/layout_rect_tranparent_grey"
+                    android:hint="@string/Name"
+                    android:inputType="textPersonName"
+                    android:singleLine="true"
+                    android:textAlignment="center" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="5dp"
+                    android:clipChildren="false"
+                    android:layoutDirection="ltr">
+
+                    <com.hbb20.CountryCodePicker
+                        android:id="@+id/countryCodePicker_to"
+                        android:layout_width="75dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/layout_rect_tranparent_grey"
+                        android:textColor="@color/blackColor"
+                        app:ccp_autoDetectCountry="false"
+                        app:ccp_autoDetectLanguage="true"
+                        app:ccp_autoFormatNumber="false"
+                        app:ccp_defaultNameCode="SA"
+                        app:ccp_showFlag="false"
+                        app:ccp_showNameCode="false"
+                        app:ccp_textSize="15sp" />
+
+                    <View
+                        android:layout_width="2dp"
+                        android:layout_height="match_parent" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/layout_rect_tranparent_grey">
+
+                        <EditText
+                            android:id="@+id/edit_to_mobile"
+                            style="@style/FontSizeFifteen"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@android:color/transparent"
+                            android:gravity="center"
+                            android:hint="@string/Mobile"
+                            android:inputType="phone"
+                            android:singleLine="true"
+                            android:textDirection="ltr" />
+
+                        <ImageView
+                            android:id="@+id/img_to_mobile"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:padding="5dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/ic_address_book" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <TextView
+                    style="@style/FontSizeFifteen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/droid_arabic_kufi"
+                    android:text="@string/DoYouNeedPackersAndMovers"
+                    android:textColor="@color/lightBlueColor" />
+
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RadioButton
+                        android:id="@+id/yesButton"
+                        style="@style/FontSizeFourteen"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/Yes" />
+
+                    <RadioButton
+                        android:id="@+id/noButton"
+                        style="@style/FontSizeFourteen"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/No" />
+                </RadioGroup>
+
+                <LinearLayout
+                    android:id="@+id/worker_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        style="@style/FontSizeFifteen"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/droid_arabic_kufi"
+                        android:text="@string/RequiredPersons"
+                        android:textColor="@color/lightBlueColor"
+                        android:visibility="gone" />
+
+                    <TextView
+                        style="@style/FontSizeFifteen"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/droid_arabic_kufi"
+                        android:text="@string/upload_and_download"
+                        android:textColor="@color/lightBlueColor" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:gravity="center_vertical">
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/loading_check_box"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/droid_arabic_kufi"
+                            android:text="@string/loading"
+                            android:textColor="@color/lightBlueColor" />
+
+                        <FrameLayout
+                            android:id="@+id/loading_spinner_container"
+                            android:layout_width="80dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:visibility="gone">
+
+                            <Spinner
+                                android:id="@+id/loading_spnr_worker_count"
+                                style="@style/FontSizeFifteen"
+                                android:layout_width="match_parent"
+                                android:layout_height="35dp"
+                                android:background="@drawable/layout_rect_tranparent_grey"
+                                android:textAlignment="center"
+                                android:textColor="@color/blackColor" />
+
+                            <ImageView
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
+                                android:layout_gravity="center_vertical|end"
+                                android:layout_marginEnd="3dp"
+                                android:src="@drawable/ccp_down_arrow"></ImageView>
+
+                        </FrameLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:gravity="center_vertical">
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/unloading_check_box"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/droid_arabic_kufi"
+                            android:text="@string/unloading"
+                            android:textColor="@color/lightBlueColor" />
+
+                        <FrameLayout
+                            android:id="@+id/unloading_spinner_container"
+                            android:layout_width="80dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:visibility="gone">
+
+                            <Spinner
+                                android:id="@+id/unloading_spnr_worker_count"
+                                style="@style/FontSizeFifteen"
+                                android:layout_width="match_parent"
+                                android:layout_height="35dp"
+                                android:background="@drawable/layout_rect_tranparent_grey"
+                                android:textAlignment="center"
+                                android:textColor="@color/blackColor" />
+
+                            <ImageView
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
+                                android:layout_gravity="center_vertical|end"
+                                android:layout_marginEnd="3dp"
+                                android:src="@drawable/ccp_down_arrow"></ImageView>
+
+                        </FrameLayout>
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/unpackAndInstallContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <TextView
+                            style="@style/FontSizeFifteen"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:fontFamily="@font/droid_arabic_kufi"
+                            android:text="@string/do_you_need_unpack_and_install"
+                            android:textColor="@color/lightBlueColor" />
+
+                        <RadioGroup
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <RadioButton
+                                android:id="@+id/installYesButton"
+                                style="@style/FontSizeFourteen"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/Yes" />
+
+                            <RadioButton
+                                android:id="@+id/installNoButton"
+                                style="@style/FontSizeFourteen"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/No" />
+                        </RadioGroup>
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/unpackAndInstallMsgTextView"
+                        style="@style/FontSizeTwelve"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/droid_arabic_kufi"
+                        android:text="@string/the_price_does_not_include_dismantling_and_installation_the_price_will_be_agreed_upon_with_the_driver"
+                        android:textColor="@color/redColor"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+
+                <TextView
+                    style="@style/FontSizeFifteen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/droid_arabic_kufi"
+                    android:text="@string/DateAndTime"
+                    android:textColor="@color/lightBlueColor" />
+
+                <LinearLayout
+                    android:id="@+id/date_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layoutDirection="ltr"
+                    android:orientation="horizontal">
+
+                    <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/layout_rect_tranparent_grey"
+                        android:clipChildren="false">
+
+                        <Button
+                            android:id="@+id/txt_datepicker1"
+                            style="@style/FontSizeFourteen"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@android:color/transparent"
+                            android:textColor="@color/blackColor" />
+
+                        <ImageView
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:layout_gravity="end|center_vertical"
+                            android:padding="2dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/ic_date" />
+
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/layout_rect_tranparent_grey"
+                        android:clipChildren="false"
+                        android:visibility="gone">
+
+                        <Button
+                            android:id="@+id/txt_datepicker2"
+                            style="@style/FontSizeFourteen"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@android:color/transparent"
+                            android:textColor="@color/blackColor" />
+
+                        <ImageView
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:layout_gravity="end|center_vertical"
+                            android:padding="2dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/ic_date" />
+
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/layout_rect_tranparent_grey"
+                        android:clipChildren="false">
+
+                        <Button
+                            android:id="@+id/txt_timepicker"
+                            style="@style/FontSizeFourteen"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@android:color/transparent"
+                            android:textColor="@color/blackColor" />
+
+                        <ImageView
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:layout_gravity="end|center_vertical"
+                            android:padding="2dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/ic_time" />
+
+                    </FrameLayout>
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btn_book_vehicle"
+                    style="@style/FontSizeSixteen"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="30dp"
+                    android:background="@color/blueColor"
+                    android:text="@string/Continue"
+                    android:textColor="@color/whiteColor" />
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</androidx.drawerlayout.widget.DrawerLayout>
+

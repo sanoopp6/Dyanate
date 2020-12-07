@@ -22,6 +22,7 @@
                 android:src="@drawable/ic_camera" />
 
             <TextView
+                android:fontFamily="@font/droid_arabic_kufi"
                 android:textColor="@color/blackColor"
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -47,6 +48,7 @@
                 android:src="@drawable/ic_gallery" />
 
             <TextView
+                android:fontFamily="@font/droid_arabic_kufi"
                 android:textColor="@color/blackColor"
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -72,6 +74,7 @@
                 android:src="@drawable/ic_cancel" />
 
             <TextView
+                android:fontFamily="@font/droid_arabic_kufi"
                 android:textColor="@color/blackColor"
                 android:layout_width="0dp"
                 android:layout_weight="1"

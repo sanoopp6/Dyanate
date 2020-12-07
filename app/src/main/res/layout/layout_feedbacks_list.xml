@@ -21,6 +21,7 @@
             android:orientation="horizontal">
 
             <TextView
+                android:fontFamily="@font/droid_arabic_kufi"
                 android:text="@string/Name"
                 android:id="@+id/textView1_name"
                 android:layout_width="0dp"
@@ -32,6 +33,7 @@
                 android:textColor="@color/whiteColor" />
 
             <TextView
+                android:fontFamily="@font/droid_arabic_kufi"
                 android:text="@string/Mobile"
                 android:id="@+id/textView1_mobile"
                 android:layout_width="0dp"
@@ -51,6 +53,7 @@
             <!--android:src="@drawable/ic_attachments" />-->
 
             <TextView
+                android:fontFamily="@font/droid_arabic_kufi"
                 android:text="@string/Date"
                 android:id="@+id/textView1_date"
                 android:layout_width="0dp"

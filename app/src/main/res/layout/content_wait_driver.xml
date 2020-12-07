@@ -39,6 +39,7 @@
             app:pulse_startFromScratch="false"  />
 
         <TextView
+                android:fontFamily="@font/droid_arabic_kufi"
             android:id="@+id/searching_for_driver_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/update_box"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/titletextView"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#100E0E0E"
+        android:fontFamily="@font/droid_arabic_kufi"
+        android:gravity="center"
+        android:text="Update"
+        android:textColor="#000"
+        android:textSize="15sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.4dp"
+        android:background="#000" />
+
+    <TextView
+        android:id="@+id/messageTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/droid_arabic_kufi"
+        android:gravity="center"
+        android:text="Update"
+        android:textColor="#3E8863"
+        android:textSize="15sp" />
+
+    <Button
+        android:id="@+id/yesButton"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="16dp"
+        android:background="#3E8863"
+        android:fontFamily="@font/droid_arabic_kufi"
+        android:text="YES"
+        android:textColor="#FFF"
+        android:textSize="15sp" />
+
+
+    <Button
+        android:id="@+id/noButton"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="40dp"
+        android:background="#3E8863"
+        android:fontFamily="@font/droid_arabic_kufi"
+        android:text="No"
+        android:textColor="#FFF"
+        android:textSize="15sp" />
+
+</LinearLayout>

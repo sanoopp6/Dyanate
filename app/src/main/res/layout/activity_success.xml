@@ -51,6 +51,7 @@
                 android:src="@drawable/ic_union_14"/>
 
             <TextView
+                android:fontFamily="@font/droid_arabic_kufi"
                 android:layout_marginTop="15dp"
                 android:id="@+id/textView_message"
                 android:layout_marginLeft="20dp"

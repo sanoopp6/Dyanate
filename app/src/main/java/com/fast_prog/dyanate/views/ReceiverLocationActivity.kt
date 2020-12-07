@@ -37,12 +37,14 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
+import com.google.android.material.snackbar.Snackbar
 import com.snappydb.DBFactory
 import com.snappydb.SnappydbException
 import kotlinx.android.synthetic.main.activity_receiver_location.*
 import kotlinx.android.synthetic.main.content_receiver_location.*
 import org.json.JSONArray
 import org.json.JSONException
+import org.json.JSONObject
 import java.util.*
 
 class ReceiverLocationActivity : AppCompatActivity(), OnMapReadyCallback,
@@ -106,9 +108,16 @@ class ReceiverLocationActivity : AppCompatActivity(), OnMapReadyCallback,
 
         type_location_text_view.setOnClickListener {
 
-            val fields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.ADDRESS_COMPONENTS, Place.Field.LAT_LNG)
+            val fields = listOf(
+                Place.Field.ID,
+                Place.Field.NAME,
+                Place.Field.ADDRESS,
+                Place.Field.ADDRESS_COMPONENTS,
+                Place.Field.LAT_LNG
+            )
 
             val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
+                .setCountry("SA")
                 .build(this)
             startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE)
 
@@ -117,9 +126,16 @@ class ReceiverLocationActivity : AppCompatActivity(), OnMapReadyCallback,
         }
 
         location_select_gps_image_view.setOnClickListener {
-            val fields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.ADDRESS_COMPONENTS, Place.Field.LAT_LNG)
+            val fields = listOf(
+                Place.Field.ID,
+                Place.Field.NAME,
+                Place.Field.ADDRESS,
+                Place.Field.ADDRESS_COMPONENTS,
+                Place.Field.LAT_LNG
+            )
 
             val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
+                .setCountry("SA")
                 .build(this)
             startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE)
 //            val intent = Intent(this@ReceiverLocationActivity, PickLocationActivity::class.java)
@@ -127,9 +143,16 @@ class ReceiverLocationActivity : AppCompatActivity(), OnMapReadyCallback,
         }
 
         search_location_image_view.setOnClickListener {
-            val fields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.ADDRESS_COMPONENTS, Place.Field.LAT_LNG)
+            val fields = listOf(
+                Place.Field.ID,
+                Place.Field.NAME,
+                Place.Field.ADDRESS,
+                Place.Field.ADDRESS_COMPONENTS,
+                Place.Field.LAT_LNG
+            )
 
             val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
+                .setCountry("SA")
                 .build(this)
             startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE)
 //            val intent = Intent(this@ReceiverLocationActivity, PickLocationActivity::class.java)
@@ -349,12 +372,13 @@ class ReceiverLocationActivity : AppCompatActivity(), OnMapReadyCallback,
 //                                },
 //                                {})
 //                        } else {
-                startActivity(
-                    Intent(
-                        this@ReceiverLocationActivity,
-                        ShipmentDetActivity::class.java
-                    )
-                )
+//                startActivity(
+//                    Intent(
+//                        this@ReceiverLocationActivity,
+//                        ShipmentDetActivity::class.java
+//                    )
+//                )
+                CalcuateTripPrice().execute()
 //                        }
             }
 //                }, {})
@@ -411,6 +435,15 @@ class ReceiverLocationActivity : AppCompatActivity(), OnMapReadyCallback,
             val mLocation = Location("")
             mLocation.latitude = Ride.instance.dropOffLatitude!!.toDouble()
             mLocation.longitude = Ride.instance.dropOffLongitude!!.toDouble()
+            userLocation = mLocation
+
+            latLng = LatLng(userLocation!!.latitude, userLocation!!.longitude)
+            val cameraPosition = CameraPosition.Builder().target(latLng).zoom(17f).build()
+            mMap!!.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+        } else {
+            val mLocation = Location("")
+            mLocation.latitude = gpsTracker.latitude
+            mLocation.longitude = gpsTracker.longitude
             userLocation = mLocation
 
             latLng = LatLng(userLocation!!.latitude, userLocation!!.longitude)
@@ -691,11 +724,13 @@ class ReceiverLocationActivity : AppCompatActivity(), OnMapReadyCallback,
                                             "en"
                                         )!!.equals("ar", true)
                                     ) {
-                                        addressComponents.getJSONObject(i).getString("long_name") + " ،" + locationName
+                                        addressComponents.getJSONObject(i)
+                                            .getString("long_name") + " ،" + locationName
                                     } else {
-                                        locationName + ", " + addressComponents.getJSONObject(i).getString(
-                                            "long_name"
-                                        )
+                                        locationName + ", " + addressComponents.getJSONObject(i)
+                                            .getString(
+                                                "long_name"
+                                            )
                                     }
                                 else -> locationName =
                                     addressComponents.getJSONObject(i).getString("long_name")
@@ -797,7 +832,8 @@ class ReceiverLocationActivity : AppCompatActivity(), OnMapReadyCallback,
                         }
 
                         latLng = LatLng(userLocation!!.latitude, userLocation!!.longitude)
-                        val cameraPosition = CameraPosition.Builder().target(latLng).zoom(17f).build()
+                        val cameraPosition =
+                            CameraPosition.Builder().target(latLng).zoom(17f).build()
                         mMap!!.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
                     }
                 }
@@ -813,6 +849,70 @@ class ReceiverLocationActivity : AppCompatActivity(), OnMapReadyCallback,
                 }
             }
             return
+        }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private inner class CalcuateTripPrice : AsyncTask<Void, Void, JSONObject>() {
+
+        override fun onPreExecute() {
+            super.onPreExecute()
+            UtilityFunctions.showProgressDialog(this@ReceiverLocationActivity)
+        }
+
+        override fun doInBackground(vararg param: Void): JSONObject? {
+            val jsonParser = JsonParser()
+            val params = HashMap<String, String>()
+            params["lang"] = sharedPreferences.getString(Constants.PREFS_LANG, "ar")!!
+            params["persons"] = Ride.instance.requiredPersons
+            params["loading_count"] = Ride.instance.loadingCount
+            params["unloading_count"] = Ride.instance.unloadingCount
+            params["start_lat"] = Ride.instance.pickUpLatitude!!
+            params["start_lon"] = Ride.instance.pickUpLongitude!!
+            params["end_lat"] = Ride.instance.dropOffLatitude!!
+            params["end_lon"] = Ride.instance.dropOffLongitude!!
+            params["is_loading_unloading_calculation"] = "1"
+
+            return jsonParser.makeHttpRequest(
+                Constants.BASE_URL + "customer/calculate_price",
+                "POST",
+                params
+            )
+        }
+
+        override fun onPostExecute(response: JSONObject?) {
+            UtilityFunctions.dismissProgressDialog()
+
+            if (response != null) {
+                try {
+                    if (response.getBoolean("status")) {
+                        startActivity(
+                            Intent(
+                                this@ReceiverLocationActivity,
+                                ShipmentDetActivity::class.java
+                            )
+                        )
+                    } else {
+
+                        UtilityFunctions.showAlertOnActivity(this@ReceiverLocationActivity,
+                            response.getString("message"), resources.getString(R.string.Ok),
+                            "", false, false, {}, {})
+                    }
+
+                } catch (e: JSONException) {
+                    UtilityFunctions.dismissProgressDialog()
+                    e.printStackTrace()
+                }
+
+            } else {
+                UtilityFunctions.dismissProgressDialog()
+                val snackbar = Snackbar.make(
+                    coordinator_layout,
+                    R.string.UnableToConnect,
+                    Snackbar.LENGTH_LONG
+                ).setAction(R.string.Ok) { }
+                snackbar.show()
+            }
         }
     }
 }

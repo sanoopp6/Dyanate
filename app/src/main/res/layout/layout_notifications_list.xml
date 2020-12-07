@@ -30,6 +30,7 @@
         android:layout_height="wrap_content">
 
         <TextView
+                android:fontFamily="@font/droid_arabic_kufi"
             android:id="@+id/textView_title"
             style="@style/FontSizeSixteen"
             android:textColor="@color/lightBlueColor"
@@ -38,6 +39,7 @@
             android:layout_height="wrap_content" />
 
         <TextView
+                android:fontFamily="@font/droid_arabic_kufi"
             android:id="@+id/textView_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -46,6 +48,7 @@
             android:textColor="@color/blackColor" />
 
         <TextView
+                android:fontFamily="@font/droid_arabic_kufi"
             android:id="@+id/textView_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

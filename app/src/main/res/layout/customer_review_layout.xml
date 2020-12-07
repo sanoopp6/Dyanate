@@ -15,6 +15,7 @@
         android:paddingBottom="20dp">
 
         <TextView
+                android:fontFamily="@font/droid_arabic_kufi"
             android:id="@+id/ratingLabel"
             style="@style/FontSizeFifteen"
             android:layout_width="wrap_content"
@@ -28,7 +29,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-            <!--<TextView-->
+            <!--<TextView
+                android:fontFamily="@font/droid_arabic_kufi"-->
             <!--android:textColor="@color/colorBlack"-->
             <!--style="@style/FontSizeThirteen"-->
             <!--android:layout_gravity="start|top"-->
@@ -36,7 +38,8 @@
             <!--android:layout_width="wrap_content"-->
             <!--android:layout_height="wrap_content" />-->
 
-            <!--<TextView-->
+            <!--<TextView
+                android:fontFamily="@font/droid_arabic_kufi"-->
             <!--android:textColor="@color/colorBlack"-->
             <!--style="@style/FontSizeThirteen"-->
             <!--android:layout_gravity="end|top"-->

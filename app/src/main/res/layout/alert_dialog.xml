@@ -6,6 +6,7 @@
     android:orientation="vertical" >
 
     <TextView
+                android:fontFamily="@font/droid_arabic_kufi"
         android:textColor="@color/blackColor"
         android:id="@+id/txt_alert"
         android:layout_width="wrap_content"

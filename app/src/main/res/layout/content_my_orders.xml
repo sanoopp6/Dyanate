@@ -28,7 +28,8 @@
                 <!--android:layout_marginTop="@dimen/activity_vertical_margin"-->
                 <!--android:layout_height="wrap_content">-->
 
-                <!--<TextView-->
+                <!--<TextView
+                android:fontFamily="@font/droid_arabic_kufi"-->
                     <!--android:id="@+id/enter_port_priority_text_view"-->
                     <!--android:layout_width="match_parent"-->
                     <!--android:layout_height="33dp"-->
@@ -55,7 +56,8 @@
                 <!--android:layout_marginTop="10dp"-->
                 <!--android:background="@drawable/layout_view_item_background" >-->
 
-                <!--<TextView-->
+                <!--<TextView
+                android:fontFamily="@font/droid_arabic_kufi"-->
                     <!--android:layout_width="100dp"-->
                     <!--android:layout_height="match_parent"-->
                     <!--android:gravity="center_vertical"-->
@@ -68,7 +70,8 @@
                     <!--android:layout_width="1dp"-->
                     <!--android:layout_height="match_parent" />-->
 
-                <!--<TextView-->
+                <!--<TextView
+                android:fontFamily="@font/droid_arabic_kufi"-->
                     <!--android:id="@+id/order_no_value_text_view"-->
                     <!--android:layout_width="0dp"-->
                     <!--android:layout_height="match_parent"-->
@@ -87,7 +90,8 @@
                 <!--android:layout_marginTop="1dp"-->
                 <!--android:background="@drawable/layout_view_item_background" >-->
 
-                <!--<TextView-->
+                <!--<TextView
+                android:fontFamily="@font/droid_arabic_kufi"-->
                     <!--android:layout_width="100dp"-->
                     <!--android:layout_height="match_parent"-->
                     <!--android:gravity="center_vertical"-->
@@ -100,7 +104,8 @@
                     <!--android:layout_width="1dp"-->
                     <!--android:layout_height="match_parent" />-->
 
-                <!--<TextView-->
+                <!--<TextView
+                android:fontFamily="@font/droid_arabic_kufi"-->
                     <!--android:id="@+id/veh_name_value_text_view"-->
                     <!--android:layout_width="0dp"-->
                     <!--android:layout_height="match_parent"-->
@@ -119,7 +124,8 @@
                 <!--android:layout_marginTop="1dp"-->
                 <!--android:background="@drawable/layout_view_item_background" >-->
 
-                <!--<TextView-->
+                <!--<TextView
+                android:fontFamily="@font/droid_arabic_kufi"-->
                     <!--android:layout_width="100dp"-->
                     <!--android:layout_height="match_parent"-->
                     <!--android:gravity="center_vertical"-->
@@ -132,7 +138,8 @@
                     <!--android:layout_width="1dp"-->
                     <!--android:layout_height="match_parent" />-->
 
-                <!--<TextView-->
+                <!--<TextView
+                android:fontFamily="@font/droid_arabic_kufi"-->
                     <!--android:id="@+id/from_addr_value_text_view"-->
                     <!--android:layout_width="0dp"-->
                     <!--android:layout_height="match_parent"-->
@@ -151,7 +158,8 @@
                 <!--android:layout_marginTop="1dp"-->
                 <!--android:background="@drawable/layout_view_item_background" >-->
 
-                <!--<TextView-->
+                <!--<TextView
+                android:fontFamily="@font/droid_arabic_kufi"-->
                     <!--android:layout_width="100dp"-->
                     <!--android:layout_height="match_parent"-->
                     <!--android:gravity="center_vertical"-->
@@ -164,7 +172,8 @@
                     <!--android:layout_width="1dp"-->
                     <!--android:layout_height="match_parent" />-->
 
-                <!--<TextView-->
+                <!--<TextView
+                android:fontFamily="@font/droid_arabic_kufi"-->
                     <!--android:id="@+id/to_addr_value_text_view"-->
                     <!--android:layout_width="0dp"-->
                     <!--android:layout_height="match_parent"-->
@@ -183,7 +192,8 @@
                 <!--android:layout_marginTop="1dp"-->
                 <!--android:background="@drawable/layout_view_item_background" >-->
 
-                <!--<TextView-->
+                <!--<TextView
+                android:fontFamily="@font/droid_arabic_kufi"-->
                     <!--android:layout_width="100dp"-->
                     <!--android:layout_height="match_parent"-->
                     <!--android:gravity="center_vertical"-->
@@ -196,7 +206,8 @@
                     <!--android:layout_width="1dp"-->
                     <!--android:layout_height="match_parent" />-->
 
-                <!--<TextView-->
+                <!--<TextView
+                android:fontFamily="@font/droid_arabic_kufi"-->
                     <!--android:id="@+id/date_value_text_view"-->
                     <!--android:layout_width="0dp"-->
                     <!--android:layout_height="match_parent"-->
@@ -215,7 +226,8 @@
                 <!--android:layout_marginTop="1dp"-->
                 <!--android:background="@drawable/layout_view_item_background" >-->
 
-                <!--<TextView-->
+                <!--<TextView
+                android:fontFamily="@font/droid_arabic_kufi"-->
                     <!--android:layout_width="100dp"-->
                     <!--android:layout_height="match_parent"-->
                     <!--android:gravity="center_vertical"-->
@@ -228,7 +240,8 @@
                     <!--android:layout_width="1dp"-->
                     <!--android:layout_height="match_parent" />-->
 
-                <!--<TextView-->
+                <!--<TextView
+                android:fontFamily="@font/droid_arabic_kufi"-->
                     <!--android:id="@+id/time_value_text_view"-->
                     <!--android:layout_width="0dp"-->
                     <!--android:layout_height="match_parent"-->
@@ -247,7 +260,8 @@
                 <!--android:layout_marginTop="1dp"-->
                 <!--android:background="@drawable/layout_view_item_background" >-->
 
-                <!--<TextView-->
+                <!--<TextView
+                android:fontFamily="@font/droid_arabic_kufi"-->
                     <!--android:layout_width="100dp"-->
                     <!--android:layout_height="match_parent"-->
                     <!--android:gravity="center_vertical"-->
@@ -260,7 +274,8 @@
                     <!--android:layout_width="1dp"-->
                     <!--android:layout_height="match_parent" />-->
 
-                <!--<TextView-->
+                <!--<TextView
+                android:fontFamily="@font/droid_arabic_kufi"-->
                     <!--android:id="@+id/subject_value_text_view"-->
                     <!--android:layout_width="0dp"-->
                     <!--android:layout_height="match_parent"-->
@@ -279,7 +294,8 @@
                 <!--android:layout_marginTop="1dp"-->
                 <!--android:background="@drawable/layout_view_item_background" >-->
 
-                <!--<TextView-->
+                <!--<TextView
+                android:fontFamily="@font/droid_arabic_kufi"-->
                     <!--android:layout_width="100dp"-->
                     <!--android:layout_height="match_parent"-->
                     <!--android:gravity="center_vertical"-->
@@ -292,7 +308,8 @@
                     <!--android:layout_width="1dp"-->
                     <!--android:layout_height="match_parent" />-->
 
-                <!--<TextView-->
+                <!--<TextView
+                android:fontFamily="@font/droid_arabic_kufi"-->
                     <!--android:id="@+id/notes_value_text_view"-->
                     <!--android:layout_width="0dp"-->
                     <!--android:layout_height="match_parent"-->
@@ -311,7 +328,8 @@
                 <!--android:layout_marginTop="1dp"-->
                 <!--android:background="@drawable/layout_view_item_background" >-->
 
-                <!--<TextView-->
+                <!--<TextView
+                android:fontFamily="@font/droid_arabic_kufi"-->
                     <!--android:layout_width="100dp"-->
                     <!--android:layout_height="match_parent"-->
                     <!--android:gravity="center_vertical"-->
@@ -324,7 +342,8 @@
                     <!--android:layout_width="1dp"-->
                     <!--android:layout_height="match_parent" />-->
 
-                <!--<TextView-->
+                <!--<TextView
+                android:fontFamily="@font/droid_arabic_kufi"-->
                     <!--android:id="@+id/status_value_text_view"-->
                     <!--android:layout_width="0dp"-->
                     <!--android:layout_weight="1"-->

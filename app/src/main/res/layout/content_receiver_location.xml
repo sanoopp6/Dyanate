@@ -81,6 +81,7 @@
                     android:gravity="center">
 
                     <TextView
+                android:fontFamily="@font/droid_arabic_kufi"
                         android:id="@+id/you_are_here_text_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -125,6 +126,7 @@
                     android:layout_weight="1">
 
                     <TextView
+                android:fontFamily="@font/droid_arabic_kufi"
                         android:id="@+id/text_view_location_name"
                         style="@style/FontSizeTwelve"
                         android:layout_width="wrap_content"
@@ -207,6 +209,7 @@
             android:paddingLeft="10dp">
 
             <TextView
+                android:fontFamily="@font/droid_arabic_kufi"
                 android:id="@+id/type_location_text_view"
                 style="@style/FontSizeEleven"
                 android:layout_width="match_parent"
@@ -218,6 +221,7 @@
                 android:text="@string/TypeYourLocation" />
 
             <TextView
+                android:fontFamily="@font/droid_arabic_kufi"
                 android:id="@+id/text_view_province"
                 style="@style/FontSizeEleven"
                 android:layout_width="wrap_content"
@@ -241,7 +245,8 @@
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:background="@color/darkest_gray" />
+            android:background="@color/darkest_gray"
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/bookmark_location_image_view"
@@ -252,7 +257,8 @@
             android:layout_marginRight="3dp"
             android:scaleType="fitXY"
             android:scrollHorizontally="true"
-            android:src="@drawable/ic_bookmark" />
+            android:src="@drawable/ic_bookmark"
+            android:visibility="gone" />
 
     </LinearLayout>
 

@@ -68,6 +68,8 @@ class ConfirmFromToActivity : AppCompatActivity(), OnMapReadyCallback {
     internal var estimated_distance = ""
     internal var estimated_duration = ""
     internal var estimated_price = ""
+    internal var estimated_trip_price = ""
+    internal var estimated_labour_price = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,7 +90,9 @@ class ConfirmFromToActivity : AppCompatActivity(), OnMapReadyCallback {
                 } else {
                     ConnectionDetector.errorSnackbar(coordinator_layout)
                 }
-            } else { finish() }
+            } else {
+                finish()
+            }
         }
 
         customTitle(resources.getString(R.string.ConfirmTrip))
@@ -96,24 +100,34 @@ class ConfirmFromToActivity : AppCompatActivity(), OnMapReadyCallback {
         estimated_price = intent.getStringExtra("price")
         estimated_duration = intent.getStringExtra("time")
         estimated_distance = intent.getStringExtra("distance")
+        estimated_trip_price = intent.getStringExtra("trip_price")
+        estimated_labour_price = intent.getStringExtra("labour_price")
 
         var time = round(intent.getStringExtra("time").toDouble() / 60)
 
-        distanceStr = (round((intent.getStringExtra("distance").toDouble() / 1000))).toString() + getString(
-                    R.string.km)
+        distanceStr =
+            (round((intent.getStringExtra("distance").toDouble() / 1000))).toString() + getString(
+                R.string.km
+            )
         if (time > 60) {
-            durationStr = (time / 60).toString() + getString(R.string.hr) + (time % 60) + getString(R.string.min)
+            durationStr =
+                (time / 60).toString() + getString(R.string.hr) + (time % 60) + getString(R.string.min)
         } else {
             durationStr = "$time ${getString(R.string.min)}"
         }
 
-        price = intent.getStringExtra("price") + " SAR"
+        price = intent.getStringExtra("price") + " SR"
 
 
-        Ride.instance.distanceStr = resources.getString(R.string.Distance) + " : " + distanceStr + ", " + resources.getString(R.string.Duration) + " : " + durationStr
+        Ride.instance.distanceStr =
+            resources.getString(R.string.Distance) + " : " + distanceStr + ", " + resources.getString(
+                R.string.Duration
+            ) + " : " + durationStr
         txt_distance.text = Ride.instance.distanceStr
-        txt_price.text = "${getString(R.string.TripPrice)} ${intent.getStringExtra("trip_price")} SAR"
-        txt_labour_price.text = "${getString(R.string.LabourPrice)} ${intent.getStringExtra("labour_price")} SAR"
+        txt_price.text =
+            "${getString(R.string.TripPrice)} ${intent.getStringExtra("trip_price")} SR"
+        txt_labour_price.text =
+            "${getString(R.string.LabourPrice)} ${intent.getStringExtra("labour_price")} SR"
         installation_price.text = getString(R.string.InstallationCharge)
 
         try {
@@ -132,25 +146,44 @@ class ConfirmFromToActivity : AppCompatActivity(), OnMapReadyCallback {
 //        txt_distance.startAnimation(UtilityFunctions.blinkAnimation)
 
         btn_confirm_route.setOnClickListener {
-//            UtilityFunctions.showAlertOnActivity(this@ConfirmFromToActivity,
-//                    resources.getString(R.string.AreYouSure), resources.getString(R.string.Yes),
-//                    resources.getString(R.string.No), true, false,
-//                    {
-                        if (ConnectionDetector.isConnected(this@ConfirmFromToActivity)) {
-                            AddTripMasterBackground().execute()
-                        } else {
-                            ConnectionDetector.errorSnackbar(coordinator_layout)
-                        }
-//                    }, {})
+            UtilityFunctions.showAlertOnActivity(this@ConfirmFromToActivity,
+                resources.getString(R.string.AreYouSure), resources.getString(R.string.Yes),
+                resources.getString(R.string.No), true, false,
+                {
+                    if (ConnectionDetector.isConnected(this@ConfirmFromToActivity)) {
+                        AddTripMasterBackground().execute()
+                    } else {
+                        ConnectionDetector.errorSnackbar(coordinator_layout)
+                    }
+                }, {})
         }
 
         btn_show_details.setOnClickListener {
-            startActivity(Intent(this@ConfirmFromToActivity, ConfirmDetailsActivity::class.java)
-                .putExtra("estimated_price", estimated_price)
-                .putExtra("estimated_distance", estimated_distance)
-                .putExtra("estimated_duration", estimated_duration)
+            startActivity(
+                Intent(this@ConfirmFromToActivity, ConfirmDetailsActivity::class.java)
+                    .putExtra("estimated_price", estimated_price)
+                    .putExtra("estimated_distance", estimated_distance)
+                    .putExtra("estimated_duration", estimated_duration)
+                    .putExtra("estimated_trip_price", estimated_trip_price)
+                    .putExtra("estimated_labour_price", estimated_labour_price)
 
             )
+        }
+
+        btn_cancel.setOnClickListener {
+            UtilityFunctions.showAlertOnActivity(this@ConfirmFromToActivity,
+                resources.getString(R.string.AreYouSure), resources.getString(R.string.Yes),
+                resources.getString(R.string.No), true, false,
+                {
+
+                    Ride()
+                    startActivity(
+                        Intent(
+                            this@ConfirmFromToActivity,
+                            SenderLocationActivity::class.java
+                        )
+                    )
+                }, {})
         }
 
         image_view_map_change_icon.setOnClickListener {
@@ -187,15 +220,23 @@ class ConfirmFromToActivity : AppCompatActivity(), OnMapReadyCallback {
             } else {
                 ConnectionDetector.errorSnackbar(coordinator_layout)
             }
-        } else { finish() }
+        } else {
+            finish()
+        }
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
         try {
-            start = LatLng(Ride.instance.pickUpLatitude!!.toDouble(), Ride.instance.pickUpLongitude!!.toDouble())
-            stop = LatLng(Ride.instance.dropOffLatitude!!.toDouble(), Ride.instance.dropOffLongitude!!.toDouble())
+            start = LatLng(
+                Ride.instance.pickUpLatitude!!.toDouble(),
+                Ride.instance.pickUpLongitude!!.toDouble()
+            )
+            stop = LatLng(
+                Ride.instance.dropOffLatitude!!.toDouble(),
+                Ride.instance.dropOffLongitude!!.toDouble()
+            )
         } catch (e: Exception) {
             start = LatLng(0.0, 0.0)
             stop = LatLng(0.0, 0.0)
@@ -232,13 +273,31 @@ class ConfirmFromToActivity : AppCompatActivity(), OnMapReadyCallback {
         val marker1 = layoutInflater.inflate(R.layout.cab_marker_green, null)
 
         if (marker1 != null) {
-            startMarker = googleMap.addMarker(MarkerOptions().position(start).icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(this@ConfirmFromToActivity, marker1))))
+            startMarker = googleMap.addMarker(
+                MarkerOptions().position(start).icon(
+                    BitmapDescriptorFactory.fromBitmap(
+                        createDrawableFromView(
+                            this@ConfirmFromToActivity,
+                            marker1
+                        )
+                    )
+                )
+            )
         }
 
         val marker2 = layoutInflater.inflate(R.layout.cab_marker_red, null)
 
         if (marker2 != null) {
-            stopMarker = googleMap.addMarker(MarkerOptions().position(stop).icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(this@ConfirmFromToActivity, marker2))))
+            stopMarker = googleMap.addMarker(
+                MarkerOptions().position(stop).icon(
+                    BitmapDescriptorFactory.fromBitmap(
+                        createDrawableFromView(
+                            this@ConfirmFromToActivity,
+                            marker2
+                        )
+                    )
+                )
+            )
         }
 
         val url = getDirectionsUrl(start, stop)
@@ -364,7 +423,8 @@ class ConfirmFromToActivity : AppCompatActivity(), OnMapReadyCallback {
                         builder.include(position)
                         points.add(position)
 
-                    } catch (ignored: Exception) { }
+                    } catch (ignored: Exception) {
+                    }
                 }
 
                 lineOptions.addAll(points)
@@ -388,7 +448,7 @@ class ConfirmFromToActivity : AppCompatActivity(), OnMapReadyCallback {
 
         override fun onPreExecute() {
             super.onPreExecute()
-            UtilityFunctions.showProgressDialog (this@ConfirmFromToActivity)
+            UtilityFunctions.showProgressDialog(this@ConfirmFromToActivity)
         }
 
         override fun doInBackground(vararg param: Void): JSONObject? {
@@ -418,6 +478,8 @@ class ConfirmFromToActivity : AppCompatActivity(), OnMapReadyCallback {
             params["ArgTripMNoOfDrivers"] = "0"
             params["ArgTripMDistanceRadiusKm"] = "0"
             params["estimated_price"] = estimated_price
+            params["estimated_trip_price"] = estimated_trip_price
+            params["estimated_labour_price"] = estimated_labour_price
             params["estimated_distance"] = estimated_distance
             params["estimated_duration"] = estimated_duration
             if (Ride.instance.distanceStr != null) {
@@ -427,8 +489,15 @@ class ConfirmFromToActivity : AppCompatActivity(), OnMapReadyCallback {
             }
             params["required_persons"] = Ride.instance.requiredPersons
             params["unpack_and_install_requirement"] = Ride.instance.requiredUnpackAndInstall
+            params["loading_count"] = Ride.instance.loadingCount
+            params["unloading_count"] = Ride.instance.unloadingCount
+            params["is_loading_unloading_calculation"] = "1"
 
-            return jsonParser.makeHttpRequest(Constants.BASE_URL + "customer/add_trip", "POST", params)
+            return jsonParser.makeHttpRequest(
+                Constants.BASE_URL + "customer/add_trip",
+                "POST",
+                params
+            )
         }
 
         override fun onPostExecute(response: JSONObject?) {
@@ -446,18 +515,28 @@ class ConfirmFromToActivity : AppCompatActivity(), OnMapReadyCallback {
 
 
                         UtilityFunctions.showAlertOnActivity(this@ConfirmFromToActivity,
-                            getString(R.string.trip_added_successfully), resources.getString(R.string.Ok),
-                            "", false, false, {
-                                startActivity(Intent(this@ConfirmFromToActivity, SenderLocationActivity::class.java))
-                            }, {})
+                            getString(R.string.trip_added_successfully),
+                            resources.getString(R.string.Ok),
+                            "",
+                            false,
+                            false,
+                            {
+                                startActivity(
+                                    Intent(
+                                        this@ConfirmFromToActivity,
+                                        SenderLocationActivity::class.java
+                                    )
+                                )
+                            },
+                            {})
 
                         //                        intent.putExtra("driver", driver)
 
                     } else {
                         UtilityFunctions.dismissProgressDialog()
                         UtilityFunctions.showAlertOnActivity(this@ConfirmFromToActivity,
-                                response.getString("message"), resources.getString(R.string.Ok),
-                                "", false, false, {}, {})
+                            response.getString("message"), resources.getString(R.string.Ok),
+                            "", false, false, {}, {})
                     }
 
                 } catch (e: JSONException) {
@@ -466,7 +545,11 @@ class ConfirmFromToActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
             } else {
                 UtilityFunctions.dismissProgressDialog()
-                val snackbar = Snackbar.make(coordinator_layout, R.string.UnableToConnect, Snackbar.LENGTH_LONG).setAction(R.string.Ok) { }
+                val snackbar = Snackbar.make(
+                    coordinator_layout,
+                    R.string.UnableToConnect,
+                    Snackbar.LENGTH_LONG
+                ).setAction(R.string.Ok) { }
                 snackbar.show()
             }
         }
@@ -563,13 +646,12 @@ class ConfirmFromToActivity : AppCompatActivity(), OnMapReadyCallback {
             btnRetryWithAny.setOnClickListener {
                 alertDialog.dismiss()
                 Ride.instance.vehicleSizeId = "0"
-              //  UpdateTripMasterBackground().execute()
+                //  UpdateTripMasterBackground().execute()
             }
         }
 
         alertDialog.show()
     }
-
 
 
 //    @SuppressLint("StaticFieldLeak")
@@ -613,11 +695,12 @@ class ConfirmFromToActivity : AppCompatActivity(), OnMapReadyCallback {
 //    }
 
     @SuppressLint("StaticFieldLeak")
-    private inner class TripMasterStatusUpdateBackground internal constructor(internal var status: String) : AsyncTask<Void, Void, JSONObject>() {
+    private inner class TripMasterStatusUpdateBackground internal constructor(internal var status: String) :
+        AsyncTask<Void, Void, JSONObject>() {
 
         override fun onPreExecute() {
             super.onPreExecute()
-            UtilityFunctions.showProgressDialog (this@ConfirmFromToActivity)
+            UtilityFunctions.showProgressDialog(this@ConfirmFromToActivity)
         }
 
         override fun doInBackground(vararg param: Void): JSONObject? {
@@ -629,7 +712,9 @@ class ConfirmFromToActivity : AppCompatActivity(), OnMapReadyCallback {
 
             var BASE_URL = Constants.BASE_URL_EN + "TripMasterStatusUpdate"
 
-            if (sharedPreferences.getString(Constants.PREFS_LANG, "en")!!.equals("ar", ignoreCase = true)) {
+            if (sharedPreferences.getString(Constants.PREFS_LANG, "en")!!
+                    .equals("ar", ignoreCase = true)
+            ) {
                 BASE_URL = Constants.BASE_URL_AR + "TripMasterStatusUpdate"
             }
 
@@ -647,11 +732,18 @@ class ConfirmFromToActivity : AppCompatActivity(), OnMapReadyCallback {
                         if (goingBack) {
                             finish()
                         } else {
-                            startActivity(Intent(this@ConfirmFromToActivity, ShipmentDetActivity::class.java))
+                            startActivity(
+                                Intent(
+                                    this@ConfirmFromToActivity,
+                                    ShipmentDetActivity::class.java
+                                )
+                            )
                             finish()
                         }
                     }
-                } catch (e: JSONException) { e.printStackTrace() }
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                }
             }
         }
     }
@@ -659,11 +751,15 @@ class ConfirmFromToActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun createDrawableFromView(context: Context, view: View): Bitmap {
         val displayMetrics = DisplayMetrics()
         (context as Activity).windowManager.defaultDisplay.getMetrics(displayMetrics)
-        view.layoutParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
+        view.layoutParams = RelativeLayout.LayoutParams(
+            RelativeLayout.LayoutParams.WRAP_CONTENT,
+            RelativeLayout.LayoutParams.WRAP_CONTENT
+        )
         view.measure(displayMetrics.widthPixels, displayMetrics.heightPixels)
         view.layout(0, 0, displayMetrics.widthPixels, displayMetrics.heightPixels)
         view.buildDrawingCache()
-        val bitmap = Bitmap.createBitmap(view.measuredWidth, view.measuredHeight, Bitmap.Config.ARGB_8888)
+        val bitmap =
+            Bitmap.createBitmap(view.measuredWidth, view.measuredHeight, Bitmap.Config.ARGB_8888)
 
         val canvas = Canvas(bitmap)
         view.draw(canvas)

@@ -1,118 +1,172 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="20dp">
+    android:layout_marginBottom="20dp"
+    android:background="@drawable/rectangle_bg"
+    android:elevation="5dp">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:orientation="vertical">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/priceTextView"
-            style="@style/FontSizeSeventeen"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="97dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tripNoTextView"
+                style="@style/FontSizeSeventeen"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/droid_arabic_kufi"
+                android:gravity="center"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:textColor="#000"
+                android:textSize="16sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/darkest_gray" />
+
+            <TextView
+                android:id="@+id/priceTextView"
+                style="@style/FontSizeSeventeen"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/droid_arabic_kufi"
+                android:gravity="center"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:text="10"
+                android:textColor="@color/lightBlueColor"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/darkest_gray" />
+
+            <TextView
+                android:id="@+id/sarTextView"
+                style="@style/FontSizeFourteen"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:fontFamily="@font/droid_arabic_kufi"
+                android:text="@string/SAR"
+                android:textAlignment="center"
+                android:textColor="#000" />
+
+            <TextView
+                android:id="@+id/estimatedTextView"
+                style="@style/FontSizeFourteen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/droid_arabic_kufi"
+                android:text="@string/estimated"
+                android:textAlignment="center"
+                android:textColor="@color/darkest_gray"
+                android:textSize="10sp"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="@color/darkest_gray" />
+
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_weight="1"
             android:gravity="center"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:text="10"
-            android:textColor="@color/lightBlueColor"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/sarTextView"
-            style="@style/FontSizeFourteen"
+            <TextView
+                style="@style/FontSizeSixteen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/droid_arabic_kufi"
+                android:text="@string/Date"
+                android:textColor="@color/lightBlueColor" />
+
+            <TextView
+                android:id="@+id/dateTextView"
+                style="@style/FontSizeSixteen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/droid_arabic_kufi"
+                android:text="04/09/2018"
+                android:textColor="@color/darkest_gray"
+                android:textSize="14sp" />
+
+
+            <TextView
+                android:id="@+id/tripStatusTextView"
+                style="@style/FontSizeSixteen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/droid_arabic_kufi"
+                android:textColor="@color/darkest_gray"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/SAR"
-            android:textAlignment="center"
-            android:textColor="@color/darkest_gray" />
+            android:gravity="center"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/estimatedTextView"
-            style="@style/FontSizeFourteen"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/estimated"
-            android:textAlignment="center"
-            android:textColor="@color/darkest_gray"
-            android:textSize="10sp"
-            android:visibility="gone" />
+            <Button
+                android:id="@+id/detailsButton"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_gravity="center"
+                android:background="@drawable/layout_rect_white_lightblue"
+                android:text="@string/Details"
+                android:textColor="@color/lightBlueColor" />
+
+            <ImageView
+                android:id="@+id/whatsAppButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/whatspp_icon"
+                android:textColor="@color/lightBlueColor"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/rate_driver_text_view"
+                style="@style/FontSizeFourteen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/droid_arabic_kufi"
+                android:text="@string/rate_driver"
+                android:textColor="@color/blueColor"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+
+        <View
+            android:layout_width="15dp"
+            android:layout_height="match_parent" />
 
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <TextView
-            style="@style/FontSizeSixteen"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@string/Date"
-            android:textColor="@color/lightBlueColor" />
-
-        <TextView
-            android:id="@+id/dateTextView"
-            style="@style/FontSizeSixteen"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="04/09/2018"
-            android:textColor="@color/darkest_gray" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <Button
-            android:id="@+id/detailsButton"
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:layout_gravity="center"
-            android:background="@drawable/layout_rect_white_lightblue"
-            android:text="@string/Details"
-            android:textColor="@color/lightBlueColor" />
-
-        <ImageView
-            android:id="@+id/whatsAppButton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/whatspp_icon"
-            android:textColor="@color/lightBlueColor"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/rate_driver_text_view"
-            style="@style/FontSizeFourteen"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="@string/rate_driver"
-            android:textColor="@color/blueColor"
-            android:visibility="gone" />
-
-    </LinearLayout>
-
-
-    <View
-        android:layout_width="15dp"
-        android:layout_height="match_parent" />
-
-</LinearLayout>
+</androidx.cardview.widget.CardView>

@@ -32,6 +32,7 @@ object Constants {
 //    val IMG_URL                         = "https://dyanate.fast-prog.com/"
 //
 //    val BASE_URL                        = "http://10.0.2.2/dyanate/api/"
+//    val BASE_URL                        = "http://192.168.43.51/dyanate/api/"
     val DATE_URL                        = "http://myapi.dawammy.com.sa/ServiceEn.asmx/"
     val BASE_URL                        = "http://dyanate.eu-central-1.elasticbeanstalk.com/api/"
     val IMG_URL                         = "https://dyanate.s3.eu-central-1.amazonaws.com"
@@ -39,7 +40,7 @@ object Constants {
 
 
     val APP_NAME                        = "dyna"
-    val APP_VERSION                     = "2.6"
+    val APP_VERSION                     = "2.8"
 
     val SMS_ORIGIN                      = "DyanateApp"
     val OTP_DELIMITER                   = ":"

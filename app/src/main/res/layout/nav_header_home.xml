@@ -42,6 +42,7 @@
             <!--app:srcCompat="@drawable/ic_man_user" />-->
 
         <TextView
+                android:fontFamily="@font/droid_arabic_kufi"
             android:textColor="@color/blackColor"
             android:background="@android:color/transparent"
             style="@style/FontSizeTen"
@@ -56,6 +57,7 @@
     </FrameLayout>
 
     <TextView
+                android:fontFamily="@font/droid_arabic_kufi"
         android:textColor="@color/whiteColor"
         android:id="@+id/textView_nav_name"
         android:layout_width="match_parent"

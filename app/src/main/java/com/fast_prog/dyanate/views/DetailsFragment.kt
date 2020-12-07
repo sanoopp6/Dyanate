@@ -13,14 +13,18 @@ import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.fast_prog.dyanate.R
 import com.fast_prog.dyanate.models.Order
+import com.fast_prog.dyanate.models.Ride
 import com.fast_prog.dyanate.utilities.ConnectionDetector
 import com.fast_prog.dyanate.utilities.Constants
 import com.fast_prog.dyanate.utilities.JsonParser
 import com.fast_prog.dyanate.utilities.UtilityFunctions
+import com.fast_prog.dyanate.views.edit.EditSenderLocationActivity
+import kotlinx.android.synthetic.main.content_confirm_details.*
 import kotlinx.android.synthetic.main.fragment_details.view.*
 import org.json.JSONException
 import org.json.JSONObject
@@ -38,9 +42,17 @@ class DetailsFragment : Fragment() {
 
     internal var cancelFailedLabel = ""
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    lateinit var editTripButton: Button
+    lateinit var cancelTripButton: Button
 
-        sharedPreferences = activity!!.getSharedPreferences(Constants.PREFS_NAME, Context.MODE_PRIVATE)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+
+        sharedPreferences =
+            activity!!.getSharedPreferences(Constants.PREFS_NAME, Context.MODE_PRIVATE)
 
         val view = inflater.inflate(R.layout.fragment_details, container, false)
 
@@ -50,19 +62,31 @@ class DetailsFragment : Fragment() {
         okLabel = resources.getString(R.string.Ok)
         cancelFailedLabel = resources.getString(R.string.CancelFailed)
 
-        view.shipmentTitleTextView.text = String.format(Locale.getDefault(), "%s :", resources.getString(R.string.Shipment))
-        view.fromNameTitleTextView.text = String.format(Locale.getDefault(), "%s :", resources.getString(R.string.Name))
-        view.fromMobTitleTextView.text = String.format(Locale.getDefault(), "%s :", resources.getString(R.string.Mobile))
-        view.engDateTitleTextView.text = String.format(Locale.getDefault(), "%s :", resources.getString(R.string.Date))
-        view.arDateTitleTextView.text = String.format(Locale.getDefault(), "%s :", resources.getString(R.string.Date))
-        view.timeTitleTextView.text = String.format(Locale.getDefault(), "%s :", resources.getString(R.string.Time))
-        view.toNameTitleTextView.text = String.format(Locale.getDefault(), "%s :", resources.getString(R.string.Name))
-        view.toMobTitleTextView.text = String.format(Locale.getDefault(), "%s :", resources.getString(R.string.Mobile))
+        view.shipmentTitleTextView.text =
+            String.format(Locale.getDefault(), "%s :", resources.getString(R.string.Shipment))
+        view.fromNameTitleTextView.text =
+            String.format(Locale.getDefault(), "%s :", resources.getString(R.string.Name))
+        view.fromMobTitleTextView.text =
+            String.format(Locale.getDefault(), "%s :", resources.getString(R.string.Mobile))
+//        view.engDateTitleTextView.text =
+//            String.format(Locale.getDefault(), "%s :", resources.getString(R.string.Date))
+//        view.arDateTitleTextView.text =
+//            String.format(Locale.getDefault(), "%s :", resources.getString(R.string.Date))
+        view.timeTitleTextView.text =
+            String.format(Locale.getDefault(), "%s :", resources.getString(R.string.Time))
+        view.toNameTitleTextView.text =
+            String.format(Locale.getDefault(), "%s :", resources.getString(R.string.Name))
+        view.toMobTitleTextView.text =
+            String.format(Locale.getDefault(), "%s :", resources.getString(R.string.Mobile))
+
+        editTripButton = view.editTripButton
+        cancelTripButton = view.cancelTripButton
 
         view.tripNoTextView.text = order?.tripNo
 
         val flag = Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-        val colorSpan = ForegroundColorSpan(ContextCompat.getColor(activity!!, R.color.lightBlueColor))
+        val colorSpan =
+            ForegroundColorSpan(ContextCompat.getColor(activity!!, R.color.lightBlueColor))
         var builder = SpannableStringBuilder()
 
         var spannableString = SpannableString(resources.getString(R.string.Subject) + " : ")
@@ -77,53 +101,81 @@ class DetailsFragment : Fragment() {
         spannableString = SpannableString(resources.getString(R.string.Size) + " : ")
         spannableString.setSpan(colorSpan, 0, spannableString.length, flag)
         builder.append(spannableString)
-//        builder.append(order?.vehicleModel)
+        builder.append(order?.vehicleModel)
         view.vehicleTextView.text = builder
 
         view.fromNameTextView.text = order?.tripFromName
-        view.fromMobTextView.text = order?.tripFromMob?.trimStart{ it <= '+'}
+        view.fromMobTextView.text = order?.tripFromMob?.trimStart { it <= '+' }
         view.engDateTextView.text = order?.scheduleDate
         view.arDateTextView.text = order?.scheduleDate
         view.timeTextView.text = order?.scheduleTime
         view.toNameTextView.text = order?.tripToName
-        view.toMobTextView.text = order?.tripToMob?.trimStart{ it <= '+'}
+        view.toMobTextView.text = order?.tripToMob?.trimStart { it <= '+' }
+        view.estimatedValueTextView.text = order?.estimatedPrice + " " + getString(R.string.SAR)
+//        view.workersRequiredValueTextView.text = order?.workersRequired
+        view.loading_labour_count.text = getString(R.string.loading) + ": " + order?.loadingCount
+        view.unloading_labour_count.text =
+            getString(R.string.unloading) + ": " + order?.unloadingCount
+        if (order?.isUnpackInstallRequired == "1") {
+            view.installationRequiredValue.text = getString(R.string.Yes)
+        } else {
+            view.installationRequiredValue.text = getString(R.string.No)
+        }
 
-//        view.cancelTripButton.setOnClickListener {
-//            UtilityFunctions.showAlertOnActivity(activity!!,
-//                    resources.getString(R.string.AreYouSure), resources.getString(R.string.Yes),
-//                    resources.getString(R.string.No), true, false,
-//                    {
-//                        if (ConnectionDetector.isConnected(activity!!)) {
-//                            TripMasterStatusUpdateBackground(order?.tripId!!).execute()
-//                        }
-//                    }, {})
-//        }
+        if (order?.tripStatus!! == "2" || order?.tripStatus!! == "13") {
+            editTripButton.visibility = View.VISIBLE
+        }
+
+        if (order?.tripStatus!! == "2") {
+            cancelTripButton.visibility = View.VISIBLE
+        }
+
+        if (order?.is_loading_unloading_calculation == "0") {
+            editTripButton.visibility = View.GONE
+        }
+        view.cancelTripButton.setOnClickListener {
+            UtilityFunctions.showAlertOnActivity(activity!!,
+                resources.getString(R.string.AreYouSure), resources.getString(R.string.Yes),
+                resources.getString(R.string.No), true, false,
+                {
+                    if (ConnectionDetector.isConnected(activity!!)) {
+                        TripMasterStatusUpdateBackground(order?.tripId!!).execute()
+                    }
+                }, {})
+        }
+
+        view.editTripButton.setOnClickListener {
+            startActivity(
+                Intent(
+                    activity!!,
+                    EditSenderLocationActivity::class.java
+                ).putExtra("order", order!!)
+            )
+        }
 
         return view
     }
 
     @SuppressLint("StaticFieldLeak")
-    private inner class TripMasterStatusUpdateBackground internal constructor(internal var tripDMId: String) : AsyncTask<Void, Void, JSONObject>() {
+    private inner class TripMasterStatusUpdateBackground internal constructor(internal var tripDMId: String) :
+        AsyncTask<Void, Void, JSONObject>() {
 
         override fun onPreExecute() {
             super.onPreExecute()
-            UtilityFunctions.showProgressDialog (activity!!)
+            UtilityFunctions.showProgressDialog(activity!!)
         }
 
         override fun doInBackground(vararg param: Void): JSONObject? {
             val jsonParser = JsonParser()
             val params = HashMap<String, String>()
 
-            params["ArgTripMID"] = tripDMId
-            params["ArgTripMStatus"] = "4"
-
-            var BASE_URL = Constants.BASE_URL_EN + "TripMasterStatusUpdate"
-
-            if (sharedPreferences.getString(Constants.PREFS_LANG, "en")!!.equals("ar", ignoreCase = true)) {
-                BASE_URL = Constants.BASE_URL_AR + "TripMasterStatusUpdate"
-            }
-
-            return jsonParser.makeHttpRequest(BASE_URL, "POST", params)
+            params["trip_id"] = tripDMId
+            params["lang"] = sharedPreferences.getString(Constants.PREFS_LANG, "ar")!!
+            return jsonParser.makeHttpRequest(
+                Constants.BASE_URL + "customer/cancel_trip",
+                "POST",
+                params
+            )
         }
 
         override fun onPostExecute(response: JSONObject?) {
@@ -133,15 +185,14 @@ class DetailsFragment : Fragment() {
                 try {
                     if (response.getBoolean("status")) {
                         UtilityFunctions.showAlertOnActivity(activity!!,
-                                cancelSuccessLabel, okLabel, "", false, false,
-                                {
-                                    startActivity(Intent(activity!!, MyOrdersActivity::class.java))
-                                    activity!!.finish()
-                                }, {})
+                            cancelSuccessLabel, okLabel, "", false, false,
+                            {
+                                activity!!.finish()
+                            }, {})
 
                     } else {
                         UtilityFunctions.showAlertOnActivity(activity!!,
-                                cancelFailedLabel, okLabel, "", false, false, {}, {})
+                            cancelFailedLabel, okLabel, "", false, false, {}, {})
                     }
                 } catch (e: JSONException) {
                     e.printStackTrace()
