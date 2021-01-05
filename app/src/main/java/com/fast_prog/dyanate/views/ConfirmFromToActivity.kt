@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Bitmap
@@ -19,6 +20,16 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import com.amazonaws.mobile.client.AWSMobileClient
+import com.amazonaws.mobile.client.UserStateDetails
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferService
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferState
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility
+import com.amazonaws.regions.Region
+import com.amazonaws.regions.Regions
+import com.amazonaws.services.s3.AmazonS3Client
 import com.fast_prog.dyanate.R
 import com.fast_prog.dyanate.models.Ride
 import com.fast_prog.dyanate.utilities.*
@@ -28,7 +39,9 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.activity_change_nm_ph.*
 import kotlinx.android.synthetic.main.activity_confirm_from_to.*
+import kotlinx.android.synthetic.main.activity_confirm_from_to.coordinator_layout
 import kotlinx.android.synthetic.main.content_confirm_from_to.*
 import org.json.JSONException
 import org.json.JSONObject
@@ -38,8 +51,10 @@ import java.io.InputStream
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.round
+
 
 class ConfirmFromToActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -74,6 +89,7 @@ class ConfirmFromToActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_confirm_from_to)
+        applicationContext.startService(Intent(applicationContext, TransferService::class.java))
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -146,16 +162,7 @@ class ConfirmFromToActivity : AppCompatActivity(), OnMapReadyCallback {
 //        txt_distance.startAnimation(UtilityFunctions.blinkAnimation)
 
         btn_confirm_route.setOnClickListener {
-            UtilityFunctions.showAlertOnActivity(this@ConfirmFromToActivity,
-                resources.getString(R.string.AreYouSure), resources.getString(R.string.Yes),
-                resources.getString(R.string.No), true, false,
-                {
-                    if (ConnectionDetector.isConnected(this@ConfirmFromToActivity)) {
-                        AddTripMasterBackground().execute()
-                    } else {
-                        ConnectionDetector.errorSnackbar(coordinator_layout)
-                    }
-                }, {})
+            CheckIfAlreadyHavetrip().execute()
         }
 
         btn_show_details.setOnClickListener {
@@ -492,6 +499,11 @@ class ConfirmFromToActivity : AppCompatActivity(), OnMapReadyCallback {
             params["loading_count"] = Ride.instance.loadingCount
             params["unloading_count"] = Ride.instance.unloadingCount
             params["is_loading_unloading_calculation"] = "1"
+            params["building_level"] = Ride.instance.buildingLevel
+            params["from_location_in_arabic"] = Ride.instance.pickUpLocationNameArabic
+            params["to_location_in_arabic"] = Ride.instance.dropOffLocationNameArabic
+            params["store_name"] = Ride.instance.storeName
+            params["store_invoice_name"] = Ride.instance.storeInvoiceName
 
             return jsonParser.makeHttpRequest(
                 Constants.BASE_URL + "customer/add_trip",
@@ -513,7 +525,8 @@ class ConfirmFromToActivity : AppCompatActivity(), OnMapReadyCallback {
 //                        intent.putExtra("trip_id", tripID)
 //                        startActivity(intent)
 
-
+                        Ride.instance.storeInvoiceName = ""
+                        Ride.instance.invoiceImage = null
                         UtilityFunctions.showAlertOnActivity(this@ConfirmFromToActivity,
                             getString(R.string.trip_added_successfully),
                             resources.getString(R.string.Ok),
@@ -554,6 +567,80 @@ class ConfirmFromToActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
     }
+
+    fun uploadInvoice() {
+        val dateFormatter = SimpleDateFormat("dd_MM_yyyy_HH_mm_ss", Locale.US)
+        val now = Date()
+        Ride.instance.storeInvoiceName =
+            sharedPreferences.getString(
+                Constants.PREFS_USER_ID,
+                ""
+            ) + "_invoice_" + dateFormatter.format(
+                now
+            ) + Ride.instance.invoiceImage!!.absolutePath.substring(
+                Ride.instance.invoiceImage!!.absolutePath.lastIndexOf(
+                    "."
+                )
+            )
+
+//        var credentialsProvider = CognitoCachingCredentialsProvider(this@ChangeNmPhActivity,
+//            "eu-central-1:e91ba098-84fc-4fe6-b763-dc8a2eaf0773", Regions.EU_CENTRAL_1)
+//        var s3Client = AmazonS3Client(
+//            AWSMobileClient.getInstance(),
+//            Region.getRegion(Regions.EU_CENTRAL_1)
+//        )
+
+
+        val transferUtility = TransferUtility.builder()
+            .context(applicationContext)
+            .awsConfiguration(AWSMobileClient.getInstance().configuration)
+            .s3Client(
+                AmazonS3Client(
+                    AWSMobileClient.getInstance(),
+                    Region.getRegion(Regions.EU_CENTRAL_1)
+                )
+            ).defaultBucket("arn:aws:s3:::dyanate")
+            .build()
+        val uploadObserver = transferUtility.upload(
+            "customer/invoice/${Ride.instance.storeInvoiceName}",
+            Ride.instance.invoiceImage!!
+        )
+        uploadObserver.setTransferListener(object : TransferListener {
+            override fun onProgressChanged(id: Int, bytesCurrent: Long, bytesTotal: Long) {
+
+            }
+
+            override fun onStateChanged(id: Int, state: TransferState?) {
+
+                if (TransferState.COMPLETED == state) {
+
+                    runOnUiThread {
+                        UtilityFunctions.dismissProgressDialog()
+
+                    }
+                    AddTripMasterBackground().execute()
+                }
+            }
+
+            override fun onError(id: Int, ex: java.lang.Exception?) {
+
+                runOnUiThread {
+                    UtilityFunctions.dismissProgressDialog()
+                }
+                ex?.printStackTrace()
+                UtilityFunctions.showAlertOnActivity(this@ConfirmFromToActivity,
+                    getString(R.string.invoice_upload_failed),
+                    resources.getString(R.string.Ok).toString(),
+                    "",
+                    false,
+                    false,
+                    {},
+                    {})
+            }
+
+        })
+    }
+
 
 //    @SuppressLint("StaticFieldLeak")
 //    private inner class AutoAllocateNearestDriverByCustLatLngTripMIdBackground : AsyncTask<Void, Void, JSONObject>() {
@@ -767,4 +854,116 @@ class ConfirmFromToActivity : AppCompatActivity(), OnMapReadyCallback {
         return bitmap
     }
 
+    private inner class CheckIfAlreadyHavetrip :
+        AsyncTask<Void, Void, JSONObject?>() {
+
+        override fun onPreExecute() {
+            UtilityFunctions.showProgressDialog(this@ConfirmFromToActivity)
+
+        }
+
+        override fun doInBackground(vararg p0: Void?): JSONObject? {
+
+            val jsonParser = JsonParser()
+            val params = HashMap<String, String>()
+            params["lang"] = sharedPreferences.getString(Constants.PREFS_LANG, "en")!!
+            params["user_id"] = sharedPreferences.getString(Constants.PREFS_USER_ID, "")!!
+
+            return jsonParser.makeHttpRequest(
+                Constants.BASE_URL + "customer/check_if_already_have_trip",
+                "POST",
+                params
+            )
+        }
+
+        override fun onPostExecute(result: JSONObject?) {
+            UtilityFunctions.dismissProgressDialog()
+            if (result != null) {
+                if (result.getBoolean("status")) {
+
+                    var alertDialog = AlertDialog.Builder(this@ConfirmFromToActivity).create()
+
+                    alertDialog.setTitle("")
+
+                    alertDialog.setMessage(result.getString("message"))
+
+                    alertDialog.setButton(
+                        AlertDialog.BUTTON_POSITIVE, getString(R.string.AddATrip)
+                    ) { dialog, id ->
+                        if (Ride.instance.invoiceImage != null) {
+
+                            AWSMobileClient.getInstance().initialize(
+                                applicationContext,
+                                object : com.amazonaws.mobile.client.Callback<UserStateDetails> {
+                                    override fun onResult(result: UserStateDetails?) {
+
+                                        runOnUiThread {
+                                            UtilityFunctions.showProgressDialog(this@ConfirmFromToActivity)
+
+                                        }
+                                        uploadInvoice()
+                                    }
+
+                                    override fun onError(e: java.lang.Exception?) {
+                                        e?.printStackTrace()
+                                        ConnectionDetector.errorSnackbar(coordinator_layout as CoordinatorLayout)
+                                    }
+
+                                })
+
+                        } else {
+                            AddTripMasterBackground().execute()
+                        }
+                    }
+
+                    alertDialog.setButton(
+                        AlertDialog.BUTTON_NEGATIVE, getString(R.string.EditOrder)
+                    ) { dialog, id ->
+                        startActivity(Intent(this@ConfirmFromToActivity, MyOrdersActivity::class.java))
+                    }
+
+                    alertDialog.setButton(
+                        AlertDialog.BUTTON_NEUTRAL, getString(R.string.Cancel)
+                    ) { dialog, id ->
+                    }
+
+                    alertDialog.show()
+
+                } else {
+
+                    UtilityFunctions.showAlertOnActivity(this@ConfirmFromToActivity,
+                        resources.getString(R.string.AreYouSure), resources.getString(R.string.Yes),
+                        resources.getString(R.string.No), true, false,
+                        {
+                            if (ConnectionDetector.isConnected(this@ConfirmFromToActivity)) {
+                                if (Ride.instance.invoiceImage != null) {
+                                    AWSMobileClient.getInstance().initialize(
+                                        applicationContext,
+                                        object : com.amazonaws.mobile.client.Callback<UserStateDetails> {
+                                            override fun onResult(result: UserStateDetails?) {
+
+                                                runOnUiThread {
+                                                    UtilityFunctions.showProgressDialog(this@ConfirmFromToActivity)
+
+                                                }
+                                                uploadInvoice()
+                                            }
+
+                                            override fun onError(e: java.lang.Exception?) {
+                                                e?.printStackTrace()
+                                                ConnectionDetector.errorSnackbar(coordinator_layout as CoordinatorLayout)
+                                            }
+
+                                        })
+                                } else {
+                                    AddTripMasterBackground().execute()
+                                }
+                            } else {
+                                ConnectionDetector.errorSnackbar(coordinator_layout)
+                            }
+                        }, {})
+                }
+            }
+        }
+    }
 }

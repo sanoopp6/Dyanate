@@ -263,6 +263,7 @@
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_weight="1"
+                android:visibility="gone"
                 android:fontFamily="@font/droid_arabic_kufi"
                 android:text="@string/DateAr"
                 android:textColor="@color/lightBlueColor" />
@@ -289,6 +290,7 @@
                 style="@style/FontSizeFifteen"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:layout_weight="1"
                 android:fontFamily="@font/droid_arabic_kufi"
                 android:textColor="@color/darkest_gray" />

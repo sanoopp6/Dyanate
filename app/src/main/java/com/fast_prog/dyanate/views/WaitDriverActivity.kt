@@ -420,6 +420,7 @@ class WaitDriverActivity : AppCompatActivity(), OnMapReadyCallback {
 
             params["trip_id"] = tripID
             params["user_id"] = sharedPreferences.getString(Constants.PREFS_USER_ID, "")!!
+            params["lang"] = sharedPreferences.getString(Constants.PREFS_LANG, "ar")!!
 
             return jsonParser.makeHttpRequest(
                 Constants.BASE_URL + "customer/cancel_trip",

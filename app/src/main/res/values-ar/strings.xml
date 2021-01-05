@@ -334,4 +334,24 @@
     <string name="upload_and_download">عمال التحميل والتنزيل</string>
     <string name="loading">عمال تحميل‎</string>
     <string name="unloading">عمال تنزيل</string>
+    <string name="PayOnline">ادفع عبر الإنترنت</string>
+    <string name="paid">تم الدفع</string>
+    <string name="Total">مجموع</string>
+    <string name="PaymentCompleted">اكتمل الدفع بنجاح</string>
+    <string name="DistanceLessThan2Km">"المسافة قريبة جدا هل ترغب بالاستمرار "</string>
+    <string name="BuildingLevel">مستوى المبنى</string>
+    <string name="GroundFloor">الارض </string>
+    <string name="InstallationPrice">سعر التركيب</string>
+    <string name="StoreName">اسم المتجر (اختياري)</string>
+    <string name="AttachCopyOfInvoice">اسم المتجر (اختياري)</string>
+    <string name="AttachInvoice">إرفاق الفاتورة</string>
+    <string name="Delete">حذف</string>
+    <string name="StoreNameTitle">اسم المتجر</string>
+    <string name="InvoiceTitle">الفاتورة</string>
+    <string name="PlsEnterReason">الرجاء إدخال السبب</string>
+    <string name="TimeBetween8And10">علما أن التوصيل وتنفذ الطلبات يبداء من الساعه 10 م وحتي 8 ص</string>
+    <string name="CreateAnOrder">انشاء طلب</string>
+    <string name="SelectPickUpLocationText">يرجي اختيار موقع الاستلام</string>
+    <string name="ComingSoon">قريباً</string>
+    <string name="invoice_upload_failed">Invoice upload failed</string>
 </resources>

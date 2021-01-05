@@ -36,6 +36,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_edit_shipment_det_activity.*
 import kotlinx.android.synthetic.main.activity_edit_shipment_det_activity.btn_book_vehicle
+import kotlinx.android.synthetic.main.activity_edit_shipment_det_activity.coordinator_layout
 import kotlinx.android.synthetic.main.activity_edit_shipment_det_activity.countryCodePicker_from
 import kotlinx.android.synthetic.main.activity_edit_shipment_det_activity.countryCodePicker_to
 import kotlinx.android.synthetic.main.activity_edit_shipment_det_activity.edit_from_mobile
@@ -48,16 +49,21 @@ import kotlinx.android.synthetic.main.activity_edit_shipment_det_activity.img_fr
 import kotlinx.android.synthetic.main.activity_edit_shipment_det_activity.img_to_mobile
 import kotlinx.android.synthetic.main.activity_edit_shipment_det_activity.installNoButton
 import kotlinx.android.synthetic.main.activity_edit_shipment_det_activity.installYesButton
+import kotlinx.android.synthetic.main.activity_edit_shipment_det_activity.loading_check_box
+import kotlinx.android.synthetic.main.activity_edit_shipment_det_activity.loading_spinner_container
 import kotlinx.android.synthetic.main.activity_edit_shipment_det_activity.loading_spnr_worker_count
 import kotlinx.android.synthetic.main.activity_edit_shipment_det_activity.noButton
 import kotlinx.android.synthetic.main.activity_edit_shipment_det_activity.sameSenderCheckBox
 import kotlinx.android.synthetic.main.activity_edit_shipment_det_activity.second_disable_view
+import kotlinx.android.synthetic.main.activity_edit_shipment_det_activity.spnr_building_level
 import kotlinx.android.synthetic.main.activity_edit_shipment_det_activity.spnr_shipment_type
 import kotlinx.android.synthetic.main.activity_edit_shipment_det_activity.spnr_veh_size
 import kotlinx.android.synthetic.main.activity_edit_shipment_det_activity.third_disable_view
 import kotlinx.android.synthetic.main.activity_edit_shipment_det_activity.txt_datepicker1
 import kotlinx.android.synthetic.main.activity_edit_shipment_det_activity.txt_datepicker2
 import kotlinx.android.synthetic.main.activity_edit_shipment_det_activity.txt_timepicker
+import kotlinx.android.synthetic.main.activity_edit_shipment_det_activity.unloading_check_box
+import kotlinx.android.synthetic.main.activity_edit_shipment_det_activity.unloading_spinner_container
 import kotlinx.android.synthetic.main.activity_edit_shipment_det_activity.unloading_spnr_worker_count
 import kotlinx.android.synthetic.main.activity_edit_shipment_det_activity.unpackAndInstallContainer
 import kotlinx.android.synthetic.main.activity_edit_shipment_det_activity.unpackAndInstallMsgTextView
@@ -69,6 +75,8 @@ import kotlinx.android.synthetic.main.activity_edit_shipment_det_activity.vehicl
 import kotlinx.android.synthetic.main.activity_edit_shipment_det_activity.vehicle_two_text_view
 import kotlinx.android.synthetic.main.activity_edit_shipment_det_activity.worker_layout
 import kotlinx.android.synthetic.main.activity_edit_shipment_det_activity.yesButton
+import kotlinx.android.synthetic.main.activity_shipment_det.*
+import kotlinx.android.synthetic.main.content_shipment_det.*
 import net.alhazmy13.hijridatepicker.date.gregorian.GregorianDatePickerDialog
 import net.alhazmy13.hijridatepicker.date.hijri.HijriDatePickerDialog
 import org.json.JSONArray
@@ -113,14 +121,17 @@ class EditShipmentDetActivity : AppCompatActivity(), GregorianDatePickerDialog.O
 //    private var dateTimeUpdate: Thread? = null
 
     private var simpleDateFormat1 = SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH)
-    private var simpleDateFormat2 = SimpleDateFormat("yyyy/MM/dd hh:mm aa", Locale.ENGLISH)
-    private val simpleDateFormat3 = SimpleDateFormat("hh:mm aa", Locale.ENGLISH)
+    private var simpleDateFormat2 = SimpleDateFormat("yyyy/MM/dd HH:mm aa", Locale.ENGLISH)
+    private val simpleDateFormat3 = SimpleDateFormat("HH:mm aa", Locale.ENGLISH)
 
     private val PICK_CONTACT = 101
 
     private var progressDialog: Dialog? = null
 
     private lateinit var order: Order
+
+    internal lateinit var buildingLevelList: MutableList<String>
+    internal lateinit var buildingLevelAdapter: ArrayAdapter<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -157,6 +168,7 @@ class EditShipmentDetActivity : AppCompatActivity(), GregorianDatePickerDialog.O
 //        Ride.instance.requiredPersons = order.workersRequired
         Ride.instance.loadingCount = order.loadingCount
         Ride.instance.unloadingCount = order.unloadingCount
+        Ride.instance.buildingLevel = order.buildingLevel
 
         orderList = ArrayList()
         workerCountList = mutableListOf("1", "2", "3", "4")
@@ -214,6 +226,29 @@ class EditShipmentDetActivity : AppCompatActivity(), GregorianDatePickerDialog.O
             }
         }
 
+        buildingLevelList = mutableListOf(resources.getString(R.string.GroundFloor), "1", "2", "3", "4", "5")
+        buildingLevelAdapter = MySpinnerAdapter(
+            this@EditShipmentDetActivity,
+            android.R.layout.select_dialog_item,
+            buildingLevelList
+        )
+        spnr_building_level.adapter = buildingLevelAdapter
+
+        spnr_building_level.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+
+                }
+
+                override fun onItemSelected(
+                    p0: AdapterView<*>?,
+                    p1: View?,
+                    position: Int,
+                    p3: Long
+                ) {
+                    Ride.instance.buildingLevel = position.toString()
+                }
+            }
 
         spnr_shipment_type.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -509,6 +544,14 @@ class EditShipmentDetActivity : AppCompatActivity(), GregorianDatePickerDialog.O
         if (Ride.instance.fromMobile.isNotEmpty()) countryCodePicker_from.fullNumber =
             Ride.instance.fromMobile
         edit_to_name.setText(Ride.instance.toName)
+
+        try {
+            spnr_building_level.setSelection(Ride.instance.buildingLevel.toInt())
+        } catch (e: java.lang.Exception) {
+
+        }
+
+
         if (Ride.instance.toMobile.isNotEmpty()) countryCodePicker_to.fullNumber =
             Ride.instance.toMobile
 
@@ -728,6 +771,7 @@ class EditShipmentDetActivity : AppCompatActivity(), GregorianDatePickerDialog.O
             params["end_lat"] = Ride.instance.dropOffLatitude!!
             params["end_lon"] = Ride.instance.dropOffLongitude!!
             params["is_loading_unloading_calculation"] = "1"
+            params["building_level"] = Ride.instance.buildingLevel
 
             return jsonParser.makeHttpRequest(
                 Constants.BASE_URL + "customer/calculate_price",
@@ -1000,7 +1044,7 @@ class EditShipmentDetActivity : AppCompatActivity(), GregorianDatePickerDialog.O
 
         } catch (e: ParseException) {
             e.printStackTrace()
-            simpleDateFormat2 = SimpleDateFormat("yyyy/MM/dd hh:mm:ss aa", Locale.ENGLISH)
+            simpleDateFormat2 = SimpleDateFormat("yyyy/MM/dd HH:mm:ss aa", Locale.ENGLISH)
             try {
                 getCurrentDate = simpleDateFormat2.parse(simpleDateFormat2.format(Date()))
 
@@ -1010,12 +1054,12 @@ class EditShipmentDetActivity : AppCompatActivity(), GregorianDatePickerDialog.O
         }
 
         try {
-            simpleDateFormat2 = SimpleDateFormat("yyyy/MM/dd hh:mm aa", Locale.ENGLISH)
+            simpleDateFormat2 = SimpleDateFormat("yyyy/MM/dd HH:mm aa", Locale.ENGLISH)
             getMyDate = simpleDateFormat2.parse(getMyDateTime)
 
         } catch (e: ParseException) {
             e.printStackTrace()
-            simpleDateFormat2 = SimpleDateFormat("yyyy/MM/dd hh:mm:ss aa", Locale.ENGLISH)
+            simpleDateFormat2 = SimpleDateFormat("yyyy/MM/dd HH:mm:ss aa", Locale.ENGLISH)
             try {
                 getMyDate = simpleDateFormat2.parse(getMyDateTime)
 
@@ -1046,7 +1090,9 @@ class EditShipmentDetActivity : AppCompatActivity(), GregorianDatePickerDialog.O
                 "",
                 false,
                 false,
-                {},
+                {
+                    dateTimeAdd2HourUpdateTextView()
+                },
                 {})
             return false
         }
@@ -1067,6 +1113,83 @@ class EditShipmentDetActivity : AppCompatActivity(), GregorianDatePickerDialog.O
                 {})
             return false
         }
+
+        var calendarCheckNight = Calendar.getInstance()
+        calendarCheckNight.time = getMyDate
+
+        if ((calendarCheckNight.get(Calendar.HOUR_OF_DAY) > 21) || (calendarCheckNight.get(Calendar.HOUR_OF_DAY) < 8 )) {
+
+            var hour = calendarCheckNight.get(Calendar.HOUR_OF_DAY)
+            var timeToAdd = 0
+            if (hour == 22) {
+                timeToAdd = 10
+            } else if (hour == 23){
+                timeToAdd = 9
+            } else if (hour == 24) {
+                timeToAdd = 8
+            } else {
+                timeToAdd = 8 - hour
+            }
+
+            calendarCheckNight.add(Calendar.HOUR, timeToAdd)
+
+            UtilityFunctions.showAlertOnActivity(this@EditShipmentDetActivity,
+                getString(R.string.TimeBetween8And10),
+                resources.getString(R.string.Ok),
+                "",
+                false,
+                false,
+                {
+
+                    var monthOfYear = calendarCheckNight.get(Calendar.MONTH)
+                    monthOfYear += 1
+                    var dateString: String
+
+                    if (monthOfYear < 10)
+                        dateString = calendarCheckNight.get(Calendar.YEAR).toString() + "/0" + monthOfYear
+                    else
+                        dateString = calendarCheckNight.get(Calendar.YEAR).toString() + "/" + monthOfYear
+
+                    if (calendarCheckNight.get(Calendar.DAY_OF_MONTH) < 10) {
+                        dateString += "/0" + calendarCheckNight.get(Calendar.DAY_OF_MONTH)
+                    } else
+                        dateString += "/" + calendarCheckNight.get(Calendar.DAY_OF_MONTH)
+
+                    if (ConnectionDetector.isConnected(this@EditShipmentDetActivity)) {
+                        GetDateBackground(true, dateString).execute()
+                    } else {
+                        ConnectionDetector.errorSnackbar(coordinator_layout)
+                    }
+
+                    val AM_PM: String
+                    var time: String
+
+                    if (calendarCheckNight.get(Calendar.HOUR_OF_DAY) < 12) {
+                        AM_PM = "AM"
+                    } else {
+                        AM_PM = "PM"
+                    }
+
+                    if (calendarCheckNight.get(Calendar.HOUR_OF_DAY) < 10) {
+                        time = "0${calendarCheckNight.get(Calendar.HOUR_OF_DAY)}:"
+                    } else {
+                        time = calendarCheckNight.get(Calendar.HOUR_OF_DAY).toString() + ":"
+                    }
+
+                    if (calendarCheckNight.get(Calendar.MINUTE) < 10) {
+                        time += "0${calendarCheckNight.get(Calendar.MINUTE)} $AM_PM"
+                    } else {
+                        time += calendarCheckNight.get(Calendar.MINUTE).toString() + " " + AM_PM
+                    }
+
+                    txt_timepicker.text = time
+                    Ride.instance.time = time
+
+                },
+                {})
+            return false
+        }
+
 
         if (toName.isEmpty()) {
             UtilityFunctions.showAlertOnActivity(this@EditShipmentDetActivity,
@@ -1100,6 +1223,49 @@ class EditShipmentDetActivity : AppCompatActivity(), GregorianDatePickerDialog.O
         Ride.instance.toMobile = toNumber
 
         return true
+    }
+
+    private fun dateTimeAdd2HourUpdateTextView() {
+        val cal = Calendar.getInstance()
+        cal.add(Calendar.HOUR, 2)
+        cal.add(Calendar.MINUTE, 2)
+        val date = cal.time
+        var temp: String
+        val getMyDateTime = txt_datepicker1.text.toString().trim()
+
+        if (getMyDateTime.isNotEmpty()) {
+            var getMyDate: Date? = null
+
+            try {
+                getMyDate = simpleDateFormat1.parse(getMyDateTime)
+            } catch (e: ParseException) {
+                e.printStackTrace()
+            }
+
+            if (getMyDate!!.before(date) || getMyDate == date) {
+                temp = simpleDateFormat3.format(date)
+                Ride.instance.time = temp
+                txt_timepicker.text = temp
+
+
+                Log.d("date_", temp)
+
+                temp = simpleDateFormat1.format(date)
+
+                if (ConnectionDetector.isConnected(this@EditShipmentDetActivity)) {
+                    GetDateBackground(true, temp).execute()
+                }
+            }
+        } else {
+            temp = simpleDateFormat3.format(date)
+            Ride.instance.time = temp
+            txt_timepicker.text = temp
+            temp = simpleDateFormat1.format(date)
+
+            if (ConnectionDetector.isConnected(this@EditShipmentDetActivity)) {
+                GetDateBackground(true, temp).execute()
+            }
+        }
     }
 
     fun stringContainsNumber(s: String?): Boolean {

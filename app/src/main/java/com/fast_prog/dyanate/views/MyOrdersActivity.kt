@@ -19,10 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fast_prog.dyanate.R
 import com.fast_prog.dyanate.models.Order
-import com.fast_prog.dyanate.utilities.ConnectionDetector
-import com.fast_prog.dyanate.utilities.Constants
-import com.fast_prog.dyanate.utilities.JsonParser
-import com.fast_prog.dyanate.utilities.UtilityFunctions
+import com.fast_prog.dyanate.utilities.*
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_my_orders.*
 import kotlinx.android.synthetic.main.content_my_orders.*
@@ -49,9 +46,13 @@ class MyOrdersActivity : AppCompatActivity() {
 
     internal lateinit var sharedPreferences: SharedPreferences
 
+    protected var mMyApp: DynateApplication? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_my_orders)
+
+        mMyApp = this.applicationContext as DynateApplication
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -114,9 +115,10 @@ class MyOrdersActivity : AppCompatActivity() {
         }
     }
 
+
     override fun onResume() {
         super.onResume()
-
+        mMyApp!!.setCurrentActivity(this)
         if (ConnectionDetector.isConnected(applicationContext)) {
             TripMasterListBackground().execute()
         } else {
@@ -124,8 +126,24 @@ class MyOrdersActivity : AppCompatActivity() {
         }
     }
 
+
+    override fun onPause() {
+        clearReferences()
+        super.onPause()
+    }
+
+    override fun onDestroy() {
+        clearReferences()
+        super.onDestroy()
+    }
+
+    private fun clearReferences() {
+        val currActivity = mMyApp!!.getCurrentActivity()
+        if (this == currActivity) mMyApp!!.setCurrentActivity(null)
+    }
+
     @SuppressLint("StaticFieldLeak")
-    private inner class TripMasterListBackground : AsyncTask<Void, Void, JSONObject>() {
+    public inner class TripMasterListBackground : AsyncTask<Void, Void, JSONObject>() {
 
         override fun onPreExecute() {
             super.onPreExecute()
@@ -224,7 +242,7 @@ class MyOrdersActivity : AppCompatActivity() {
                                     jsonArr.getJSONObject(i).getString("driver_id").trim()
                                 order.driverMobileNumber =
                                     jsonArr.getJSONObject(i).getString("driver_mobile").trim()
-                                    order.vehicleSizeID =
+                                order.vehicleSizeID =
                                     jsonArr.getJSONObject(i).getString("vehicle_size_id").trim()
                                 order.isUnpackInstallRequired =
                                     jsonArr.getJSONObject(i).getString("unpack_install_required")
@@ -244,7 +262,32 @@ class MyOrdersActivity : AppCompatActivity() {
                                 order.unloadingCount =
                                     jsonArr.getJSONObject(i).getString("unloading_count")
                                 order.is_loading_unloading_calculation =
-                                    jsonArr.getJSONObject(i).getString("is_loading_unloading_calculation")
+                                    jsonArr.getJSONObject(i)
+                                        .getString("is_loading_unloading_calculation")
+                                order.paymentStatus =
+                                    jsonArr.getJSONObject(i)
+                                        .getString("payment_status")
+                                order.paymentID =
+                                    jsonArr.getJSONObject(i)
+                                        .getString("payment_id")
+                                order.paymentMessage =
+                                    jsonArr.getJSONObject(i)
+                                        .getString("payment_message")
+                                order.paidDate =
+                                    jsonArr.getJSONObject(i)
+                                        .getString("paid_date")
+                                order.buildingLevel =
+                                    jsonArr.getJSONObject(i)
+                                        .getString("building_level")
+                                order.tripPrice =
+                                    jsonArr.getJSONObject(i)
+                                        .getString("estimated_trip_price")
+                                order.labourPrice =
+                                    jsonArr.getJSONObject(i)
+                                        .getString("estimated_labour_price")
+                                order.installationPrice = jsonArr.getJSONObject(i)
+                                    .getString("installation_charge")
+
                                 ordersArrayList!!.add(order)
 
                                 //if (selectedId != null && selectedId == order.tripId) {
@@ -282,10 +325,12 @@ class MyOrdersActivity : AppCompatActivity() {
             var priceTextView: TextView = v.findViewById(R.id.priceTextView) as TextView
             var tripNoTextView: TextView = v.findViewById(R.id.tripNoTextView) as TextView
             var tripStatusTextView: TextView = v.findViewById(R.id.tripStatusTextView) as TextView
+            var installationChargeTextView: TextView = v.findViewById(R.id.installationChargeTextView) as TextView
             var dateTextView: TextView = v.findViewById(R.id.dateTextView) as TextView
-            var sarTextView: TextView = v.findViewById(R.id.sarTextView) as TextView
-            var estimatedTextView: TextView = v.findViewById(R.id.estimatedTextView) as TextView
+//            var sarTextView: TextView = v.findViewById(R.id.sarTextView) as TextView
+//            var estimatedTextView: TextView = v.findViewById(R.id.estimatedTextView) as TextView
             var detailsButton: Button = v.findViewById(R.id.detailsButton) as Button
+            var payOnlineButton: Button = v.findViewById(R.id.payOnlineButton) as Button
             var whatsAppButton: ImageView = v.findViewById(R.id.whatsAppButton) as ImageView
             var rate_driver_text_view: TextView =
                 v.findViewById(R.id.rate_driver_text_view) as TextView
@@ -309,8 +354,23 @@ class MyOrdersActivity : AppCompatActivity() {
 //            }
 
             if (ordersArrayList!![position].tripStatus == "11") {
-                holder.rate_driver_text_view.visibility = View.VISIBLE
                 holder.whatsAppButton.visibility = View.GONE
+            }
+
+            holder.rate_driver_text_view.visibility = View.VISIBLE
+            holder.installationChargeTextView.text  = ordersArrayList!![position].installationPrice + " " + resources.getString(R.string.SAR)
+
+
+            if ((ordersArrayList!![position].tripStatus == "13" || ordersArrayList!![position].tripStatus == "7" || ordersArrayList!![position].tripStatus == "10") && ordersArrayList!![position].paymentStatus.toLowerCase() != "paid")  {
+                holder.payOnlineButton.visibility = View.VISIBLE
+            }
+
+
+            if (ordersArrayList!![position].paymentStatus == "paid") {
+
+                holder.payOnlineButton.visibility = View.VISIBLE
+                holder.payOnlineButton.text = getString(R.string.paid)
+                holder.payOnlineButton.isEnabled = false
             }
 
             holder.tripNoTextView.text = ordersArrayList!![position].tripNo
@@ -323,6 +383,19 @@ class MyOrdersActivity : AppCompatActivity() {
                 holder.tripStatusTextView.text = getString(R.string.on_trip)
             } else if (ordersArrayList!![position].tripStatus == "11") {
                 holder.tripStatusTextView.text = getString(R.string.trip_finished)
+            }
+
+            holder.payOnlineButton.setOnClickListener {
+
+                startActivity(Intent(this@MyOrdersActivity, PaymentActivity::class.java)
+                    .putExtra("trip_no", ordersArrayList!![position].tripNo)
+                    .putExtra("trip_price", ordersArrayList!![position].tripPrice)
+                    .putExtra("labour_price", ordersArrayList!![position].labourPrice)
+                    .putExtra("total_price", ordersArrayList!![position].estimatedPrice)
+                    .putExtra("installation_price", ordersArrayList!![position].installationPrice)
+                    .putExtra("payment_type", "creditcard")
+                    .putExtra("trip_id", ordersArrayList!![position].tripId)
+                )
             }
 
             holder.rate_driver_text_view.setOnClickListener {
@@ -348,8 +421,7 @@ class MyOrdersActivity : AppCompatActivity() {
                     if (rating <= 0f) {
 
                         UtilityFunctions.showAlertOnActivity(this@MyOrdersActivity,
-                            getString(R.string.pls_add_your_rating)
-                            ,
+                            getString(R.string.pls_add_your_rating),
                             getString(R.string.ok),
                             "",
                             false,
@@ -361,8 +433,7 @@ class MyOrdersActivity : AppCompatActivity() {
 
                     if (notes.isEmpty()) {
                         UtilityFunctions.showAlertOnActivity(this@MyOrdersActivity,
-                            getString(R.string.pls_add_your_rating)
-                            ,
+                            getString(R.string.pls_add_your_rating),
                             getString(R.string.ok),
                             "",
                             false,
@@ -393,14 +464,14 @@ class MyOrdersActivity : AppCompatActivity() {
                 startActivity(i)
             }
 
-            holder.priceTextView.text = ordersArrayList!![position].tripDRate
+            holder.priceTextView.text = ordersArrayList!![position].tripDRate + " " + resources.getString(R.string.SAR)
             holder.dateTextView.text =
                 ordersArrayList!![position].scheduleDate + " " + ordersArrayList!![position].scheduleTime
 
             if (ordersArrayList!![position].tripDRate.isNullOrEmpty()) {
                 //holder.sarTextView.text = ""
 //                holder.estimatedTextView.visibility = View.VISIBLE
-                holder.priceTextView.text = ordersArrayList!![position].estimatedPrice
+                holder.priceTextView.text = ordersArrayList!![position].estimatedPrice + " " + resources.getString(R.string.SAR)
             }
 
             holder.detailsButton.setOnClickListener {
@@ -591,13 +662,17 @@ class MyOrdersActivity : AppCompatActivity() {
                                     ordersJSONArray.getJSONObject(i).getJSONObject("0")
                                         .getString("name").trim()
                                 order.driverMobileNumber =
-                                    "+${ordersJSONArray.getJSONObject(i).getJSONObject("0")
-                                        .getString(
-                                            "country_code"
-                                        ).trim()}${ordersJSONArray.getJSONObject(i)
-                                        .getJSONObject("0").getString(
-                                            "mobile_number"
-                                        ).trim()}"
+                                    "+${
+                                        ordersJSONArray.getJSONObject(i).getJSONObject("0")
+                                            .getString(
+                                                "country_code"
+                                            ).trim()
+                                    }${
+                                        ordersJSONArray.getJSONObject(i)
+                                            .getJSONObject("0").getString(
+                                                "mobile_number"
+                                            ).trim()
+                                    }"
 
                                 Log.d("url_", order!!.driverName)
                             }

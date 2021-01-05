@@ -1,6 +1,7 @@
 package com.fast_prog.dyanate.views
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -14,6 +15,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
+import android.widget.RatingBar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.fast_prog.dyanate.R
@@ -122,7 +125,7 @@ class DetailsFragment : Fragment() {
             view.installationRequiredValue.text = getString(R.string.No)
         }
 
-        if (order?.tripStatus!! == "2" || order?.tripStatus!! == "13") {
+        if (order?.tripStatus!! == "2" || order?.tripStatus!! == "13" || order?.tripStatus!! == "9" || order?.tripStatus!! == "8" || order?.tripStatus!! == "15") {
             editTripButton.visibility = View.VISIBLE
         }
 
@@ -134,14 +137,49 @@ class DetailsFragment : Fragment() {
             editTripButton.visibility = View.GONE
         }
         view.cancelTripButton.setOnClickListener {
-            UtilityFunctions.showAlertOnActivity(activity!!,
-                resources.getString(R.string.AreYouSure), resources.getString(R.string.Yes),
-                resources.getString(R.string.No), true, false,
-                {
-                    if (ConnectionDetector.isConnected(activity!!)) {
-                        TripMasterStatusUpdateBackground(order?.tripId!!).execute()
-                    }
-                }, {})
+//            UtilityFunctions.showAlertOnActivity(activity!!,
+//                resources.getString(R.string.AreYouSure), resources.getString(R.string.Yes),
+//                resources.getString(R.string.No), true, false,
+//                {
+//                    if (ConnectionDetector.isConnected(activity!!)) {
+//                        TripMasterStatusUpdateBackground(order?.tripId!!).execute()
+//                    }
+//                }, {})
+
+
+            val builder = AlertDialog.Builder(activity!!)
+            val inflaterAlert =
+                activity!!.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+            val viewDialog = inflaterAlert.inflate(R.layout.cancel_reason_layout, null)
+            builder.setView(viewDialog)
+            val dialog = builder.create()
+
+            val buttonSubmit = viewDialog.findViewById<Button>(R.id.submitButton)
+            val reasonEditText = viewDialog.findViewById<EditText>(R.id.reasonET)
+
+
+            buttonSubmit.setOnClickListener {
+                dialog.dismiss()
+
+                var reason = reasonEditText.text.toString().trim()
+                if (reason.isEmpty()) {
+                    UtilityFunctions.showAlertOnActivity(activity!!,
+                        getString(R.string.pls_add_your_rating),
+                        getString(R.string.ok),
+                        "",
+                        false,
+                        true,
+                        {},
+                        {})
+                    return@setOnClickListener
+                }
+
+
+                TripMasterStatusUpdateBackground(order?.tripId!!, reason).execute()
+            }
+
+            dialog.setCancelable(true)
+            dialog.show()
         }
 
         view.editTripButton.setOnClickListener {
@@ -157,7 +195,7 @@ class DetailsFragment : Fragment() {
     }
 
     @SuppressLint("StaticFieldLeak")
-    private inner class TripMasterStatusUpdateBackground internal constructor(internal var tripDMId: String) :
+    private inner class TripMasterStatusUpdateBackground internal constructor(internal var tripDMId: String, internal var reason: String) :
         AsyncTask<Void, Void, JSONObject>() {
 
         override fun onPreExecute() {
@@ -171,6 +209,7 @@ class DetailsFragment : Fragment() {
 
             params["trip_id"] = tripDMId
             params["lang"] = sharedPreferences.getString(Constants.PREFS_LANG, "ar")!!
+            params["reason"] = reason
             return jsonParser.makeHttpRequest(
                 Constants.BASE_URL + "customer/cancel_trip",
                 "POST",

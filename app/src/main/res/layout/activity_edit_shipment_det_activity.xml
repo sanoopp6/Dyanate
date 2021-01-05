@@ -684,6 +684,37 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:fontFamily="@font/droid_arabic_kufi"
+                    android:text="@string/BuildingLevel"
+                    android:textColor="@color/lightBlueColor" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <Spinner
+                        android:id="@+id/spnr_building_level"
+                        style="@style/FontSizeFifteen"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:background="@drawable/layout_rect_tranparent_grey"
+                        android:textAlignment="center"
+                        android:textColor="@color/blackColor" />
+
+                    <ImageView
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:layout_gravity="center_vertical|end"
+                        android:layout_marginEnd="3dp"
+                        android:src="@drawable/ccp_down_arrow"></ImageView>
+
+                </FrameLayout>
+
+                <TextView
+                    style="@style/FontSizeFifteen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/droid_arabic_kufi"
                     android:text="@string/DateAndTime"
                     android:textColor="@color/lightBlueColor" />
 

@@ -100,6 +100,9 @@
             android:name=".views.SenderLocationActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".views.PaymentActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".views.LoginActivity"
             android:screenOrientation="portrait" >
 

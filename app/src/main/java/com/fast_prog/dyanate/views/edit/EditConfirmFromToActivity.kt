@@ -455,6 +455,9 @@ class EditConfirmFromToActivity : AppCompatActivity(), OnMapReadyCallback {
             params["loading_count"] = Ride.instance.loadingCount
             params["unloading_count"] = Ride.instance.unloadingCount
             params["is_loading_unloading_calculation"] = "1"
+            params["building_level"] = Ride.instance.buildingLevel
+            params["from_location_in_arabic"] = Ride.instance.pickUpLocationNameArabic
+            params["to_location_in_arabic"] = Ride.instance.dropOffLocationNameArabic
 
             return jsonParser.makeHttpRequest(
                 Constants.BASE_URL + "customer/update_trip_customer",

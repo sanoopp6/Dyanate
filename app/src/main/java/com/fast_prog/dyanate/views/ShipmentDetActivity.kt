@@ -1,30 +1,35 @@
 package com.fast_prog.dyanate.views
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.app.AlertDialog
 import android.app.Dialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.database.Cursor
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.provider.ContactsContract
+import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityCompat
+import androidx.core.content.FileProvider
 import com.fast_prog.dyanate.R
 import com.fast_prog.dyanate.models.Order
 import com.fast_prog.dyanate.models.Ride
@@ -39,6 +44,9 @@ import net.alhazmy13.hijridatepicker.date.hijri.HijriDatePickerDialog
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.IOException
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -58,6 +66,7 @@ class ShipmentDetActivity : AppCompatActivity(), GregorianDatePickerDialog.OnDat
     internal lateinit var vehicleSizeIdList: MutableList<String>
     internal lateinit var vehicleImageList: MutableList<String>
 
+
     internal lateinit var vehicleSizeAdapter: ArrayAdapter<String>
 
     internal lateinit var shipmentTypeArray: JSONArray
@@ -69,6 +78,10 @@ class ShipmentDetActivity : AppCompatActivity(), GregorianDatePickerDialog.OnDat
     internal lateinit var shipmentTypeAdapter: ArrayAdapter<String>
     internal lateinit var workerCountAdapter: ArrayAdapter<String>
 
+
+    internal lateinit var buildingLevelList: MutableList<String>
+    internal lateinit var buildingLevelAdapter: ArrayAdapter<String>
+
     internal var runThread: Boolean? = null
 
     private lateinit var gpsTracker: GPSTracker
@@ -78,12 +91,19 @@ class ShipmentDetActivity : AppCompatActivity(), GregorianDatePickerDialog.OnDat
 //    private var dateTimeUpdate: Thread? = null
 
     private var simpleDateFormat1 = SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH)
-    private val simpleDateFormat2 = SimpleDateFormat("yyyy/MM/dd hh:mm aa", Locale.ENGLISH)
-    private val simpleDateFormat3 = SimpleDateFormat("hh:mm aa", Locale.ENGLISH)
+    private val simpleDateFormat2 = SimpleDateFormat("yyyy/MM/dd HH:mm aa", Locale.ENGLISH)
+    private val simpleDateFormat3 = SimpleDateFormat("HH:mm aa", Locale.ENGLISH)
 
     private val PICK_CONTACT = 101
 
     private var progressDialog: Dialog? = null
+
+    private val RESULT_LOAD_IMAGE = 103
+    private val TAKE_PHOTO_CODE = 104
+
+    private val MY_PERMISSIONS_REQUEST_CAMERA = 99
+
+    private var mCurrentInvoicePhotoPath: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -200,6 +220,33 @@ class ShipmentDetActivity : AppCompatActivity(), GregorianDatePickerDialog.OnDat
             }
             DisplayPrice().execute()
         }
+
+
+        buildingLevelList =
+            mutableListOf(resources.getString(R.string.GroundFloor), "1", "2", "3", "4", "5")
+        buildingLevelAdapter = MySpinnerAdapter(
+            this@ShipmentDetActivity,
+            android.R.layout.select_dialog_item,
+            buildingLevelList
+        )
+        spnr_building_level.adapter = buildingLevelAdapter
+
+        spnr_building_level.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+
+                }
+
+                override fun onItemSelected(
+                    p0: AdapterView<*>?,
+                    p1: View?,
+                    position: Int,
+                    p3: Long
+                ) {
+                    Ride.instance.buildingLevel = position.toString()
+                    DisplayPrice().execute()
+                }
+            }
 
         spnr_shipment_type.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -664,6 +711,84 @@ class ShipmentDetActivity : AppCompatActivity(), GregorianDatePickerDialog.OnDat
             Ride.instance.vehicleSizeId = vehicleSizeIdList[2]
             Ride.instance.vehicleSizeName = vehicleSizeDataList[2]
         }
+
+
+        invoice_image_button.setOnClickListener {
+
+            val builder = AlertDialog.Builder(this@ShipmentDetActivity)
+            val inflater = this@ShipmentDetActivity.getLayoutInflater()
+            val view = inflater.inflate(R.layout.alert_dialog_add_image, null)
+            builder.setView(view)
+            val alertDialog = builder.create()
+            alertDialog.setCancelable(false)
+            val linearLayoutTakePhoto =
+                view.findViewById<LinearLayout>(R.id.linearLayout_take_photo)
+            val linearLayoutChooseFromGallery =
+                view.findViewById<LinearLayout>(R.id.linearLayout_choose_from_gallery)
+            val linearLayoutCancel = view.findViewById<LinearLayout>(R.id.linearLayout_cancel)
+
+            linearLayoutTakePhoto.setOnClickListener {
+                alertDialog.dismiss()
+
+                if (ActivityCompat.checkSelfPermission(
+                        this@ShipmentDetActivity,
+                        Manifest.permission.CAMERA
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    ActivityCompat.requestPermissions(
+                        this@ShipmentDetActivity,
+                        arrayOf(Manifest.permission.CAMERA),
+                        MY_PERMISSIONS_REQUEST_CAMERA
+                    )
+
+                } else {
+//                UtilityFunctions.showAlertOnActivity(this@UploadDocsActivity,
+//                        resources.getString(R.string.ShootClearly), resources.getString(R.string.Ok),
+//                        "", false, false,
+//                        {
+                    val takePhotoIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                    try {
+                        val photoFile = UtilityFunctions.createImageFile()
+                        mCurrentInvoicePhotoPath = photoFile.absolutePath
+                        val uri = FileProvider.getUriForFile(
+                            this@ShipmentDetActivity,
+                            applicationContext.packageName + ".provider",
+                            photoFile
+                        )
+                        takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri)
+                        startActivityForResult(takePhotoIntent, TAKE_PHOTO_CODE)
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
+
+//                        }, {})
+                }
+            }
+
+            linearLayoutChooseFromGallery.setOnClickListener {
+                alertDialog.dismiss()
+
+                val i = Intent(
+                    Intent.ACTION_PICK,
+                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+                )
+                startActivityForResult(i, RESULT_LOAD_IMAGE)
+            }
+
+            linearLayoutCancel.setOnClickListener {
+                alertDialog.dismiss()
+            }
+
+            alertDialog.show()
+        }
+
+        deleteButton.setOnClickListener {
+            Ride.instance.storeInvoiceName = ""
+            Ride.instance.invoiceImage = null
+            invoice_image_button.text = resources.getString(R.string.AttachInvoice)
+            invoice_image_container_view.visibility = View.GONE
+            invoiceImageView.setImageBitmap(null)
+        }
     }
 
 
@@ -687,6 +812,7 @@ class ShipmentDetActivity : AppCompatActivity(), GregorianDatePickerDialog.OnDat
             params["end_lat"] = Ride.instance.dropOffLatitude!!
             params["end_lon"] = Ride.instance.dropOffLongitude!!
             params["is_loading_unloading_calculation"] = "1"
+            params["building_level"] = Ride.instance.buildingLevel
 
             return jsonParser.makeHttpRequest(
                 Constants.BASE_URL + "customer/calculate_price",
@@ -1052,6 +1178,82 @@ class ShipmentDetActivity : AppCompatActivity(), GregorianDatePickerDialog.OnDat
             return false
         }
 
+        var calendarCheckNight = Calendar.getInstance()
+        calendarCheckNight.time = getMyDate
+
+        if ((calendarCheckNight.get(Calendar.HOUR_OF_DAY) > 21) || (calendarCheckNight.get(Calendar.HOUR_OF_DAY) < 8 )) {
+
+            var hour = calendarCheckNight.get(Calendar.HOUR_OF_DAY)
+            var timeToAdd = 0
+            if (hour == 22) {
+                timeToAdd = 10
+            } else if (hour == 23){
+                timeToAdd = 9
+            } else if (hour == 24) {
+                timeToAdd = 8
+            } else {
+                timeToAdd = 8 - hour
+            }
+
+            calendarCheckNight.add(Calendar.HOUR, timeToAdd)
+
+            UtilityFunctions.showAlertOnActivity(this@ShipmentDetActivity,
+                getString(R.string.TimeBetween8And10),
+                resources.getString(R.string.Ok),
+                "",
+                false,
+                false,
+                {
+
+                    var monthOfYear = calendarCheckNight.get(Calendar.MONTH)
+                    monthOfYear += 1
+                    var dateString: String
+
+                    if (monthOfYear < 10)
+                        dateString = calendarCheckNight.get(Calendar.YEAR).toString() + "/0" + monthOfYear
+                    else
+                        dateString = calendarCheckNight.get(Calendar.YEAR).toString() + "/" + monthOfYear
+
+                    if (calendarCheckNight.get(Calendar.DAY_OF_MONTH) < 10) {
+                        dateString += "/0" + calendarCheckNight.get(Calendar.DAY_OF_MONTH)
+                    } else
+                        dateString += "/" + calendarCheckNight.get(Calendar.DAY_OF_MONTH)
+
+                    if (ConnectionDetector.isConnected(this@ShipmentDetActivity)) {
+                        GetDateBackground(true, dateString).execute()
+                    } else {
+                        ConnectionDetector.errorSnackbar(coordinator_layout)
+                    }
+
+                    val AM_PM: String
+                    var time: String
+
+                    if (calendarCheckNight.get(Calendar.HOUR_OF_DAY) < 12) {
+                        AM_PM = "AM"
+                    } else {
+                        AM_PM = "PM"
+                    }
+
+                    if (calendarCheckNight.get(Calendar.HOUR_OF_DAY) < 10) {
+                        time = "0${calendarCheckNight.get(Calendar.HOUR_OF_DAY)}:"
+                    } else {
+                        time = calendarCheckNight.get(Calendar.HOUR_OF_DAY).toString() + ":"
+                    }
+
+                    if (calendarCheckNight.get(Calendar.MINUTE) < 10) {
+                        time += "0${calendarCheckNight.get(Calendar.MINUTE)} $AM_PM"
+                    } else {
+                        time += calendarCheckNight.get(Calendar.MINUTE).toString() + " " + AM_PM
+                    }
+
+                    txt_timepicker.text = time
+                    Ride.instance.time = time
+
+                },
+                {})
+            return false
+        }
+
         if (toName.isEmpty()) {
             UtilityFunctions.showAlertOnActivity(this@ShipmentDetActivity,
                 resources.getString(R.string.InvalidReceiverName), resources.getString(R.string.Ok),
@@ -1072,6 +1274,8 @@ class ShipmentDetActivity : AppCompatActivity(), GregorianDatePickerDialog.OnDat
                 "", false, false, {}, {})
             return false
         }
+
+        Ride.instance.storeName = store_name_et.text.toString().trim();
 
 //        Ride.instance.subject = subject
         Ride.instance.shipment = shipment
@@ -1165,10 +1369,12 @@ class ShipmentDetActivity : AppCompatActivity(), GregorianDatePickerDialog.OnDat
 
                             if (vehicleSizeArray.getJSONObject(1).getString("status") == "0") {
                                 second_disable_view.visibility = View.VISIBLE
+                                vehicle2ComingSoonTV.visibility = View.VISIBLE
                             }
 
                             if (vehicleSizeArray.getJSONObject(2).getString("status") == "0") {
                                 third_disable_view.visibility = View.VISIBLE
+                                vehicle3ComingSoonTV.visibility = View.VISIBLE
                             }
 
                             Picasso.get()
@@ -1312,6 +1518,7 @@ class ShipmentDetActivity : AppCompatActivity(), GregorianDatePickerDialog.OnDat
             params["end_lat"] = Ride.instance.dropOffLatitude!!
             params["end_lon"] = Ride.instance.dropOffLongitude!!
             params["is_loading_unloading_calculation"] = "1"
+            params["building_level"] = Ride.instance.buildingLevel
             return jsonParser.makeHttpRequest(
                 Constants.BASE_URL + "customer/calculate_price",
                 "POST",
@@ -1376,6 +1583,58 @@ class ShipmentDetActivity : AppCompatActivity(), GregorianDatePickerDialog.OnDat
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == PICK_CONTACT && resultCode == RESULT_OK && data != null) {
             contactPicked(data!!)
+        }
+
+        if (requestCode == RESULT_LOAD_IMAGE && resultCode == Activity.RESULT_OK && data != null) {
+            val selectedImage = data.data
+            val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
+
+            val cursor = contentResolver.query(selectedImage!!, filePathColumn, null, null, null)
+            cursor!!.moveToFirst()
+
+            val columnIndex = cursor.getColumnIndex(filePathColumn[0])
+            val picturePath = cursor.getString(columnIndex)
+            cursor.close()
+
+            val f = File(picturePath)
+            var bm = UtilityFunctions.decodeFile(f)
+            bm = UtilityFunctions.scaleDownBitmap(bm, 400, this@ShipmentDetActivity)
+            val baos = ByteArrayOutputStream()
+
+            bm!!.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+//            val byteImage_photo = baos.toByteArray()
+
+            if (bm != null) {
+                Ride.instance.storeInvoiceName = f.name
+                Ride.instance.invoiceImage =
+                    Util.getCompressed(this@ShipmentDetActivity, f.absolutePath)
+                invoice_image_button.text = Ride.instance.storeInvoiceName
+                invoice_image_container_view.visibility = View.VISIBLE
+                invoiceImageView.setImageBitmap(bm!!)
+            }
+
+
+//            addToClass(bm, byteImage_photo, f)
+
+        } else if (requestCode == TAKE_PHOTO_CODE && resultCode == Activity.RESULT_OK) {
+
+            val baos = ByteArrayOutputStream()
+            val f = File(mCurrentInvoicePhotoPath)
+            var bm1 = UtilityFunctions.decodeFile(f)
+            // f.delete()
+            bm1 = UtilityFunctions.scaleDownBitmap(bm1, 800, this@ShipmentDetActivity)
+            bm1!!.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+//                val byteImage_photo = baos.toByteArray()
+
+            if (bm1 != null) {
+                Ride.instance.storeInvoiceName = f.name
+                Ride.instance.invoiceImage =
+                    Util.getCompressed(this@ShipmentDetActivity, f.absolutePath)
+                invoice_image_button.text = Ride.instance.storeInvoiceName
+                invoice_image_container_view.visibility = View.VISIBLE
+                invoiceImageView.setImageBitmap(bm1!!)
+            }
+
         }
     }
 
@@ -1507,6 +1766,28 @@ class ShipmentDetActivity : AppCompatActivity(), GregorianDatePickerDialog.OnDat
 
             })
         }).start()
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        when (requestCode) {
+            MY_PERMISSIONS_REQUEST_CAMERA -> {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return
+            }
+        }// other 'case' lines to check for other
+        // permissions this app might request
     }
 
 }

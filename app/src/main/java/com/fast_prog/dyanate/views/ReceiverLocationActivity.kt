@@ -472,6 +472,10 @@ class ReceiverLocationActivity : AppCompatActivity(), OnMapReadyCallback,
                         userLocation!!.latitude,
                         userLocation!!.longitude
                     ).execute()
+                    GetLocationNameBackgroundArabic(
+                        userLocation!!.latitude,
+                        userLocation!!.longitude
+                    ).execute()
                 }
             } else {
                 ConnectionDetector.errorSnackbar(coordinator_layout)
@@ -796,6 +800,88 @@ class ReceiverLocationActivity : AppCompatActivity(), OnMapReadyCallback,
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
+    private inner class GetLocationNameBackgroundArabic internal constructor(
+        private val latitude: Double,
+        private val longitude: Double
+    ) : AsyncTask<Void, Void, JSONArray>() {
+
+        override fun doInBackground(vararg voids: Void): JSONArray? {
+            val locationNameArabicParser = JsonParser()
+            val params = HashMap<String, String>()
+
+            params["latlng"] = latitude.toString() + "," + longitude
+            params["sensor"] = "true"
+            params["key"] = Constants.GOOGLE_API_KEY
+            params["language"] = "ar"
+
+            val locationNameObject = locationNameArabicParser.makeHttpRequest(
+                Constants.GOOGLE_LOCATION_NAME_URL,
+                "GET",
+                params
+            )
+
+            if (locationNameObject != null) {
+                try {
+                    val locationNameArray = locationNameObject.getJSONArray("results")
+                    if (locationNameArray != null) {
+                        return locationNameArray
+                    }
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                }
+
+            }
+            return null
+        }
+
+        override fun onPostExecute(locationArray: JSONArray?) {
+            super.onPostExecute(locationArray)
+            showProgressBarMarker(false)
+            if (locationArray != null) {
+                try {
+                    var provinceName = ""
+                    var locationName = ""
+                    val addressComponents =
+                        locationArray.getJSONObject(0).getJSONArray("address_components")
+
+                    for (i in 0 until addressComponents.length()) {
+                        val types = addressComponents.getJSONObject(i).getJSONArray("types")
+
+                        if (types.getString(0).equals(
+                                "route",
+                                ignoreCase = true
+                            ) || types.getString(0).equals(
+                                "locality",
+                                ignoreCase = true
+                            ) || types.length() > 1 && types.getString(1).equals(
+                                "sublocality",
+                                ignoreCase = true
+                            ) || types.getString(0).equals("country")
+                        ) {
+
+                            when {
+                                types.getString(0).equals("locality", true) -> provinceName =
+                                    addressComponents.getJSONObject(i).getString("long_name")
+                                locationName.trim().isNotEmpty() -> locationName =
+                                    addressComponents.getJSONObject(i)
+                                        .getString("long_name") + " ،" + locationName
+                                else -> locationName =
+                                    addressComponents.getJSONObject(i).getString("long_name")
+                            }
+                        }
+                    }
+
+                    Ride.instance.dropOffLocationNameArabic = locationName
+
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                }
+
+            }
+        }
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -872,6 +958,7 @@ class ReceiverLocationActivity : AppCompatActivity(), OnMapReadyCallback,
             params["end_lat"] = Ride.instance.dropOffLatitude!!
             params["end_lon"] = Ride.instance.dropOffLongitude!!
             params["is_loading_unloading_calculation"] = "1"
+            params["building_level"] = Ride.instance.buildingLevel
 
             return jsonParser.makeHttpRequest(
                 Constants.BASE_URL + "customer/calculate_price",
@@ -886,12 +973,31 @@ class ReceiverLocationActivity : AppCompatActivity(), OnMapReadyCallback,
             if (response != null) {
                 try {
                     if (response.getBoolean("status")) {
-                        startActivity(
-                            Intent(
-                                this@ReceiverLocationActivity,
-                                ShipmentDetActivity::class.java
+                        if (response.getJSONObject("data").getInt("distance") < 2000) {
+                            UtilityFunctions.showAlertOnActivity(this@ReceiverLocationActivity,
+                                getString(R.string.DistanceLessThan2Km),
+                                resources.getString(R.string.Yes),
+                                resources.getString(R.string.No),
+                                true,
+                                false,
+                                {
+                                    startActivity(
+                                        Intent(
+                                            this@ReceiverLocationActivity,
+                                            ShipmentDetActivity::class.java
+                                        )
+                                    )
+                                },
+                                {})
+                        } else {
+                            startActivity(
+                                Intent(
+                                    this@ReceiverLocationActivity,
+                                    ShipmentDetActivity::class.java
+                                )
                             )
-                        )
+                        }
+
                     } else {
 
                         UtilityFunctions.showAlertOnActivity(this@ReceiverLocationActivity,

@@ -10,17 +10,23 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.location.Location
+import android.net.Uri
 import android.os.*
 import android.text.SpannableString
 import android.text.style.BackgroundColorSpan
 import android.text.style.ForegroundColorSpan
 import android.util.DisplayMetrics
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
+import android.widget.Button
 import android.widget.RelativeLayout
+import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
@@ -113,6 +119,7 @@ class SenderLocationActivity : AppCompatActivity(), OnMapReadyCallback,
     var selectedCountry = ""
 
     val AUTOCOMPLETE_REQUEST_CODE = 100
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -395,45 +402,64 @@ class SenderLocationActivity : AppCompatActivity(), OnMapReadyCallback,
 //                resources.getString(R.string.AreYouSure), resources.getString(R.string.Yes),
 //                resources.getString(R.string.No), true, false,
 //                {
+
             if (!type_location_text_view.text.toString().equals(
                     resources.getString(R.string.TypeYourLocation),
                     true
                 )
             ) {
 
-                Log.d("selected_country", selectedCountry)
-                if (selectedCountry.toUpperCase() != "SA") {
+
+                if (btn_select_location.text.toString().trim() == resources.getString(R.string.CreateAnOrder)) {
+
                     UtilityFunctions.showAlertOnActivity(this@SenderLocationActivity,
-                        getString(R.string.sorry_this_service_only_in_saudi),
+                        getString(R.string.SelectPickUpLocationText),
                         getString(R.string.ok),
                         "",
                         showCancelButton = false,
                         setCancelable = true,
                         actionOk = {},
                         actionCancel = {})
-                    return@setOnClickListener
-                }
 
-                if (sharedPreferences.getString(Constants.PREFS_LANG, "en")!!.equals(
-                        "ar",
-                        true
-                    )
-                ) {
-                    Ride.instance.pickUpLocation =
-                        text_view_province.text.toString() + " ،" + type_location_text_view.text.toString()
+                    btn_select_location.text = resources.getString(R.string.Continue)
+
                 } else {
-                    Ride.instance.pickUpLocation =
-                        type_location_text_view.text.toString() + ", " + text_view_province.text.toString()
-                }
-                Ride.instance.pickUpLatitude = userLocation!!.latitude.toString()
-                Ride.instance.pickUpLongitude = userLocation!!.longitude.toString()
 
-                startActivity(
-                    Intent(
-                        this@SenderLocationActivity,
-                        ReceiverLocationActivity::class.java
+                    Log.d("selected_country", selectedCountry)
+                    if (selectedCountry.toUpperCase() != "SA") {
+                        UtilityFunctions.showAlertOnActivity(this@SenderLocationActivity,
+                            getString(R.string.sorry_this_service_only_in_saudi),
+                            getString(R.string.ok),
+                            "",
+                            showCancelButton = false,
+                            setCancelable = true,
+                            actionOk = {},
+                            actionCancel = {})
+                        return@setOnClickListener
+                    }
+
+                    if (sharedPreferences.getString(Constants.PREFS_LANG, "en")!!.equals(
+                            "ar",
+                            true
+                        )
+                    ) {
+                        Ride.instance.pickUpLocation =
+                            text_view_province.text.toString() + " ،" + type_location_text_view.text.toString()
+                    } else {
+                        Ride.instance.pickUpLocation =
+                            type_location_text_view.text.toString() + ", " + text_view_province.text.toString()
+                    }
+                    Ride.instance.pickUpLatitude = userLocation!!.latitude.toString()
+                    Ride.instance.pickUpLongitude = userLocation!!.longitude.toString()
+
+                    startActivity(
+                        Intent(
+                            this@SenderLocationActivity,
+                            ReceiverLocationActivity::class.java
+                        )
                     )
-                )
+                }
+
             }
 //                }, {})
         }
@@ -458,6 +484,72 @@ class SenderLocationActivity : AppCompatActivity(), OnMapReadyCallback,
 
         viewMyTripsTextView.setOnClickListener {
             startActivity(Intent(this@SenderLocationActivity, MyOrdersActivity::class.java))
+        }
+    }
+
+    private inner class checkUpdate :
+        AsyncTask<Void, Void, JSONObject?>() {
+
+        override fun doInBackground(vararg p0: Void?): JSONObject? {
+
+            val jsonParser = JsonParser()
+            val params = HashMap<String, String>()
+            params["lang"] = sharedPreferences.getString(Constants.PREFS_LANG, "en")!!
+            params["app_version"] = Constants.APP_VERSION
+
+            return jsonParser.makeHttpRequest(
+                Constants.BASE_URL + "customer/check_app_version",
+                "POST",
+                params
+            )
+        }
+
+        override fun onPostExecute(result: JSONObject?) {
+            if (result != null) {
+                if (result.getBoolean("status")) {
+
+                    if (result.getJSONObject("data").getString("is_update_available") == "yes") {
+
+                        val builder = AlertDialog.Builder(this@SenderLocationActivity)
+                        val inflaterAlert =
+                            getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+                        val viewDialog = inflaterAlert.inflate(R.layout.update_dialog, null)
+                        builder.setView(viewDialog)
+                        val dialog = builder.create()
+
+                        val titleTextView = viewDialog.findViewById<TextView>(R.id.titletextView)
+                        val messageTextView = viewDialog.findViewById<TextView>(R.id.messageTextView)
+                        val yesButton = viewDialog.findViewById<Button>(R.id.yesButton)
+                        val noButton = viewDialog.findViewById<Button>(R.id.noButton)
+
+                        messageTextView.text = result.getJSONObject("data").getString("message")
+                        titleTextView.text = result.getJSONObject("data").getString("title")
+                        yesButton.text = result.getJSONObject("data").getString("yes_button_title")
+                        noButton.text = result.getJSONObject("data").getString("no_button_title")
+
+                        if (result.getJSONObject("data").getBoolean("show_no_button")) {
+                            noButton.visibility = View.VISIBLE
+                        } else {
+                            noButton.visibility = View.GONE
+                        }
+
+                        yesButton.setOnClickListener {
+                            startActivity(
+                                Intent(
+                                    Intent.ACTION_VIEW,
+                                    Uri.parse("https://play.google.com/store/apps/details?id=com.fast_prog.dyanate")
+                                )
+                            )
+
+                        }
+
+                        dialog.setCancelable(false)
+                        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                        dialog.show()
+                    }
+
+                }
+            }
         }
     }
 
@@ -590,6 +682,7 @@ class SenderLocationActivity : AppCompatActivity(), OnMapReadyCallback,
 //        }
 
 
+        checkUpdate().execute()
     }
 
     override fun onPause() {
@@ -1115,6 +1208,8 @@ class SenderLocationActivity : AppCompatActivity(), OnMapReadyCallback,
                         userLocation!!.latitude,
                         userLocation!!.longitude
                     ).execute()
+
+                    GetLocationNameBackgroundArabic(userLocation!!.latitude, userLocation!!.longitude).execute()
                 }
             } else {
                 ConnectionDetector.errorSnackbar(coordinator_layout)
@@ -1434,6 +1529,88 @@ class SenderLocationActivity : AppCompatActivity(), OnMapReadyCallback,
                     } catch (e: SnappydbException) {
                         e.printStackTrace()
                     }
+
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                }
+
+            }
+        }
+    }
+
+
+    @SuppressLint("StaticFieldLeak")
+    private inner class GetLocationNameBackgroundArabic internal constructor(
+        private val latitude: Double,
+        private val longitude: Double
+    ) : AsyncTask<Void, Void, JSONArray>() {
+
+        override fun doInBackground(vararg voids: Void): JSONArray? {
+            val locationNameArabicParser = JsonParser()
+            val params = HashMap<String, String>()
+
+            params["latlng"] = "$latitude,$longitude"
+            params["sensor"] = "true"
+            params["key"] = Constants.GOOGLE_API_KEY
+            params["language"] = "ar"
+
+            val locationNameObject = locationNameArabicParser.makeHttpRequest(
+                Constants.GOOGLE_LOCATION_NAME_URL,
+                "GET",
+                params
+            )
+
+            if (locationNameObject != null) {
+                try {
+                    val locationNameArray = locationNameObject.getJSONArray("results")
+                    if (locationNameArray != null) {
+                        return locationNameArray
+                    }
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                }
+
+            }
+            return null
+        }
+
+        override fun onPostExecute(locationArray: JSONArray?) {
+            super.onPostExecute(locationArray)
+            if (locationArray != null) {
+                try {
+                    var provinceName = ""
+                    var locationName = ""
+                    val addressComponents =
+                        locationArray.getJSONObject(0).getJSONArray("address_components")
+
+                    for (i in 0 until addressComponents.length()) {
+                        val types = addressComponents.getJSONObject(i).getJSONArray("types")
+
+                        if (types.getString(0).equals(
+                                "route",
+                                ignoreCase = true
+                            ) || types.getString(0).equals(
+                                "locality",
+                                ignoreCase = true
+                            ) || types.length() > 1 && types.getString(1).equals(
+                                "sublocality",
+                                ignoreCase = true
+                            ) || types.getString(0).equals("country")
+                        ) {
+
+                            when {
+                                types.getString(0).equals("locality", true) -> provinceName =
+                                    addressComponents.getJSONObject(i).getString("long_name")
+                                locationName.trim().isNotEmpty() -> locationName =
+                                    addressComponents.getJSONObject(i)
+                                        .getString("long_name") + " ،" + locationName
+                                else -> locationName =
+                                    addressComponents.getJSONObject(i).getString("long_name")
+                            }
+                        }
+                    }
+
+                    Ride.instance.pickUpLocationNameArabic = locationName
 
                 } catch (e: JSONException) {
                     e.printStackTrace()

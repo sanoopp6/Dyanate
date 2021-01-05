@@ -1,10 +1,9 @@
 package com.fast_prog.dyanate.models
 
+import android.media.Image
+import java.io.File
 import java.io.Serializable
 
-/**
- * Created by sarathk on 1/4/17.
- */
 
 class Ride : Serializable {
     var tripId = ""
@@ -35,6 +34,12 @@ class Ride : Serializable {
     var requiredUnpackAndInstall = "0"
     var loadingCount = "0"
     var unloadingCount = "0"
+    var buildingLevel = ""
+    var pickUpLocationNameArabic = ""
+    var dropOffLocationNameArabic = ""
+    var storeName = ""
+    var storeInvoiceName = ""
+    var invoiceImage: File? = null
 
     companion object { lateinit var instance: Ride }
 

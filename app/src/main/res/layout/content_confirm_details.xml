@@ -116,6 +116,32 @@
             android:fontFamily="@font/droid_arabic_kufi"
             android:textColor="@color/darkest_gray" />
 
+
+
+
+        <TextView
+            style="@style/FontSizeFifteen"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/droid_arabic_kufi"
+            android:text="@string/BuildingLevel"
+            android:textColor="@color/lightBlueColor" />
+
+
+        <TextView
+            android:id="@+id/buildingLevelValueTV"
+            style="@style/FontSizeFifteen"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/droid_arabic_kufi"
+            android:textColor="@color/darkest_gray" />
+
+
+
+
         <TextView
             android:id="@+id/installationRequiredTitle"
             style="@style/FontSizeFifteen"

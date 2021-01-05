@@ -1,14 +1,12 @@
 package com.fast_prog.dyanate.firebase
 
+import android.app.Activity
 import android.content.ContentValues.TAG
-import android.content.Context
-import android.os.AsyncTask
 import android.util.Log
-import com.fast_prog.dyanate.utilities.Constants
+import com.fast_prog.dyanate.utilities.DynateApplication
+import com.fast_prog.dyanate.views.MyOrdersActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import com.google.gson.JsonParser
-import org.json.JSONObject
 
 
 class DyanateFirebaseMessagingService : FirebaseMessagingService() {
@@ -35,6 +33,19 @@ class DyanateFirebaseMessagingService : FirebaseMessagingService() {
         // Check if message contains a notification payload.
         if (remoteMessage.notification != null) {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.notification!!.body)
+        }
+
+        var tag = remoteMessage.data["tag"]?.trim()
+
+        if (tag == "trip_status") {
+            val currentActivity: Activity? =
+                (applicationContext as DynateApplication).getCurrentActivity()
+            if (currentActivity != null) {
+                if (currentActivity!! == MyOrdersActivity()) {
+                    (currentActivity as MyOrdersActivity).TripMasterListBackground().execute()
+                }
+            }
+
         }
 
         // Also if you intend on generating your own notifications as a result of a received FCM

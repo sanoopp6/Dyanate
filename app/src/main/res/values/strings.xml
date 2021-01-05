@@ -351,4 +351,24 @@
     <string name="upload_and_download">Loading and unloading</string>
     <string name="loading">loading</string>
     <string name="unloading">unloading</string>
+    <string name="PayOnline">PAY ONLINE</string>
+    <string name="paid">Paid</string>
+    <string name="Total">Total</string>
+    <string name="PaymentCompleted">Payment completed successfully</string>
+    <string name="DistanceLessThan2Km">The distance is too close, do you want to continue?</string>
+    <string name="BuildingLevel">Building Level</string>
+    <string name="GroundFloor">Ground Floor</string>
+    <string name="InstallationPrice">Installation Price</string>
+    <string name="StoreName">Store name (Optional)</string>
+    <string name="AttachCopyOfInvoice">Attach copy of the invoice (Optional)</string>
+    <string name="AttachInvoice">Attach invoice</string>
+    <string name="Delete">Delete</string>
+    <string name="StoreNameTitle">Store name</string>
+    <string name="InvoiceTitle">Invoice</string>
+    <string name="PlsEnterReason">Please enter reason</string>
+    <string name="TimeBetween8And10">Note that communication and implementation of requests starts from 8 am to 10 pm</string>
+    <string name="CreateAnOrder">Create an order</string>
+    <string name="SelectPickUpLocationText">Please select the pick up location</string>
+    <string name="ComingSoon">Coming soon</string>
+    <string name="invoice_upload_failed">Invoice upload failed</string>
 </resources>

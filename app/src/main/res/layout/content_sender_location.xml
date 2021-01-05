@@ -27,14 +27,14 @@
             android:focusable="true" />
 
         <TextView
-                android:fontFamily="@font/droid_arabic_kufi"
             android:id="@+id/viewMyTripsTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:background="@color/blueColor"
+            android:background="#4CAF50"
+            android:fontFamily="@font/droid_arabic_kufi"
             android:paddingStart="5dp"
             android:paddingEnd="5dp"
             android:text="@string/view_my_trips"
@@ -97,11 +97,11 @@
                     android:gravity="center">
 
                     <TextView
-                android:fontFamily="@font/droid_arabic_kufi"
                         android:id="@+id/you_are_here_text_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:fontFamily="@font/droid_arabic_kufi"
                         android:gravity="center"
                         android:padding="5dp"
                         android:text="@string/StartPoint"
@@ -142,7 +142,6 @@
                     android:layout_weight="1">
 
                     <TextView
-                android:fontFamily="@font/droid_arabic_kufi"
                         android:id="@+id/text_view_location_name"
                         style="@style/FontSizeTwelve"
                         android:layout_width="wrap_content"
@@ -151,6 +150,7 @@
                         android:ellipsize="marquee"
                         android:focusable="true"
                         android:focusableInTouchMode="true"
+                        android:fontFamily="@font/droid_arabic_kufi"
                         android:freezesText="true"
                         android:gravity="center"
                         android:marqueeRepeatLimit="marquee_forever"
@@ -180,7 +180,7 @@
             android:layout_marginRight="50dp"
             android:layout_marginBottom="30dp"
             android:background="@drawable/layout_rect_blue_rounded"
-            android:text="@string/Continue"
+            android:text="@string/CreateAnOrder"
             android:textColor="@color/whiteColor" />
 
     </FrameLayout>
@@ -209,23 +209,23 @@
             android:paddingLeft="10dp">
 
             <TextView
-                android:fontFamily="@font/droid_arabic_kufi"
                 android:id="@+id/type_location_text_view"
                 style="@style/FontSizeEleven"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:ellipsize="marquee"
+                android:fontFamily="@font/droid_arabic_kufi"
                 android:marqueeRepeatLimit="marquee_forever"
                 android:singleLine="true"
                 android:text="@string/TypeYourLocation" />
 
             <TextView
-                android:fontFamily="@font/droid_arabic_kufi"
                 android:id="@+id/text_view_province"
                 style="@style/FontSizeEleven"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/droid_arabic_kufi"
                 android:textColor="@color/darkest_gray" />
 
         </LinearLayout>

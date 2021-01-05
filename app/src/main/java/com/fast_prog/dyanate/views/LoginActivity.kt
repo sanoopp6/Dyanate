@@ -5,10 +5,17 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Configuration
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.FileProvider
@@ -336,6 +343,12 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        checkUpdate().execute()
+        super.onResume()
+
+    }
+
     private inner class SendOTPBackground internal constructor(internal var userID: String) :
         AsyncTask<Void, Void, JSONObject?>() {
 
@@ -357,26 +370,71 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-//    private inner class checkUpdate :
-//        AsyncTask<Void, Void, JSONObject?>() {
-//
-//        override fun doInBackground(vararg p0: Void?): JSONObject? {
-//
-//            val jsonParser = JsonParser()
-//            val params = HashMap<String, String>()
-//            params["lang"] = sharedPreferences.getString(Constants.PREFS_LANG, "en")!!
-//            params["user_id"] = userID
-//            params["country_code"] = countryCode!!
-//            params["mobile_number"] = mobileNumber!!
-//            params["action"] = "login"
-//
-//            return jsonParser.makeHttpRequest(
-//                Constants.BASE_URL + "customer/generate_otp",
-//                "POST",
-//                params
-//            )
-//        }
-//    }
+    private inner class checkUpdate :
+        AsyncTask<Void, Void, JSONObject?>() {
+
+        override fun doInBackground(vararg p0: Void?): JSONObject? {
+
+            val jsonParser = JsonParser()
+            val params = HashMap<String, String>()
+            params["lang"] = sharedPreferences.getString(Constants.PREFS_LANG, "en")!!
+            params["app_version"] = Constants.APP_VERSION
+
+            return jsonParser.makeHttpRequest(
+                Constants.BASE_URL + "customer/check_app_version",
+                "POST",
+                params
+            )
+        }
+
+        override fun onPostExecute(result: JSONObject?) {
+            if (result != null) {
+                if (result.getBoolean("status")) {
+
+                    if (result.getJSONObject("data").getString("is_update_available") == "yes") {
+
+                        val builder = AlertDialog.Builder(this@LoginActivity)
+                        val inflaterAlert =
+                            getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+                        val viewDialog = inflaterAlert.inflate(R.layout.update_dialog, null)
+                        builder.setView(viewDialog)
+                        val dialog = builder.create()
+
+                        val titleTextView = viewDialog.findViewById<TextView>(R.id.titletextView)
+                        val messageTextView = viewDialog.findViewById<TextView>(R.id.messageTextView)
+                        val yesButton = viewDialog.findViewById<Button>(R.id.yesButton)
+                        val noButton = viewDialog.findViewById<Button>(R.id.noButton)
+
+                        messageTextView.text = result.getJSONObject("data").getString("message")
+                        titleTextView.text = result.getJSONObject("data").getString("title")
+                        yesButton.text = result.getJSONObject("data").getString("yes_button_title")
+                        noButton.text = result.getJSONObject("data").getString("no_button_title")
+
+                        if (result.getJSONObject("data").getBoolean("show_no_button")) {
+                            noButton.visibility = View.VISIBLE
+                        } else {
+                            noButton.visibility = View.GONE
+                        }
+
+                        yesButton.setOnClickListener {
+                            startActivity(
+                                Intent(
+                                    Intent.ACTION_VIEW,
+                                    Uri.parse("https://play.google.com/store/apps/details?id=com.fast_prog.dyanate")
+                                )
+                            )
+
+                        }
+
+                        dialog.setCancelable(false)
+                        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                        dialog.show()
+                    }
+
+                }
+            }
+        }
+    }
 
 
     //@SuppressLint("StaticFieldLeak")

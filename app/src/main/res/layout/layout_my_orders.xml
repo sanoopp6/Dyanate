@@ -6,12 +6,12 @@
     android:background="@drawable/rectangle_bg"
     android:elevation="5dp">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="120dp">
 
         <LinearLayout
-            android:layout_width="97dp"
+            android:layout_width="100dp"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
@@ -45,7 +45,7 @@
                 android:paddingEnd="10dp"
                 android:text="10"
                 android:textColor="@color/lightBlueColor"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <View
@@ -54,7 +54,20 @@
                 android:background="@color/darkest_gray" />
 
             <TextView
-                android:id="@+id/sarTextView"
+                style="@style/FontSizeFourteen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/droid_arabic_kufi"
+                android:text="@string/InstallationPrice"
+                android:textAlignment="center"
+                android:textColor="@color/darkest_gray"
+                android:textSize="12sp"
+                android:visibility="visible" />
+
+
+            <TextView
+                android:id="@+id/installationChargeTextView"
                 style="@style/FontSizeFourteen"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
@@ -65,18 +78,6 @@
                 android:textAlignment="center"
                 android:textColor="#000" />
 
-            <TextView
-                android:id="@+id/estimatedTextView"
-                style="@style/FontSizeFourteen"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:fontFamily="@font/droid_arabic_kufi"
-                android:text="@string/estimated"
-                android:textAlignment="center"
-                android:textColor="@color/darkest_gray"
-                android:textSize="10sp"
-                android:visibility="gone" />
 
         </LinearLayout>
 
@@ -100,7 +101,8 @@
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/droid_arabic_kufi"
                 android:text="@string/Date"
-                android:textColor="@color/lightBlueColor" />
+                android:textColor="@color/lightBlueColor"
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/dateTextView"
@@ -110,17 +112,33 @@
                 android:fontFamily="@font/droid_arabic_kufi"
                 android:text="04/09/2018"
                 android:textColor="@color/darkest_gray"
-                android:textSize="14sp" />
+                android:textSize="13sp" />
 
-
-            <TextView
-                android:id="@+id/tripStatusTextView"
-                style="@style/FontSizeSixteen"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/droid_arabic_kufi"
-                android:textColor="@color/darkest_gray"
-                android:textSize="14sp" />
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tripStatusTextView"
+                    style="@style/FontSizeSixteen"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/droid_arabic_kufi"
+                    android:textColor="@color/darkest_gray"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:id="@+id/whatsAppButton"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/whatspp_icon"
+                    android:textColor="@color/lightBlueColor"
+                    android:visibility="gone" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -137,18 +155,10 @@
                 android:layout_height="35dp"
                 android:layout_gravity="center"
                 android:background="@drawable/layout_rect_white_lightblue"
+                android:fontFamily="@font/droid_arabic_kufi"
                 android:text="@string/Details"
                 android:textColor="@color/lightBlueColor" />
 
-            <ImageView
-                android:id="@+id/whatsAppButton"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/whatspp_icon"
-                android:textColor="@color/lightBlueColor"
-                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/rate_driver_text_view"
@@ -157,9 +167,23 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:fontFamily="@font/droid_arabic_kufi"
-                android:text="@string/rate_driver"
+                android:text="@string/WriteAReview"
                 android:textColor="@color/blueColor"
+                android:visibility="visible" />
+
+            <Button
+                android:id="@+id/payOnlineButton"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="4dp"
+                android:background="@color/lightBlueColor"
+                android:fontFamily="@font/droid_arabic_kufi"
+                android:text="@string/PayOnline"
+                android:textColor="#FFF"
+                android:textSize="12sp"
                 android:visibility="gone" />
+
 
         </LinearLayout>
 

@@ -1,11 +1,15 @@
 package com.fast_prog.dyanate.views
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.AsyncTask
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.widget.Button
+import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.fast_prog.dyanate.R
@@ -68,15 +72,48 @@ class DriverReplyActivity : AppCompatActivity() {
 
         btn_cancel.setOnClickListener {
 
-            UtilityFunctions.showAlertOnActivity(this,
-                    getString(R.string.are_you_sure_cancel_trip),
-                    getString(R.string.Yes),
-                    getString(R.string.No),
-                    true,
-                    setCancelable = true,
-                    actionOk = {
-                        CancelTripBackground().execute()
-                    }, actionCancel = {})
+//            UtilityFunctions.showAlertOnActivity(this,
+//                    getString(R.string.are_you_sure_cancel_trip),
+//                    getString(R.string.Yes),
+//                    getString(R.string.No),
+//                    true,
+//                    setCancelable = true,
+//                    actionOk = {
+//                        CancelTripBackground().execute()
+//                    }, actionCancel = {})
+
+            val builder = AlertDialog.Builder(this@DriverReplyActivity)
+            val inflaterAlert = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+            val viewDialog = inflaterAlert.inflate(R.layout.cancel_reason_layout, null)
+            builder.setView(viewDialog)
+            val dialog = builder.create()
+
+            val buttonSubmit = viewDialog.findViewById<Button>(R.id.submitButton)
+            val reasonEditText = viewDialog.findViewById<EditText>(R.id.reasonET)
+
+
+            buttonSubmit.setOnClickListener {
+                dialog.dismiss()
+
+                var reason = reasonEditText.text.toString().trim()
+                if (reason.isEmpty()) {
+                    UtilityFunctions.showAlertOnActivity(this@DriverReplyActivity,
+                        getString(R.string.pls_add_your_rating),
+                        getString(R.string.ok),
+                        "",
+                        false,
+                        true,
+                        {},
+                        {})
+                    return@setOnClickListener
+                }
+
+
+                CancelTripBackground(reason).execute()
+            }
+
+            dialog.setCancelable(true)
+            dialog.show()
         }
     }
 
@@ -128,7 +165,7 @@ class DriverReplyActivity : AppCompatActivity() {
     }
 
     @SuppressLint("StaticFieldLeak")
-    private inner class CancelTripBackground internal constructor(): AsyncTask<Void, Void, JSONObject>() {
+    private inner class CancelTripBackground internal constructor(internal var reason: String): AsyncTask<Void, Void, JSONObject>() {
 
         override fun onPreExecute() {
             super.onPreExecute()
@@ -140,6 +177,8 @@ class DriverReplyActivity : AppCompatActivity() {
             val params = HashMap<String, String>()
 
             params["trip_id"] = tripID!!
+            params["reason"] = reason
+            params["lang"] = sharedPreferences!!.getString(Constants.PREFS_LANG, "ar")!!
 
             return jsonParser.makeHttpRequest(Constants.BASE_URL + "customer/cancel_trip", "POST", params)
         }
